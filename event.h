@@ -1,5 +1,5 @@
 //
-//  Created by Mikaela Smit on 30/10/2014.   
+//  Created by Mikaela Smit on 07/11/2014.   
 //  Copyright (c) 2014 Mikaela Smit. All rights reserved.
 //
 
@@ -22,7 +22,7 @@ using namespace std;
 
  	void (*p_fun)();								// Function pointer - when an event is called in the Q it can point to what functions need to be executed
 													// [...] e.g. If patient gets pos HIVTest tell him to schedule GP appointment
-													// Jack notes: - make private eventually. - function to what to excexute when event happens
+	int patientID;		 					// Jack notes: - make private eventually. - function to what to excexute when event happens
 
 	};
 

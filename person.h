@@ -19,17 +19,37 @@ public:
 
 	//// --- PATIENT CHARACTERISTICS ---
 	int PatientID;
+	int DoB;
+    int Sex;
+	int DateOfDeath;
+
 	int HIVStatus;
 	int MyDateOfHIV;
 	
-	void TellMyPatientID();
-    void PatientIDAssign(int x);
 
-	//// ---- HIV EVENTS ---
-	void GetDateOfHIVInfection(int x, int y);		// Function to get date of HIV infection
-	void TellMyHivDate();							// Function to be executed when HIV infection occurs
+	//// --- FUNCTIONS ----
 
+	// --- Patient ID ---
+	void PatientIDAssign(int x);					// Function to get Patient ID
+	void TellMyPatientID();							// Function to be executed when ID is assigned
+
+	// --- Date of Birth ---						// TO DO: Convert to date of birth later?
+	void GetMyDateOfBirth(int x, int y);			// Function to assign age
+	void TellMyDob();								// Function to be executed when birthday
  
+	// --- Sex ---
+	void GenderDistribution();						// Function to assign sex
+	void TellMySex();								// Function to be executed when sex is assigned
+
+	// --- Date of Death ---
+	void GetDateOfDeath(int x, int y);			// Function to get date of Death
+	void TellMyExpectedDeathDate();							// Function to be executed when Death occurs
+	
+	// --- HIV Infection Date ---					// TO DO: Make HIV status positive
+	void GetDateOfHIVInfection(int x, int y);		// Function to get date of HIV infection
+	void TellMyHivDateSTART();						// Function to be executed when HIV infection occurs
+
+
 };
 
 #endif
