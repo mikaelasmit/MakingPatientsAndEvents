@@ -10,4 +10,6 @@ using namespace std;
 
 	//// ---- HIV EVENTS ---
 	//double GetDateOfHIVInfection(int x, int y);		// Function to get date of HIV infection
-	void TellMyHivDate();							// Function to be executed when HIV infection occurs
+	void TellMyHivStatus();							    // Function to be executed when HIV infection occurs
+	void TellMyDeathDate();
+	void TellMyBirthDate();
