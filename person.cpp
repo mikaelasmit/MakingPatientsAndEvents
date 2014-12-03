@@ -20,9 +20,12 @@ patient::patient()											// First 'patient' class second constructor/variabl
     PatientID=0;
 	Sex=-999;
 	DoB=-999;
+	BirthdayM=-999;
+	Birthday=-999;
 	DateOfDeath=-999;
 	HIVStatus=-999;
 	MyDateOfHIV=-999;
+	// AGE													// Need to assign an age and update it later
 	}
 
 
@@ -34,7 +37,10 @@ void patient::TellMySex(){									// --- Tell Sex ---
 	cout << "The sex of patient " << PatientID << " is " << Sex << endl;}	
 
 void patient::TellMyDob(){									// --- Tell Date of Birth ---	// Convert to date of birth later???
-	cout << "The age of patient " << PatientID << " is " << DoB << endl;}
+	cout << "The year of birth of patient " << PatientID << " is " << DoB << endl;}
+
+void patient::TellMyBD(){									// --- Tell Birthday ---	// Convert to date of birth later???
+	cout << "The birthday of patient " << PatientID << " is " << Birthday << " and Birthday month is " << BirthdayM << endl;}
 
 void patient::TellMyExpectedDeathDate(){									
 	cout << "I, patient " << PatientID << ", will die " << DateOfDeath << " after the start of the model.  "  << endl;}
@@ -43,7 +49,7 @@ void patient::TellMyHivDateSTART(){
 	cout << "I, patient " << PatientID << ", will acquiere HIV " << MyDateOfHIV << " years after the start of the model" << endl;}
 
 
-	
+
 // --- FUNCTIONS TO ASSIGN CHARACTERISTICS ---	
 void patient::PatientIDAssign(int x){						// --- Assign Patient ID ---
 	PatientID=x+1;}
@@ -54,8 +60,12 @@ double	r = ((double) rand() / (RAND_MAX)) ;
 		Sex=1;}												// No need to define in patient as first line of this chunk already states this is taking place in 'patient'
 	else {Sex=2;}}
 
-void patient::GetMyDateOfBirth(int min, int max){			// --- Assign Date Of Birth ---		
-	DoB=(rand()%(max-min+1)+min)/**365*/;}					// Deal with birthday in years versus years later
+void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth ---		
+	DoB=(2014-(rand()%(max-min+1)+min));}					
+
+void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
+	BirthdayM=((rand()%(max-min+1)+min));					// 
+	Birthday=BirthdayM/12.1;}
 
 void patient::GetDateOfDeath(int min, int max){				
 	DateOfDeath=(rand()%(max-min+1)+min);}

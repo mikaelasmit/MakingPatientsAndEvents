@@ -4,12 +4,13 @@
 //
 
 #include <stdio.h>
+#include "person.h"
 
 using namespace std;
 
 
 	//// ---- HIV EVENTS ---
-	//double GetDateOfHIVInfection(int x, int y);		// Function to get date of HIV infection
-	void TellMyHivStatus();							    // Function to be executed when HIV infection occurs
-	void TellMyDeathDate();
-	void TellMyBirthDate();
+	//double GetDateOfHIVInfection(int x, int y);						// Function to get date of HIV infection
+	void TellMyHivStatus(patient *pointer);							    // Function to be executed when HIV infection occurs
+	void TellMyDeathDate(patient *pointer);
+	void TellMyBirthDate(patient *pointer);
