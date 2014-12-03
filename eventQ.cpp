@@ -12,6 +12,6 @@ bool timeComparison::operator()(const event *lhs, const event *rhs) const{
  	
 //// --- CLASS (EVENTQ) CONSTRUCTOR ---- 
 eventQ::eventQ()
-{}
+{} 
 
 

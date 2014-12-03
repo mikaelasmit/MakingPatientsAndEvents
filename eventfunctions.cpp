@@ -7,8 +7,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include "eventfunctions.h"
-#include "event.h"							// Need to add these to be able to	
-#include "eventQ.h"							// [...]run Global Time and Recurrent events pointers
+#include "event.h"														// Need to add these to be able to	
+#include "eventQ.h"														// [...]run Global Time and Recurrent events pointers
 #include "person.h"
 
 using namespace std;
@@ -23,18 +23,20 @@ extern priority_queue<event*, vector<event*>, timeComparison> *p_PQ;	// Tell thi
 //// --- FUNCTIONS FOR EVENTS ---
 
 // --- HIV Testing ---
-void TellMyHivStatus(){									
-	cout << " just got an HIV test.  " << endl;}
+void TellMyHivStatus(patient *pointer){									// The bit inside the bracket allows to link event to specific patient using patient pointer 						
+	 cout << pointer->PatientID << " just got an HIV test.  " << endl;}
 
-void TellMyDeathDate(){									
-	cout << " just died.  "  << endl;}
+void TellMyDeathDate(patient *pointer){									
+	 cout << pointer->PatientID << " just died.  "  << endl;}
 
-void TellMyBirthDate(){									
-	cout << "I just had my birthday.  "  << endl;
-
-	event * RecurrentBirthdayDate = new event;							// --- Schedule recurrent Birthday ---
-	RecurrentBirthdayDate->time = *p_GT + 1;							// Re-use code as in main to add recurrent BD to the queue (incl time and function pointer)
-	RecurrentBirthdayDate->p_fun = &TellMyBirthDate;	
-	p_PQ->push(RecurrentBirthdayDate);
-	cout << "My next Birthday will be " << *p_GT + 1 << " after the start of the model.  " << endl;
+void TellMyBirthDate(patient *pointer){									
+	
+	 event * RecurrentBirthdayDate = new event;							// --- Schedule recurrent Birthday ---
+	 RecurrentBirthdayDate->time = *p_GT + 1;							// Re-use code as in main to add recurrent BD to the queue (incl time and function pointer)
+	 RecurrentBirthdayDate->p_fun = &TellMyBirthDate;
+	 RecurrentBirthdayDate->patient_ID=pointer;
+	 p_PQ->push(RecurrentBirthdayDate);
+	
+	 cout << pointer->PatientID << " just had their birthday.  "  << endl;
+	 cout << "Patient " << pointer->PatientID << " will have their next birthday " << *p_GT + 1 << " years after model start.  " << endl;
 }

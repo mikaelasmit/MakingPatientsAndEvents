@@ -12,7 +12,6 @@
 using namespace std;
 
 
-
 //// --- DEFINE THE COMPARISON CLASS AND DEFINE OPERATOR() ---
 struct timeComparison {bool operator()(const event *lhs, const event *rhs) const;};	
 
