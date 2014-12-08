@@ -117,10 +117,11 @@ int main(){
 
 	FILE* csv_out = fopen("test.csv","w");
 	for (int i=0; i<no_patients; i++) {
-		fprintf(csv_out,"%d,%d,%d,%d,%d\n",
+		fprintf(csv_out,"%d,%d,%d,%d,%d,%d\n",
 			MyArrayOfPointersToPatients[i]->PatientID,
 			MyArrayOfPointersToPatients[i]->Sex,
 			MyArrayOfPointersToPatients[i]->DoB,
+			MyArrayOfPointersToPatients[i]->Age,
 			MyArrayOfPointersToPatients[i]->DateOfDeath,
 			MyArrayOfPointersToPatients[i]->MyDateOfHIV);
 	}

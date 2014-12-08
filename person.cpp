@@ -20,14 +20,17 @@ patient::patient()											// First 'patient' class second constructor/variabl
 	{
     PatientID=0;
 	Sex=-999;
-	Age=-999;
+
 	DoB=-999;
+	AgeT0=-999;
+	Age=-999;
 	BirthdayM=-999;
 	BirthdayY=-999;
+
 	DateOfDeath=-999;
+
 	HIVStatus=-999;
 	MyDateOfHIV=-999;
-	// AGE													// Need to assign an age and update it later
 	}
 
 
@@ -64,6 +67,7 @@ double	r = ((double) rand() / (RAND_MAX)) ;
 
 void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth ---		
 	DoB=(2014-(rand()%(max-min+1)+min));
+	AgeT0=*p_SY - DoB;
 	Age=*p_SY - DoB; }					
 
 void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		

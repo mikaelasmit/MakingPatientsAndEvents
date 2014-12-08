@@ -19,11 +19,15 @@ public:
 
 	//// --- PATIENT CHARACTERISTICS ---
 	int PatientID;
+	int Sex;
+
 	int DoB;
+	int AgeT0;
+	int Age;
 	double BirthdayM;
 	double BirthdayY;
-	int Age;										// Need to assign an age and update it later
-    int Sex;
+											// Need to assign an age and update it later
+    
 	int DateOfDeath;
 
 	int HIVStatus;
