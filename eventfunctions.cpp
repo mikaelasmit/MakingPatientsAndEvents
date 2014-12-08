@@ -36,7 +36,9 @@ void TellMyBirthDate(patient *pointer){
 	 RecurrentBirthdayDate->p_fun = &TellMyBirthDate;
 	 RecurrentBirthdayDate->patient_ID=pointer;
 	 p_PQ->push(RecurrentBirthdayDate);
-	
-	 cout << pointer->PatientID << " just had their birthday.  "  << endl;
+
+	 pointer->Age=pointer->Age+1; 
+	 	
+	 cout << pointer->PatientID << " just had their birthday.  They are now " << pointer->Age << " years old.  " << endl;
 	 cout << "Patient " << pointer->PatientID << " will have their next birthday " << *p_GT + 1 << " years after model start.  " << endl;
 }
