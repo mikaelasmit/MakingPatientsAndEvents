@@ -11,6 +11,7 @@
 #include "event.h"
 
 
+extern double *p_SY;										// Include here to be able to calculate patients' age
 
 
 //// --- CLASS (PATIENT) CONSTRUCTOR ---
@@ -19,9 +20,10 @@ patient::patient()											// First 'patient' class second constructor/variabl
 	{
     PatientID=0;
 	Sex=-999;
+	Age=-999;
 	DoB=-999;
 	BirthdayM=-999;
-	Birthday=-999;
+	BirthdayY=-999;
 	DateOfDeath=-999;
 	HIVStatus=-999;
 	MyDateOfHIV=-999;
@@ -37,10 +39,10 @@ void patient::TellMySex(){									// --- Tell Sex ---
 	cout << "The sex of patient " << PatientID << " is " << Sex << endl;}	
 
 void patient::TellMyDob(){									// --- Tell Date of Birth ---	// Convert to date of birth later???
-	cout << "The year of birth of patient " << PatientID << " is " << DoB << endl;}
+	cout << "The year of birth of patient " << PatientID << " is " << DoB << " and their age is " << Age << endl;}
 
 void patient::TellMyBD(){									// --- Tell Birthday ---	// Convert to date of birth later???
-	cout << "The birthday of patient " << PatientID << " is " << Birthday << " and Birthday month is " << BirthdayM << endl;}
+	cout << "The birthday of patient " << PatientID << " is " << BirthdayY << " and Birthday month is " << BirthdayM << endl;}
 
 void patient::TellMyExpectedDeathDate(){									
 	cout << "I, patient " << PatientID << ", will die " << DateOfDeath << " after the start of the model.  "  << endl;}
@@ -61,11 +63,12 @@ double	r = ((double) rand() / (RAND_MAX)) ;
 	else {Sex=2;}}
 
 void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth ---		
-	DoB=(2014-(rand()%(max-min+1)+min));}					
+	DoB=(2014-(rand()%(max-min+1)+min));
+	Age=*p_SY - DoB; }					
 
 void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
-	BirthdayM=((rand()%(max-min+1)+min));					// 
-	Birthday=BirthdayM/12.1;}
+	BirthdayM=((rand()%(max-min+1)+min));					
+	BirthdayY=BirthdayM/12.1;}
 
 void patient::GetDateOfDeath(int min, int max){				
 	DateOfDeath=(rand()%(max-min+1)+min);}

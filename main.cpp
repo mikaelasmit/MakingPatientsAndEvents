@@ -17,16 +17,39 @@
 using namespace std;   
 
 
+// To Do List
+// 1. Develop MakingPatients to include simple distributions (e.g. age from uniform, etc) - DONE
+// 2. Develop EventQ and play around with it - DONE
+// 3. Insert events into the EventQ, e.g. HIV Infection, Death and Birthdays - DONE
+// 4. Seperate EventQ into deifferent .h and .cpp files - TOOK A FILE BUT DONE
+// 5. Insert a global time into the model to record time - DONE
+// 6. Add global time to EventQ - DONE
+// 6. Make birthdays recurrent using function pointers and global time - DONE
+// 7. Remove repeated queue code from main() in EventQ and make it into a self-contained loop until model stop time - DONE
+// 8. Merge MakingPatients and EventQ code to make events happen to two different patients - DONE
+// 9. Add a stop time to the model - DONE
+// 10. Give patients a birth date from age - DONE
+// 11. Add ages and update age every year
+// 12. Add HIV status and update in function of HIV test
+// 11. Link death to age using a simple linear equation (increased age=increased death) 
+// 12. Include better mortality function 
+// 13.  Add Kenyan age-distribution as per 1950s
+// 14. Check that age distribution and mortality fits Kenyan data.
+
+
 // --- FUNCTIONS RELATED TO EVENTS ---
 double *p_GT;															// Pointer to global time
+double *p_SY;															// Pointer to start year of the model
 priority_queue<event*, vector<event*>, timeComparison> *p_PQ;			// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing
 																		// [...] as a result of 'primary' events in the queue, e.g. recurrent birthdays
 
 //// --- RUN THE MAIN MODEL ---
 int main(){
 
+	double StartYear=2014;												// Define Start Year if the model and set it to year of choice
 	double GlobalTime=0;												// Define Global Time and set it to 0 at the beginning of the model
 	p_GT=&GlobalTime;													// Define the location the pointer to Global time is pointing to
+	p_SY=&StartYear;													// Define the location of the pointer to Start Year is pointing to
 	srand(time(NULL));													// Random Number generator using PC time
 	priority_queue<event*, vector<event*>, timeComparison> iQ;			// Define th ePriority Q
 	p_PQ=&iQ;															// Define pointer to event Q
@@ -35,9 +58,12 @@ int main(){
 	
 
 	//// --- MAKING PATIENTS ---
-	patient** MyArrayOfPointersToPatients = new patient*[2];			// First 'patient*' is a pointer (address) and 'new patient' and space for 4 patients which will point to actual patienbt below
+
+	int no_patients = 2;
+
+	patient** MyArrayOfPointersToPatients = new patient*[no_patients];			// First 'patient*' is a pointer (address) and 'new patient' and space for 4 patients which will point to actual patienbt below
     
-	for(int i=0; i<2; i++){
+	for(int i=0; i<no_patients; i++){
 		MyArrayOfPointersToPatients[i]=new patient();}					// The 'new patient' the actual new patient
 					
 	
@@ -87,6 +113,20 @@ int main(){
 	cout<<endl<<"The dates of HIV infection..." << endl;
 	for(int i=0; i<2; i++){
 		(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
+
+
+	FILE* csv_out = fopen("test.csv","w");
+	for (int i=0; i<no_patients; i++) {
+		fprintf(csv_out,"%d,%d,%d,%d,%d\n",
+			MyArrayOfPointersToPatients[i]->PatientID,
+			MyArrayOfPointersToPatients[i]->Sex,
+			MyArrayOfPointersToPatients[i]->DoB,
+			MyArrayOfPointersToPatients[i]->DateOfDeath,
+			MyArrayOfPointersToPatients[i]->MyDateOfHIV);
+	}
+
+	fclose(csv_out);
+
 	
 		
 	//// --- EVENTQ ---
@@ -106,7 +146,7 @@ int main(){
 	
 	for(int i=0; i<2; i++){
 	event * BirthdayDate = new event;									// --- HIV Testing ---
-	BirthdayDate->time = MyArrayOfPointersToPatients[i]->Birthday;
+	BirthdayDate->time = MyArrayOfPointersToPatients[i]->BirthdayY;
 	BirthdayDate->p_fun = &TellMyBirthDate;
 	BirthdayDate->patient_ID = MyArrayOfPointersToPatients[i];
 	iQ.push(BirthdayDate);}												// Add HIVTest to queue
@@ -117,7 +157,7 @@ int main(){
 	cout << "The first event will ocurr  " << iQ.top()->time << " years after the start of model." << endl;
 	cout << "The size of the event queue is " << iQ.size() << endl;
 	
-	while( GlobalTime< 80 /*|| !iQ.empty()*/){								// This loop throws up error because no recurrent birthday pushing GT over 5 yrs and iQ.pop means GT cannot be updated after pop
+	while( GlobalTime< 5 /*|| !iQ.empty()*/){								// This loop throws up error because no recurrent birthday pushing GT over 5 yrs and iQ.pop means GT cannot be updated after pop
 		GlobalTime=iQ.top()->time;
 
 		cout << endl << endl << "An event has just ocurred.  " << endl;

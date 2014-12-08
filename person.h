@@ -21,8 +21,8 @@ public:
 	int PatientID;
 	int DoB;
 	double BirthdayM;
-	double Birthday;
-	//int Age;										// Need to assign an age and update it later
+	double BirthdayY;
+	int Age;										// Need to assign an age and update it later
     int Sex;
 	int DateOfDeath;
 
