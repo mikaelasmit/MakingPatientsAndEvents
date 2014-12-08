@@ -68,7 +68,7 @@ double	r = ((double) rand() / (RAND_MAX)) ;
 void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth ---		
 	DoB=(2014-(rand()%(max-min+1)+min));
 	AgeT0=*p_SY - DoB;
-	Age=*p_SY - DoB; }					
+	Age=*p_SY - DoB; }	 				
 
 void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
 	BirthdayM=((rand()%(max-min+1)+min));					

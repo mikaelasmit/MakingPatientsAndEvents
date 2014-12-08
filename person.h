@@ -23,7 +23,7 @@ public:
 
 	int DoB;
 	int AgeT0;
-	int Age;
+	int Age; 
 	double BirthdayM;
 	double BirthdayY;
 											// Need to assign an age and update it later

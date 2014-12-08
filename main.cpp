@@ -121,7 +121,7 @@ int main(){
 			MyArrayOfPointersToPatients[i]->PatientID,
 			MyArrayOfPointersToPatients[i]->Sex,
 			MyArrayOfPointersToPatients[i]->DoB,
-			MyArrayOfPointersToPatients[i]->Age,
+			MyArrayOfPointersToPatients[i]->Age, 
 			MyArrayOfPointersToPatients[i]->DateOfDeath,
 			MyArrayOfPointersToPatients[i]->MyDateOfHIV);
 	}
