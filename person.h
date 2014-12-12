@@ -1,6 +1,7 @@
 //
 //  Created by Mikaela Smit on 22/10/2014.
 //  Copyright (c) 2014 Mikael Smit. All rights reserved.
+//  This script makes the patients in the cohort
 //
 
 #ifndef person_h									// If not defined then defines it  # are pre-compiler definitions
@@ -21,16 +22,15 @@ public:
 	int PatientID;
 	int Sex;
 
-	int DoB;
+	int DoB;										// Variables related to age
 	int AgeT0;
 	int Age; 
 	double BirthdayM;
 	double BirthdayY;
-											// Need to assign an age and update it later
-    
-	int DateOfDeath;
+											
+    int DateOfDeath;								// Variables related to death
 
-	int HIVStatus;
+	int HIVStatus;									// Variables to HIV
 	int MyDateOfHIV;
 	
 
