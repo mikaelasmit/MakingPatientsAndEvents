@@ -1,6 +1,7 @@
 //
 //  Created by Mikael Smit on 30/10/2014. 
 //  Copyright (c) 2014 Mikaela Smit. All rights reserved.
+//  This script provides the properties of the new 'events' that are added to the EventQ 
 //
 
 
