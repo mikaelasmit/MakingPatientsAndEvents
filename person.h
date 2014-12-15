@@ -41,9 +41,12 @@ public:
 	void TellMyPatientID();							// Function to be executed when ID is assigned
 
 	// --- Year of Birth ---						// TO DO: Convert to date of birth later?
-	void GetMyYearOfBirth(int x, int y);			// Function to assign age
+	void GetMyYearOfBirth();						// Function to assign age
 	void TellMyDob();								// Function to be executed when birthday
 
+	// --- Year of Birth for New Enrtry---			// TO DO: Convert to date of birth later?
+	void GetMyYearOfBirthNewEntry();				// Function to assign age
+	
 	// --- Birthday ---								// TO DO: Convert to date of birth later?
 	void GetMyBirthday(int x, int y);				// Function to assign age
 	void TellMyBD();								// Function to be executed when birthday

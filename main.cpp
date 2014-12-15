@@ -72,7 +72,7 @@ int main(){
 
 	//// --- MAKING PATIENTS ---
 
-	int final_number_people=1000;										// To determine the final size of the total population to be modeled 
+	int final_number_people=41000;										// To determine the final size of the total population to be modeled 
 	int no_patients = 3;
 	int total_population=no_patients;									// Update total population for output and for next new entry
 	double new_entry=1;														// To add new people
@@ -94,7 +94,7 @@ int main(){
 		(MyArrayOfPointersToPatients[i])->GenderDistribution();}
 	
 	for(int i=0; i<no_patients; i++){												// --- Assign DoB/Age --- 
-		(MyArrayOfPointersToPatients[i])->GetMyYearOfBirth(28,28);}
+		(MyArrayOfPointersToPatients[i])->GetMyYearOfBirth();}
 
 	for(int i=0; i<no_patients; i++){												// --- Assign DoB/Age --- 
 		(MyArrayOfPointersToPatients[i])->GetMyBirthday(1,12);}
@@ -107,26 +107,26 @@ int main(){
 
 
 	// --- OUTPUT CHECKs ---
-	cout<<endl<<"The patient's ID...."<< endl;							// --- Ouput all the patients' IDs ---
-	for(int i=0; i<no_patients; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyPatientID();}		
-	
-	cout<<endl<<"The sex of patients...."<< endl;						// --- Ouput all the patients' gender ---
-	for(int i=0; i<no_patients; i++){
-        (MyArrayOfPointersToPatients[i])->TellMySex(); }
+	//cout<<endl<<"The patient's ID...."<< endl;							// --- Ouput all the patients' IDs ---
+	//for(int i=0; i<no_patients; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyPatientID();}		
+	//
+	//cout<<endl<<"The sex of patients...."<< endl;						// --- Ouput all the patients' gender ---
+	//for(int i=0; i<no_patients; i++){
+ //       (MyArrayOfPointersToPatients[i])->TellMySex(); }
 
-    cout<<endl<<"The year of birth of the patients..." << endl;			// --- Ouput all the patients' ages ---
-	for(int i=0; i<no_patients; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyDob(); }	
+ //   cout<<endl<<"The year of birth of the patients..." << endl;			// --- Ouput all the patients' ages ---
+	//for(int i=0; i<no_patients; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyDob(); }	
 
-	cout<<endl<<"The birthday of the patients..." << endl;				// --- Ouput all the patients' ages ---
-	for(int i=0; i<no_patients; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyBD(); }
-	
-	cout<<endl<<"The year of the patients' death..." << endl;			// --- Ouput all the patients' date of deaths ---
-	for(int i=0; i<no_patients; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
-	
+	//cout<<endl<<"The birthday of the patients..." << endl;				// --- Ouput all the patients' ages ---
+	//for(int i=0; i<no_patients; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyBD(); }
+	//
+	//cout<<endl<<"The year of the patients' death..." << endl;			// --- Ouput all the patients' date of deaths ---
+	//for(int i=0; i<no_patients; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
+	//
 	//cout<<endl<<"The dates of HIV infection..." << endl;
 	//for(int i=0; i<no_patients; i++){
 	//	(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
@@ -138,11 +138,30 @@ int main(){
 	
 	//// --- CODE FOR NEW ENTRY (THE SIMPLE WAY!!) ---
 	if (GlobalTime>=1950 & GlobalTime<1955){
-		new_entry=334.5;}
-	//if GlobalTime>=1955 & GlobalTime<1960{
-	//	new_entry=388.1;}
-	//if GlobalTime>=1960 & GlobalTime<1965{
-	//	new_entry=449.1;}
+		new_entry=335;}
+	if (GlobalTime>=1955 & GlobalTime<1960){
+		new_entry=388;}
+	if (GlobalTime>=1960 & GlobalTime<1965){
+		new_entry=449;}
+	if (GlobalTime>=1965 & GlobalTime<1970){
+		new_entry=525;}
+	if (GlobalTime>=1970 & GlobalTime<1975){
+		new_entry=628;}
+	if (GlobalTime>=1975 & GlobalTime<1980){
+		new_entry=743;}
+	if (GlobalTime>=1980 & GlobalTime<1985){
+		new_entry=869;}
+	if (GlobalTime>=1985 & GlobalTime<1990){
+		new_entry=972;}
+	if (GlobalTime>=1990 & GlobalTime<1995){
+		new_entry=1006;}
+	if (GlobalTime>=1995 & GlobalTime<2000){
+		new_entry=1123;}
+	if (GlobalTime>=2000 & GlobalTime<2005){
+		new_entry=1304;}
+	if (GlobalTime>=2005 & GlobalTime<2011){
+		new_entry=1455;}
+
 
 
 	//// --- ASSIGN PATIENT CHARACTERISTICS TO NEW PATIENTS --- 
@@ -154,7 +173,7 @@ int main(){
 		(MyArrayOfPointersToPatients[i])->GenderDistribution();}
 	
 	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign DoB/Age --- 
-		(MyArrayOfPointersToPatients[i])->GetMyYearOfBirth(28,28);}
+		(MyArrayOfPointersToPatients[i])->GetMyYearOfBirthNewEntry();}
 
 	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign DoB/Age --- 
 		(MyArrayOfPointersToPatients[i])->GetMyBirthday(1,12);}
@@ -167,26 +186,26 @@ int main(){
 
 
 	//// --- OUTPUT CHECKs FOR NEW PATIENTS ---
-	cout<<endl<<"The patient's ID...."<< endl;							// --- Ouput all the patients' IDs ---
-	for(int i=no_patients; i<no_patients+new_entry; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyPatientID();}		
-	
-	cout<<endl<<"The sex of patients...."<< endl;						// --- Ouput all the patients' gender ---
-	for(int i=no_patients; i<no_patients+new_entry; i++){
-        (MyArrayOfPointersToPatients[i])->TellMySex(); }
+	//cout<<endl<<"The patient's ID...."<< endl;							// --- Ouput all the patients' IDs ---
+	//for(int i=no_patients; i<no_patients+new_entry; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyPatientID();}		
+	//
+	//cout<<endl<<"The sex of patients...."<< endl;						// --- Ouput all the patients' gender ---
+	//for(int i=no_patients; i<no_patients+new_entry; i++){
+ //       (MyArrayOfPointersToPatients[i])->TellMySex(); }
 
-    cout<<endl<<"The year of birth of the patients..." << endl;			// --- Ouput all the patients' ages ---
-	for(int i=no_patients; i<no_patients+new_entry; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyDob(); }	
+ //   cout<<endl<<"The year of birth of the patients..." << endl;			// --- Ouput all the patients' ages ---
+	//for(int i=no_patients; i<no_patients+new_entry; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyDob(); }	
 
-	cout<<endl<<"The birthday of the patients..." << endl;				// --- Ouput all the patients' ages ---
-	for(int i=no_patients; i<no_patients+new_entry; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyBD(); }
-	
-	cout<<endl<<"The year of the patients' death..." << endl;			// --- Ouput all the patients' date of deaths ---
-	for(int i=no_patients; i<no_patients+new_entry; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
-	
+	//cout<<endl<<"The birthday of the patients..." << endl;				// --- Ouput all the patients' ages ---
+	//for(int i=no_patients; i<no_patients+new_entry; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyBD(); }
+	//
+	//cout<<endl<<"The year of the patients' death..." << endl;			// --- Ouput all the patients' date of deaths ---
+	//for(int i=no_patients; i<no_patients+new_entry; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
+	//
 	//cout<<endl<<"The dates of HIV infection..." << endl;
 	//for(int i=no_patients; i<no_patients+new_entry; i++){
 	//	(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
@@ -195,7 +214,7 @@ int main(){
 	total_population=no_patients+new_entry;								// Update total population for output and for next new entry
 
 	FILE* csv_out = fopen("test.csv","w");
-	for (int i=0; i<total_population; i++) {							// Change the i< X here
+	for (int i=0; i<total_population; i++) {							// Change the i< X here as well as the "%d!!
 		fprintf(csv_out,"%d,%d,%d,%d,%d,%d/*,%d*/\n",
 			MyArrayOfPointersToPatients[i]->PatientID,
 			MyArrayOfPointersToPatients[i]->Sex,

@@ -69,8 +69,8 @@ double	r = ((double) rand() / (RAND_MAX)) ;
 	if (r<=0.5043){Sex=1;}									
 	else {Sex=2;}}
 
-void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth, Age, etc ---		
-	double a = ((double) rand() / (RAND_MAX));
+void patient::GetMyYearOfBirth(){							// --- Assign Year Of Birth, Age, etc ---		
+double a = ((double) rand() / (RAND_MAX));
 
 	if (Sex==1);
 	if (a<=0.1729813){AgeT0 = RandomAge(0,4);}				// Using the Kenyan age-distribution as per UN data
@@ -112,7 +112,13 @@ void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth,
 		
 	DoB=(StartYear-AgeT0);
 	Age=AgeT0; 
-	}	 				
+	}
+
+void patient::GetMyYearOfBirthNewEntry(){
+	AgeT0=0;
+	Age=AgeT0;
+	DoB=(*p_GT-AgeT0);}
+
 
 void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
 	BirthdayM=((rand()%(max-min+1)+min));					// Helps 'distribute' birthdays across the year
