@@ -37,15 +37,17 @@ using namespace std;
 //14.	Add ages to the EventQ and update every year – DONE
 //15.	Make C++ output .csv  files to be able to run large populations and generate graphs – DONE
 //16.	Find Kanyan age-distribution in 1950 - DONE
-//17.	 Add Kenyan age-distribution as per 1950s – DONE
-//18.	Run model with this age distribution and generate population pyramids – BUSY WITH THIS AT THE MOMENT
-//19.	Make C++ run with Matlab – THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am looking at SJ’s code today to see how her model is set up with Matlab
+//17.	Add Kenyan age-distribution as per 1950s – DONE
+//18.	Run model with this age distribution and generate population pyramids – DONE
+//19.   Add new entries to run population forward and simulate population growth - DONE IN SIMPLE WAY
+//20.	Make C++ run with Matlab – THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am looking at SJ’s code today to see how her model is set up with Matlab
 //
-//Still to do, hopefully before Christmas:
-//20.	Link deaths to age using a linear equation (increase age->increase death)
-//21.	Compare mortality to data in Kenya, improve mortality as necessary
-//22.	Add HIV status and update it as a function of HIV test 
-//23.	Add more aspects of HIV care cascade (diagnosis, start cART,…)
+//Still to do:
+//21.	Link deaths to age using a linear equation (increase age->increase death)
+//22.	Compare mortality to data in Kenya, improve mortality as necessary
+//23.	Improve new entry and discuss patient 'vector' with Tim (deal with bigger size)
+//24.	Add HIV status and update it as a function of HIV test 
+//25.	Add more aspects of HIV care cascade (diagnosis, start cART,…)
 
 
 // --- FUNCTIONS RELATED TO EVENTS ---
@@ -70,7 +72,7 @@ int main(){
 
 	//// --- MAKING PATIENTS ---
 
-	int final_number_people=1000										// To determine the final size of the total population to be modeled 
+	int final_number_people=1000;										// To determine the final size of the total population to be modeled 
 	int no_patients = 3;
 	int total_population=no_patients;									// Update total population for output and for next new entry
 	int new_entry=6;													// To add new people
@@ -135,7 +137,8 @@ int main(){
 					
 	
 	//// --- CODE FOR NEW ENTRY (THE SIMPLE WAY!!) ---
-	//// --- ASSIGN PATIENT CHARACTERISTICS TO NEW PATIENTS --- for(int i=no_patients; i<no_patients+new_entry; i++){												// --- Assign PatientID ---
+	//// --- ASSIGN PATIENT CHARACTERISTICS TO NEW PATIENTS --- 
+	for(int i=no_patients; i<no_patients+new_entry; i++){												// --- Assign PatientID ---
 		int a=i;
 		(MyArrayOfPointersToPatients[i])->PatientIDAssign(a);}
 
