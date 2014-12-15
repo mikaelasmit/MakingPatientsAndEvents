@@ -60,7 +60,7 @@ priority_queue<event*, vector<event*>, timeComparison> *p_PQ;			// Pointer to ev
 //// --- RUN THE MAIN MODEL ---
 int main(){
 
-	double GlobalTime=0;												// Define Global Time and set it to 0 at the beginning of the model
+	double GlobalTime=StartYear;												// Define Global Time and set it to 0 at the beginning of the model
 	p_GT=&GlobalTime;													// Define the location the pointer to Global time is pointing to
 	p_SY=&StartYear;													// Define the location of the pointer to Start Year is pointing to
 	srand(time(NULL));													// Random Number generator using PC time

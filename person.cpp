@@ -12,6 +12,7 @@
 #include "event.h"
 
 
+extern double *p_GT;										// Tell this .cpp that there is pointer to Global Time defined externally
 extern double *p_SY;										// Include here to be able to calculate patients' age
 extern double StartYear;									// Include Start Year so only have to change it once in main()
 int RandomAge(int min, int max){							// Provide function for random number generator to asisgn age
@@ -118,8 +119,8 @@ void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthda
 	BirthdayY=BirthdayM/12.1;}
 
 void patient::GetDateOfDeath(int min, int max){				
-	DateOfDeath=(rand()%(max-min+1)+min);}
+	DateOfDeath=*p_GT + (rand()%(max-min+1)+min);}
 
 void patient::GetDateOfHIVInfection(int min, int max){			
-	MyDateOfHIV= (rand()%(max-min+1)+min);}
+	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
 
