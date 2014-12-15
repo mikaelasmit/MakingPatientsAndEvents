@@ -53,10 +53,10 @@ void patient::TellMyBD(){									// --- Tell Birthday ---	// Convert to date of
 	cout << "The birthday of patient " << PatientID << " is " << BirthdayY << " and Birthday month is " << BirthdayM << endl;}
 
 void patient::TellMyExpectedDeathDate(){									
-	cout << "I, patient " << PatientID << ", will die " << DateOfDeath << " after the start of the model.  "  << endl;}
+	cout << "I, patient " << PatientID << ", will die in" << DateOfDeath << endl;}
 
 void patient::TellMyHivDateSTART(){									
-	cout << "I, patient " << PatientID << ", will acquiere HIV " << MyDateOfHIV << " years after the start of the model" << endl;}
+	cout << "I, patient " << PatientID << ", will acquiere HIV is" << MyDateOfHIV << endl;}
 
 
 

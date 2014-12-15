@@ -75,7 +75,7 @@ int main(){
 	int final_number_people=1000;										// To determine the final size of the total population to be modeled 
 	int no_patients = 3;
 	int total_population=no_patients;									// Update total population for output and for next new entry
-	int new_entry=6;													// To add new people
+	double new_entry=1;														// To add new people
 	
 	patient** MyArrayOfPointersToPatients = new patient*[final_number_people];			// First 'patient*' is a pointer (address) and 'new patient' and space for 4 patients which will point to actual patienbt below
 																		// Have to now change [no_patients] to [final_number_people] to give the final size of 'matrix'
@@ -127,9 +127,9 @@ int main(){
 	for(int i=0; i<no_patients; i++){
 		(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
 	
-	cout<<endl<<"The dates of HIV infection..." << endl;
-	for(int i=0; i<no_patients; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
+	//cout<<endl<<"The dates of HIV infection..." << endl;
+	//for(int i=0; i<no_patients; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
 
 
 	for(int i=no_patients+1; i<no_patients+new_entry; i++){
@@ -137,6 +137,14 @@ int main(){
 					
 	
 	//// --- CODE FOR NEW ENTRY (THE SIMPLE WAY!!) ---
+	if (GlobalTime>=1950 & GlobalTime<1955){
+		new_entry=334.5;}
+	//if GlobalTime>=1955 & GlobalTime<1960{
+	//	new_entry=388.1;}
+	//if GlobalTime>=1960 & GlobalTime<1965{
+	//	new_entry=449.1;}
+
+
 	//// --- ASSIGN PATIENT CHARACTERISTICS TO NEW PATIENTS --- 
 	for(int i=no_patients; i<no_patients+new_entry; i++){												// --- Assign PatientID ---
 		int a=i;
@@ -154,8 +162,8 @@ int main(){
 	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign date of death ---  
 		(MyArrayOfPointersToPatients[i])->GetDateOfDeath(18,80);}
 
-	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign Date of HIV
-		(MyArrayOfPointersToPatients[i])->GetDateOfHIVInfection(1,2);}
+	//for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign Date of HIV
+	//	(MyArrayOfPointersToPatients[i])->GetDateOfHIVInfection(1,2);}
 
 
 	//// --- OUTPUT CHECKs FOR NEW PATIENTS ---
@@ -179,22 +187,22 @@ int main(){
 	for(int i=no_patients; i<no_patients+new_entry; i++){
 		(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
 	
-	cout<<endl<<"The dates of HIV infection..." << endl;
-	for(int i=no_patients; i<no_patients+new_entry; i++){
-		(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
+	//cout<<endl<<"The dates of HIV infection..." << endl;
+	//for(int i=no_patients; i<no_patients+new_entry; i++){
+	//	(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
 
 
 	total_population=no_patients+new_entry;								// Update total population for output and for next new entry
 
 	FILE* csv_out = fopen("test.csv","w");
 	for (int i=0; i<total_population; i++) {							// Change the i< X here
-		fprintf(csv_out,"%d,%d,%d,%d,%d,%d\n",
+		fprintf(csv_out,"%d,%d,%d,%d,%d,%d/*,%d*/\n",
 			MyArrayOfPointersToPatients[i]->PatientID,
 			MyArrayOfPointersToPatients[i]->Sex,
 			MyArrayOfPointersToPatients[i]->DoB,
 			MyArrayOfPointersToPatients[i]->Age, 
-			MyArrayOfPointersToPatients[i]->DateOfDeath,
-			MyArrayOfPointersToPatients[i]->MyDateOfHIV);
+			MyArrayOfPointersToPatients[i]->DateOfDeath/*,
+			MyArrayOfPointersToPatients[i]->MyDateOfHIV*/);
 	}
 
 	fclose(csv_out);
