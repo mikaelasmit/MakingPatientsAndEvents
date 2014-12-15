@@ -12,6 +12,7 @@
 #include "event.h"
 
 
+extern double *p_GT;										// Tell this .cpp that there is pointer to Global Time defined externally
 extern double *p_SY;										// Include here to be able to calculate patients' age
 extern double StartYear;									// Include Start Year so only have to change it once in main()
 int RandomAge(int min, int max){							// Provide function for random number generator to asisgn age
@@ -52,10 +53,10 @@ void patient::TellMyBD(){									// --- Tell Birthday ---	// Convert to date of
 	cout << "The birthday of patient " << PatientID << " is " << BirthdayY << " and Birthday month is " << BirthdayM << endl;}
 
 void patient::TellMyExpectedDeathDate(){									
-	cout << "I, patient " << PatientID << ", will die " << DateOfDeath << " after the start of the model.  "  << endl;}
+	cout << "I, patient " << PatientID << ", will die in" << DateOfDeath << endl;}
 
 void patient::TellMyHivDateSTART(){									
-	cout << "I, patient " << PatientID << ", will acquiere HIV " << MyDateOfHIV << " years after the start of the model" << endl;}
+	cout << "I, patient " << PatientID << ", will acquiere HIV is" << MyDateOfHIV << endl;}
 
 
 
@@ -68,8 +69,8 @@ double	r = ((double) rand() / (RAND_MAX)) ;
 	if (r<=0.5043){Sex=1;}									
 	else {Sex=2;}}
 
-void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth, Age, etc ---		
-	double a = ((double) rand() / (RAND_MAX));
+void patient::GetMyYearOfBirth(){							// --- Assign Year Of Birth, Age, etc ---		
+double a = ((double) rand() / (RAND_MAX));
 
 	if (Sex==1);
 	if (a<=0.1729813){AgeT0 = RandomAge(0,4);}				// Using the Kenyan age-distribution as per UN data
@@ -111,15 +112,21 @@ void patient::GetMyYearOfBirth(int min, int max){			// --- Assign Year Of Birth,
 		
 	DoB=(StartYear-AgeT0);
 	Age=AgeT0; 
-	}	 				
+	}
+
+void patient::GetMyYearOfBirthNewEntry(){
+	AgeT0=0;
+	Age=AgeT0;
+	DoB=(*p_GT-AgeT0);}
+
 
 void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
 	BirthdayM=((rand()%(max-min+1)+min));					// Helps 'distribute' birthdays across the year
 	BirthdayY=BirthdayM/12.1;}
 
 void patient::GetDateOfDeath(int min, int max){				
-	DateOfDeath=(rand()%(max-min+1)+min);}
+	DateOfDeath=*p_GT + (rand()%(max-min+1)+min);}
 
 void patient::GetDateOfHIVInfection(int min, int max){			
-	MyDateOfHIV= (rand()%(max-min+1)+min);}
+	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
 
