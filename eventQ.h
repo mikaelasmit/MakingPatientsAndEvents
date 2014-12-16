@@ -9,15 +9,14 @@
 
 #include <stdio.h>							// Refers to C StandarD Input Output library - uses streams to operate with physical devices including keyboards
 #include <queue>							// Needed for the priorityQ
-
 using namespace std;
 
 
-//// --- DEFINE THE COMPARISON CLASS AND DEFINE OPERATOR() ---
+// Define the comparison class and define operator
 struct timeComparison {bool operator()(const event *lhs, const event *rhs) const;};	
 
 
-//// --- CREATING EVENTQ ---
+//// --- CREATING EVENTQ --- ////
 class eventQ{
 public:
 

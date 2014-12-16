@@ -7,11 +7,11 @@
 #include "event.h"
 #include "eventQ.h"
 
-//// --- USE TIME COMPARISON AND OPERATOR ---
+//// --- Outside Information ---
 bool timeComparison::operator()(const event *lhs, const event *rhs) const{
 	return lhs->time > rhs->time;}
  	
-//// --- CLASS (EVENTQ) CONSTRUCTOR ---- 
+//// --- Class (EventQ) Constructor ---- 
 eventQ::eventQ()
 {} 
 

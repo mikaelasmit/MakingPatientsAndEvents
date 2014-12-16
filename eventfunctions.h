@@ -6,13 +6,16 @@
 
 #include <stdio.h>
 #include "person.h"
-
 using namespace std;
 
 
-	//// ---- HIV EVENTS ---
-	
+	//// ---- HIV Events --- 
 	//double GetDateOfHIVInfection(int x, int y);						// Function to get date of HIV infection
-	void TellMyHivStatus(patient *MyPointerToPatient);					// Function to be executed when HIV infection occurs
-	void TellMyDeathDate(patient *MyPointerToPatient);
-	void TellMyBirthDate(patient *MyPointerToPatient);
+	void EventMyHivStatus(patient *MyPointerToPatient);					// Function to be executed when HIV infection occurs
+	
+	//// --- Life Events ---
+	void EventMyDeathDate(patient *MyPointerToPatient);
+	void EventMyBirthDate(patient *MyPointerToPatient);
+	
+	//// --- New Entry Events ---
+	void EventNewEntry(patient *MyPointerToPatient);

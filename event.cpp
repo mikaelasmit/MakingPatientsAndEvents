@@ -12,14 +12,15 @@
 #include "event.h"
 #include "person.h"
 
+//// --- Outside Information ---
+extern double StartYear;									// Include Start Year so only have to change it once in main()
 
 //// --- CLASS (EVENT) CONSTRUCTOR ---
 event::event()			
 	{
-
-	time=0;														// Miki Notes: Could also write with class constructor
-																// [...] event::event():time(0),sex(2) 
-																// [...] this is the same thing but could be 'clearner' if lots of functions in constructor
+			time=StartYear;									// Miki Notes: Could also write with class constructor
+															// [...] event::event():time(0),sex(2) 
+															// [...] this is the same thing but could be 'clearner' if lots of functions in constructor
 	} 
 
 

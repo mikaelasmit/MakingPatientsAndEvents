@@ -12,6 +12,7 @@
 #include "event.h"
 
 
+//// --- Outside Information ---
 extern double *p_GT;										// Tell this .cpp that there is pointer to Global Time defined externally
 extern double *p_SY;										// Include here to be able to calculate patients' age
 extern double StartYear;									// Include Start Year so only have to change it once in main()
@@ -19,7 +20,7 @@ int RandomAge(int min, int max){							// Provide function for random number gen
 	return rand()%(max-min+1)+min;}
 
 
-//// --- CLASS (PATIENT) CONSTRUCTOR ---
+//// --- Class (PatientT) Constructor --- ////
 
 patient::patient()											// First 'patient' class second constructor/variable and no return type means its a constructor
 	{
@@ -39,7 +40,7 @@ patient::patient()											// First 'patient' class second constructor/variabl
 	}
 
 
-// --- FUNCTIONS TO CREATE OUTPUT ---
+// --- Functions to create Output ---
 void patient::TellMyPatientID(){							// --- Tell PatientID ---
 	cout << "The ID of patient " << PatientID << " is " << PatientID << endl;}
 
@@ -60,7 +61,7 @@ void patient::TellMyHivDateSTART(){
 
 
 
-// --- FUNCTIONS TO ASSIGN CHARACTERISTICS ---	
+// --- Funcitons to assign characteristics ---	
 void patient::PatientIDAssign(int x){						// --- Assign Patient ID ---
 	PatientID=x+1;}
 
@@ -114,7 +115,7 @@ double a = ((double) rand() / (RAND_MAX));
 	Age=AgeT0; 
 	}
 
-void patient::GetMyYearOfBirthNewEntry(){
+void patient::GetMyYearOfBirthNewEntry(){					// --- Assign Age for New Entry ---
 	AgeT0=0;
 	Age=AgeT0;
 	DoB=(*p_GT-AgeT0);}
@@ -124,9 +125,9 @@ void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthda
 	BirthdayM=((rand()%(max-min+1)+min));					// Helps 'distribute' birthdays across the year
 	BirthdayY=BirthdayM/12.1;}
 
-void patient::GetDateOfDeath(int min, int max){				
-	DateOfDeath=*p_GT + (rand()%(max-min+1)+min);}
+void patient::GetDateOfDeath(int min, int max){				// --- Assign Date of death ---	
+	DateOfDeath=*p_GT + (rand()%(max-min+1)+min);}			// INSERT FUNCTION FOR DEATH HERE
 
-void patient::GetDateOfHIVInfection(int min, int max){			
+void patient::GetDateOfHIVInfection(int min, int max){		// --- Assign Date of HIV infection ---		
 	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
 

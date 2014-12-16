@@ -9,15 +9,13 @@
 
 #include <stdio.h>
 #include "person.h"										// Need to include patient header as we make pointer to patient below
-
 using namespace std;
 
 
- class event {
- public:
+class event {
+public:
 
-	//// --- EVENT Q SPECIFIC ---
-
+//// --- EVENT Q SPECIFIC --- ////
 
 	event();											//class constructor
  	
@@ -29,7 +27,6 @@ using namespace std;
 	
 	patient * patient_ID;		 						// This means that there is a pointer called 'patient_ID' which is pointing to class 'patient'
 														// [...] allows to make sure all events, including new ones, point to the correct patient to whom this event is occurring.  
-
 	};
 
 #endif 
