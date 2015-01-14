@@ -8,14 +8,16 @@
 #include "person.h"
 using namespace std;
 
+	//// --- Get Birth of First Child ---
+	//void GetDateBirthFirstChild (person *MyPointerToPerson);
 
-	//// ---- HIV Events --- 
-	//double GetDateOfHIVInfection(int x, int y);						// Function to get date of HIV infection
-	void EventMyHivStatus(patient *MyPointerToPatient);					// Function to be executed when HIV infection occurs
+	//// --- HIV Events --- 
+	double GetDateOfHIVInfection(int x, int y);						// Function to get date of HIV infection
+	void EventMyHivStatus(person *MyPointerToPerson);					// Function to be executed when HIV infection occurs
 	
 	//// --- Life Events ---
-	void EventMyDeathDate(patient *MyPointerToPatient);
-	void EventMyBirthDate(patient *MyPointerToPatient);
+	void EventMyDeathDate(person *MyPointerToPerson);
+	void EventMyBirthDate(person *MyPointerToPerson);
 	
 	//// --- New Entry Events ---
-	void EventNewEntry(patient *MyPointerToPatient);
+	void EventNewEntry(person *MyPointerToPerson);

@@ -1,7 +1,7 @@
 //
 //  Created by Mikaela Smit on 22/10/2014.
-//  Copyright (c) 2014 Mikael Smit. All rights reserved.
-//  This script makes the patients in the cohort
+//  Copyright (c) 2014 Mikaela Smit. All rights reserved.
+//  This script makes the people in the cohort
 //
 
 #ifndef person_h									// If not defined then defines it  # are pre-compiler definitions
@@ -10,16 +10,16 @@
 using namespace std;
 
 
-//// --- CREATING PATIENTS ---
+//// --- Creating People ---
 
-class patient{										// Classes are considered private unless stated otherwise 
+class person{										// Classes are considered private unless stated otherwise 
 public:
     
-    patient();										// Class constructor or calling function for patient
+    person();										// Class constructor or calling function for person
     
 
-	//// --- PATIENT CHARACTERISTICS ---
-	int PatientID;
+	//// --- Persons Characteristics ---
+	int PersonID;
 	int Sex;
 
 	int DoB;										// Variables related to age
@@ -36,9 +36,9 @@ public:
 
 	//// --- FUNCTIONS ----
 
-	// --- Patient ID ---
-	void PatientIDAssign(int x);					// Function to get Patient ID
-	void TellMyPatientID();							// Function to be executed when ID is assigned
+	// --- Person ID ---
+	void PersonIDAssign(int x);						// Function to get Person ID
+	void TellMyPersonID();							// Function to be executed when ID is assigned
 
 	// --- Year of Birth ---						// TO DO: Convert to date of birth later?
 	void GetMyYearOfBirth();						// Function to assign age

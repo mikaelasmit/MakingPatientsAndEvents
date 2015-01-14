@@ -8,7 +8,7 @@
 #define event_h	
 
 #include <stdio.h>
-#include "person.h"										// Need to include patient header as we make pointer to patient below
+#include "person.h"										// Need to include person header as we make pointer to persons in below
 using namespace std;
 
 
@@ -17,19 +17,19 @@ public:
 
 //// --- EVENT Q SPECIFIC --- ////
 
-	event();											//class constructor
+	event();											// Class constructor
  	
  	double time;	
 
- 	void (*p_fun)(patient *MyPointerToPatient);			// Function pointer - when an event is called in the Q it can point to what functions need to be executed
-														// [...] e.g. If patient gets pos HIVTest tell him to schedule GP appointment
-														// [...] the bit inside the brackets "(patient *MyPointerToPatient) means function can carry argument which is pointer 'pointer' to class 'patient'.  
+ 	void (*p_fun)(person *MyPointerToPerson);			// Function pointer - when an event is called in the Q it can point to what functions need to be executed
+														// [...] e.g. If person gets pos HIVTest tell him to schedule GP appointment
+														// [...] the bit inside the brackets "(person *MyPointerToPerson) means function can carry argument which is pointer 'pointer' to class 'person'.  
 	
-	patient * patient_ID;		 						// This means that there is a pointer called 'patient_ID' which is pointing to class 'patient'
-														// [...] allows to make sure all events, including new ones, point to the correct patient to whom this event is occurring.  
+	person * person_ID;		 							// This means that there is a pointer called 'person_ID' which is pointing to class 'person'
+														// [...] allows to make sure all events, including new ones, point to the correct person to whom this event is occurring.  
 	};
 
-#endif 
+#endif													
 
 
 

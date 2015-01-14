@@ -1,7 +1,7 @@
 //
 //  Created by Mikaela Smit on 22/10/2014.
 //  Copyright (c) 2014 Mikael Smit. All rights reserved.
-//  This script makes the patients in the cohort
+//  This script makes the people in the cohort
 //
 
 #include <stdio.h>
@@ -10,21 +10,22 @@
 #include <time.h>
 #include "person.h"
 #include "event.h"
+#include "eventfunctions.h"
 
 
 //// --- Outside Information ---
 extern double *p_GT;										// Tell this .cpp that there is pointer to Global Time defined externally
-extern double *p_SY;										// Include here to be able to calculate patients' age
+extern double *p_SY;										// Include here to be able to calculate peoples' age
 extern double StartYear;									// Include Start Year so only have to change it once in main()
 int RandomAge(int min, int max){							// Provide function for random number generator to asisgn age
 	return rand()%(max-min+1)+min;}
 
 
-//// --- Class (PatientT) Constructor --- ////
+//// --- Class (Population) Constructor --- ////
 
-patient::patient()											// First 'patient' class second constructor/variable and no return type means its a constructor
+person::person()											// First 'person' class second constructor/variable and no return type means its a constructor
 	{
-    PatientID=0;
+    PersonID=0;
 	Sex=-999;
 
 	DoB=-999;
@@ -41,36 +42,40 @@ patient::patient()											// First 'patient' class second constructor/variabl
 
 
 // --- Functions to create Output ---
-void patient::TellMyPatientID(){							// --- Tell PatientID ---
-	cout << "The ID of patient " << PatientID << " is " << PatientID << endl;}
+void person::TellMyPersonID(){								// --- Tell PersonID ---
+	cout << "The ID of person " << PersonID << " is " << PersonID << endl;}
 
-void patient::TellMySex(){									// --- Tell Sex ---
-	cout << "The sex of patient " << PatientID << " is " << Sex << endl;}	
+void person::TellMySex(){									// --- Tell Sex ---
+	cout << "The sex of person " << PersonID << " is " << Sex << endl;}	
 
-void patient::TellMyDob(){									// --- Tell Date of Birth ---	// Convert to date of birth later???
-	cout << "The year of birth of patient " << PatientID << " is " << DoB << " and their age is " << Age << endl;}
+void person::TellMyDob(){									// --- Tell Date of Birth ---	// Convert to date of birth later???
+	cout << "The year of birth of person " << PersonID << " is " << DoB << " and their age is " << Age << endl;}
 
-void patient::TellMyBD(){									// --- Tell Birthday ---	// Convert to date of birth later???
-	cout << "The birthday of patient " << PatientID << " is " << BirthdayY << " and Birthday month is " << BirthdayM << endl;}
+void person::TellMyBD(){									// --- Tell Birthday ---	// Convert to date of birth later???
+	cout << "The birthday of person " << PersonID << " is " << BirthdayY << " and Birthday month is " << BirthdayM << endl;}
 
-void patient::TellMyExpectedDeathDate(){									
-	cout << "I, patient " << PatientID << ", will die in" << DateOfDeath << endl;}
+void person::TellMyExpectedDeathDate(){									
+	cout << "I, person " << PersonID << ", will die in" << DateOfDeath << endl;}
 
-void patient::TellMyHivDateSTART(){									
-	cout << "I, patient " << PatientID << ", will acquiere HIV is" << MyDateOfHIV << endl;}
+void person::TellMyHivDateSTART(){									
+	cout << "I, person " << PersonID << ", will acquiere HIV is" << MyDateOfHIV << endl;}
 
 
 
 // --- Funcitons to assign characteristics ---	
-void patient::PatientIDAssign(int x){						// --- Assign Patient ID ---
-	PatientID=x+1;}
+void person::PersonIDAssign(int x){							// --- Assign Person ID ---
+	PersonID=x+1;}
 
-void patient::GenderDistribution(){							// --- Assign Gender Distribution ---
+void person::GenderDistribution(){							// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
 	if (r<=0.5043){Sex=1;}									
-	else {Sex=2;}}
+	else {Sex=2;}
 
-void patient::GetMyYearOfBirth(){							// --- Assign Year Of Birth, Age, etc ---		
+	//if (Sex==2) {&person::GetDateBirthFirstChild;}
+}
+
+
+void person::GetMyYearOfBirth(){							// --- Assign Year Of Birth, Age, etc ---		
 double a = ((double) rand() / (RAND_MAX));
 
 	if (Sex==1);
@@ -115,19 +120,20 @@ double a = ((double) rand() / (RAND_MAX));
 	Age=AgeT0; 
 	}
 
-void patient::GetMyYearOfBirthNewEntry(){					// --- Assign Age for New Entry ---
+void person::GetMyYearOfBirthNewEntry(){					// --- Assign Age for New Entry ---
 	AgeT0=0;
 	Age=AgeT0;
 	DoB=(*p_GT-AgeT0);}
 
 
-void patient::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
+void person::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
 	BirthdayM=((rand()%(max-min+1)+min));					// Helps 'distribute' birthdays across the year
 	BirthdayY=BirthdayM/12.1;}
 
-void patient::GetDateOfDeath(int min, int max){				// --- Assign Date of death ---	
+void person::GetDateOfDeath(int min, int max){				// --- Assign Date of death ---	
 	DateOfDeath=*p_GT + (rand()%(max-min+1)+min);}			// INSERT FUNCTION FOR DEATH HERE
 
-void patient::GetDateOfHIVInfection(int min, int max){		// --- Assign Date of HIV infection ---		
+void person::GetDateOfHIVInfection(int min, int max){		// --- Assign Date of HIV infection ---		
 	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
+
 
