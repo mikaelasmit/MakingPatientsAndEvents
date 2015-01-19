@@ -1,8 +1,9 @@
-//
-//  Created by Mikaela Smit on 22/10/2014.
-//  Copyright (c) 2014 Mikael Smit. All rights reserved.
-//  This script makes the people in the cohort
-//
+/////////////////////////////////////////////////////////////////
+//    Created by Mikaela Smit on 22/10/2014.				   //
+//    Copyright (c) 2014 Mikaela Smit. All rights reserved.    //
+//    This script makes the people in the cohort.			   //
+/////////////////////////////////////////////////////////////////
+
 
 #include <stdio.h>
 #include <iostream>
@@ -13,67 +14,86 @@
 #include "eventfunctions.h"
 
 
-//// --- Outside Information ---
-extern double *p_GT;										// Tell this .cpp that there is pointer to Global Time defined externally
+
+//// --- OUTSIDE INFORMATION --- ////
+extern double *p_GT;							// Tell this .cpp that there is pointer to Global Time defined externally
 extern double *p_SY;										// Include here to be able to calculate peoples' age
-extern double StartYear;									// Include Start Year so only have to change it once in main()
-int RandomAge(int min, int max){							// Provide function for random number generator to asisgn age
+extern double StartYear;						// Include Start Year so only have to change it once in main()
+
+int RandomAge(int min, int max){				// Provide function for random number generator to asisgn age
+	return rand()%(max-min+1)+min;}
+
+double RandomFirstBirth(int min, int max){		// Provides function for random number generator to assign first birth for women
+	return rand()%(max-min+1)+min;}
+
+double GetMonthBD(int min, int max){		// Provides function for random number generator to assign birthdya month
 	return rand()%(max-min+1)+min;}
 
 
-//// --- Class (Population) Constructor --- ////
 
-person::person()											// First 'person' class second constructor/variable and no return type means its a constructor
-	{
-    PersonID=0;
+////// TO BE DELETED LATER _ JUST CHECKING
+//int GetMonth;									// Helps 'distribute' birthdays across the year
+//double GetYearFraction;								// Assign year fraction of birth month, e.g. June is 0.5 of the year
+//	
+
+
+//// --- CLASS (POPULATION) CONSTRUCTOR --- ////
+
+person::person()								// First 'person' class second constructor/variable and no return type means its a constructor
+{
+    PersonID=0;									// Peoples' basic information
 	Sex=-999;
 
-	DoB=-999;
+	DoB=-999;									// Varibales related to peoples' age and birthday
 	AgeT0=-999;
 	Age=-999;
-	BirthdayM=-999;
-	BirthdayY=-999;
 
-	DateOfDeath=-999;
+	ChildID=-999;								// Variables related to birth of first child
+	BirthFirstChild=9999;						// VERY IMPORTANT  this number needs to be HIGH as it entres EventQ...
+	MotherID=-999;
 
-	HIVStatus=-999;
+	DateOfDeath=-999;							// Varibles related to death 
+	Alive=-999;									// Variable to update eventQ - global check to see if person is still alive
+		
+	HIVStatus=-999;								// Variables related to HIV-infection
 	MyDateOfHIV=-999;
-	}
+}
 
 
-// --- Functions to create Output ---
-void person::TellMyPersonID(){								// --- Tell PersonID ---
+
+//// --- FUNCTION TO GENERATE OUTPUT --- ////
+void person::TellMyPersonID(){																		// --- Tell PersonID ---
 	cout << "The ID of person " << PersonID << " is " << PersonID << endl;}
 
-void person::TellMySex(){									// --- Tell Sex ---
+void person::TellMyLifeStatus(){
+	cout << "The Life Status of person " << PersonID << " is " << Alive << endl;}
+
+void person::TellMySex(){																			// --- Tell Sex ---
 	cout << "The sex of person " << PersonID << " is " << Sex << endl;}	
 
-void person::TellMyDob(){									// --- Tell Date of Birth ---	// Convert to date of birth later???
+void person::TellMyFirstChildBirth(){																// --- Tell Birth My First Child ---
+	cout << "My Sex is " << Sex << " and I will have my first baby on " << BirthFirstChild << endl;}
+
+void person::TellMyYearOfBirth(){																	// --- Tell Year of Birth ---	
 	cout << "The year of birth of person " << PersonID << " is " << DoB << " and their age is " << Age << endl;}
 
-void person::TellMyBD(){									// --- Tell Birthday ---	// Convert to date of birth later???
-	cout << "The birthday of person " << PersonID << " is " << BirthdayY << " and Birthday month is " << BirthdayM << endl;}
-
-void person::TellMyExpectedDeathDate(){									
+void person::TellMyExpectedDeathDate(){																// --- Tell Expected Date of Death ---		
 	cout << "I, person " << PersonID << ", will die in" << DateOfDeath << endl;}
 
-void person::TellMyHivDateSTART(){									
+void person::TellMyHivDateSTART(){																	// --- Tell Date of HIV Infection ---					
 	cout << "I, person " << PersonID << ", will acquiere HIV is" << MyDateOfHIV << endl;}
 
 
 
-// --- Funcitons to assign characteristics ---	
+//// --- FUNCTION TO ASSIGN CHARACTERISTIC FOR INITIAL POPULATION --- ////
 void person::PersonIDAssign(int x){							// --- Assign Person ID ---
 	PersonID=x+1;}
 
 void person::GenderDistribution(){							// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
-	if (r<=0.5043){Sex=1;}									
+	if (r<=0/*0.5043*/){Sex=1;}									
 	else {Sex=2;}
-
-	//if (Sex==2) {&person::GetDateBirthFirstChild;}
 }
-
 
 void person::GetMyYearOfBirth(){							// --- Assign Year Of Birth, Age, etc ---		
 double a = ((double) rand() / (RAND_MAX));
@@ -115,25 +135,43 @@ double a = ((double) rand() / (RAND_MAX));
 	if (a>0.9733055 && a<=0.9866050){AgeT0 = RandomAge(70,74);}
 	if (a>0.9866050 && a<=0.9952995){AgeT0 = RandomAge(75,79);}
 	if (a>0.9952995 && a<=1){AgeT0 = RandomAge(80,100);}
-		
-	DoB=(StartYear-AgeT0);
-	Age=AgeT0; 
-	}
 
-void person::GetMyYearOfBirthNewEntry(){					// --- Assign Age for New Entry ---
-	AgeT0=0;
-	Age=AgeT0;
-	DoB=(*p_GT-AgeT0);}
+	int GetMonth=GetMonthBD(1,12);									// Helps 'distribute' birthdays across the year
+	double GetYearFraction=GetMonth/12.1;								// Assign year fraction of birth month, e.g. June is 0.5 of the year
+	
+	//cout << "The Birthday will be  at " << GetYearFraction << " or Month " << GetMonth << endl;  /// POssible check code
+	
+	Age=AgeT0+GetYearFraction;
+	DoB=(StartYear-Age);
+	
+}
 
+void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday
+															// This method already calculates the child's month of birth by providing a year of birth with decimal
+	double f = ((double) rand() / (RAND_MAX));
 
-void person::GetMyBirthday(int min, int max){				// --- Assign Month of Birthday ---		
-	BirthdayM=((rand()%(max-min+1)+min));					// Helps 'distribute' birthdays across the year
-	BirthdayY=BirthdayM/12.1;}
+		if (Age>=15 && Age<20 && f<1/*0.169071*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,199)/10)-Age;}
+		if (Age>=20 && Age<25 && f<1/*0.351607*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,249)/10)-Age;}
+		if (Age>=25 && Age<30 && f<1/*0.338141*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,299)/10)-Age;}
+		if (Age>=30 && Age<35 && f<1/*0.284278*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,349)/10)-Age;}
+		if (Age>=35 && Age<40 && f<1/*0.203483*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,399)/10)-Age;}
+		if (Age>=40 && Age<45 && f<1/*0.110719*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,449)/10)-Age;}
+		if (Age>=45 && Age<50 && f<1/*0.038901*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,499)/10)-Age;}
+
+}
 
 void person::GetDateOfDeath(int min, int max){				// --- Assign Date of death ---	
 	DateOfDeath=*p_GT + (rand()%(max-min+1)+min);}			// INSERT FUNCTION FOR DEATH HERE
 
+
 void person::GetDateOfHIVInfection(int min, int max){		// --- Assign Date of HIV infection ---		
 	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
 
+
+
+//// --- FUNCTIONS FOR NEW ENTRY --- ////
+void person::GetMyYearOfBirthNewEntry(){					// --- Assign Age for New Entry ---
+	AgeT0=0;												// Set all new entries as 'newborns' 
+	Age=AgeT0;
+	DoB=(*p_GT-AgeT0);}
 

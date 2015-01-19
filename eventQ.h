@@ -1,18 +1,20 @@
-//
-//  Created by Mikaela Smit on 30/10/2014.
-//  Copyright (c) 2014 Mikael Smit. All rights reserved.
-//  This script is to make the EventQ itself - can add personalised 'push' 'pop' etc here as Jack did if necessary
-//
+////////////////////////////////////////////////////////////////////////////////////
+//    Created by Mikaela Smit on 30/10/2014.									  //
+//    Copyright (c) 2014 Mikaela Smit. All rights reserved.						  //
+//    This script is to make the EventQ itself.									  //
+//    N.B. can add personalised 'push' 'pop' etc here as Jack did if necessary.   //
+////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef eventQ_h							
-#define eventQ_h				
+
 
 #include <stdio.h>							// Refers to C StandarD Input Output library - uses streams to operate with physical devices including keyboards
 #include <queue>							// Needed for the priorityQ
+#ifndef eventQ_h							
+#define eventQ_h
 using namespace std;
 
 
-// Define the comparison class and define operator
+//// --- DEFINE THE COMPARISON CLASS AND DEFINE OPERATOR --- ////
 struct timeComparison {bool operator()(const event *lhs, const event *rhs) const;};	
 
 
@@ -22,7 +24,7 @@ public:
 
 	eventQ();								// Constructor
 
-};
+	};
 
 #endif		
 
