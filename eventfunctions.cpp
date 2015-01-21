@@ -65,26 +65,30 @@ void EventMyBirthDate(person *MyPointerToPerson){
 
 void EventNewEntry(person *MyPointerToPerson){	
 
-	cout << "New person are being created" << endl;
-	
+	cout << endl << "New person are being created" << endl;
+
+	cout << "The total population before was " << total_population << endl;
+
 	total_population=total_population+1;						// Update total population for output and for next new entry
 
-	MyArrayOfPointersToPeople[total_population]=new person();
-	(MyArrayOfPointersToPeople[total_population])->PersonIDAssign(total_population);
-	(MyArrayOfPointersToPeople[total_population])->Alive=1;
-	(MyArrayOfPointersToPeople[total_population])->GenderDistribution();
-	(MyArrayOfPointersToPeople[total_population])->GetMyYearOfBirthNewEntry();
-	//(MyArrayOfPointersToPeople[total_population])->GetDateOfDeath(18,80);
-	//(MyArrayOfPointersToPeople[total_population])->GetDateOfHIVInfection(1,2);
-	
-	// Link Mother and Child
-	(MyArrayOfPointersToPeople[total_population])->MotherID=MyPointerToPerson->PersonID;
-	MyPointerToPerson->ChildID=(MyArrayOfPointersToPeople[total_population])->PersonID;
+	cout << "The total population with the new person is " << total_population << endl;
+
+	MyArrayOfPointersToPeople[total_population-1]=new person();
+	(MyArrayOfPointersToPeople[total_population-1])->PersonIDAssign(total_population-1);
+	(MyArrayOfPointersToPeople[total_population-1])->Alive=1;
+	(MyArrayOfPointersToPeople[total_population-1])->GenderDistribution();
+	(MyArrayOfPointersToPeople[total_population-1])->GetMyYearOfBirthNewEntry();
+	(MyArrayOfPointersToPeople[total_population-1])->GetNewDateOfDeath();
+	////(MyArrayOfPointersToPeople[total_population-1])->GetDateOfHIVInfection(1,2);
+	//
+	//// Link Mother and Child
+	(MyArrayOfPointersToPeople[total_population-1])->MotherID=MyPointerToPerson->PersonID;
+	MyPointerToPerson->ChildID=(MyArrayOfPointersToPeople[total_population-1])->PersonID;
 
 
-	
-	cout << "Person " << MyPointerToPerson->PersonID << " has just been created and is " << MyPointerToPerson->Age << " years old.  " << endl;
-	cout << "The total populaiton is " << total_population << endl;
+	//
+	cout << "Person " << MyPointerToPerson->ChildID << " has just been created and is " <<  (MyArrayOfPointersToPeople[total_population-1])->Age << " years old.  " << endl;
+	cout << "The total population is " << total_population << endl;
 }
 
 

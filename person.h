@@ -32,7 +32,7 @@ public:
 	int MotherID;
 	
 
-    int DateOfDeath;								// Variables related to death
+    double DateOfDeath;								// Variables related to death
 	int Alive;
 
 	int HIVStatus;									// Variables to HIV
@@ -59,7 +59,7 @@ public:
 	void TellMyFirstChildBirth();
 
 	// --- Date of Death ---
-	void GetDateOfDeath(int x, int y);				// Function to get date of Death
+	void GetDateOfDeath();							// Function to get date of Death
 	void TellMyExpectedDeathDate();					// Function to be executed when Death occurs
 	void TellMyLifeStatus();
 	
@@ -71,7 +71,7 @@ public:
 	// --- FOR NEW ENTRY ---
 	// --- Year of Birth for New Enrtry---			// TO DO: Convert to date of birth later?
 	void GetMyYearOfBirthNewEntry();				// Function to assign age
-
+	void GetNewDateOfDeath();
 };
 
 #endif
