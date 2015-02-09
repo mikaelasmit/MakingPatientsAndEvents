@@ -149,39 +149,64 @@ void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday
 															// This method already calculates the child's month of birth by providing a year of birth with decimal
 	double f = ((double) rand() / (RAND_MAX));
 	
-		if (Sex==2 && Age>=15 && Age<20 && f<1/*0.169071*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,200)/10)-Age;}
-		if (Sex==2 && Age>=20 && Age<25 && f<1/*0.351607*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,250)/10)-Age;}
-		if (Sex==2 && Age>=25 && Age<30 && f<1/*0.338141*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,300)/10)-Age;}
-		if (Sex==2 && Age>=30 && Age<35 && f<1/*0.284278*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,350)/10)-Age;}
-		if (Sex==2 && Age>=35 && Age<40 && f<1/*0.203483*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,400)/10)-Age;}
-		if (Sex==2 && Age>=40 && Age<45 && f<1/*0.110719*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,450)/10)-Age;}
-		if (Sex==2 && Age>=45 && Age<50 && f<1/*0.038901*/){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,500)/10)-Age;}
+		if (Sex==2 && Age>=15 && Age<20 && f<0.169071){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,200)/10)-Age;}
+		if (Sex==2 && Age>=20 && Age<25 && f<0.351607){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,250)/10)-Age;}
+		if (Sex==2 && Age>=25 && Age<30 && f<0.338141){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,300)/10)-Age;}
+		if (Sex==2 && Age>=30 && Age<35 && f<0.284278){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,350)/10)-Age;}
+		if (Sex==2 && Age>=35 && Age<40 && f<0.203483){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,400)/10)-Age;}
+		if (Sex==2 && Age>=40 && Age<45 && f<0.110719){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,450)/10)-Age;}
+		if (Sex==2 && Age>=45 && Age<50 && f<0.038901){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,500)/10)-Age;}
 
 }
 
 void person::GetDateOfDeath(){							// --- Assign Date of death ---	
-	if (Age>=0 && Age<1)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,405)/10);}
-	if (Age>=1 && Age<5)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,472)/10);}
-	if (Age>=5 && Age<10)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,495)/10);}
-	if (Age>=10 && Age<15)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,471)/10);}
-	if (Age>=15 && Age<20)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,433)/10);}
-	if (Age>=20 && Age<25)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,396)/10);}
-	if (Age>=25 && Age<30)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,363)/10);}
-	if (Age>=30 && Age<35)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,329)/10);}
-	if (Age>=35 && Age<40)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,295)/10);}
-	if (Age>=40 && Age<45)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,260)/10);}
-	if (Age>=45 && Age<50)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,227)/10);}
-	if (Age>=50 && Age<55)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,194)/10);}
-	if (Age>=55 && Age<60)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,163)/10);}
-	if (Age>=60 && Age<65)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,133)/10);}
-	if (Age>=65 && Age<70)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,105)/10);}
-	if (Age>=70 && Age<75)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,80)/10);}
-	if (Age>=75 && Age<80)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,60)/10);}
-	if (Age>=80 && Age<85)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,44)/10);}
-	if (Age>=85 && Age<90)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,32)/10);}
-	if (Age>=90 && Age<95)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,24)/10);}
-	if (Age>=95 && Age<100)	{DateOfDeath=*p_GT+(RandomLifeExpect(0,18)/10);}
-	if (Age>=100 )	{DateOfDeath=*p_GT;}}
+	
+	double	d = ((double) rand() / (RAND_MAX)) ;
+
+	if (Sex==1){
+
+	if (*p_GT>=1950 && *p_GT<1955 && d<=1 && d>=0.84051)		{DateOfDeath=*p_GT+(RandomLifeExpect(0,10)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.84051 && d>=0.73751)	{DateOfDeath=*p_GT+(RandomLifeExpect(10,50)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.73751 && d>=0.69947)	{DateOfDeath=*p_GT+(RandomLifeExpect(50,100)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.69947 && d>=0.68085)	{DateOfDeath=*p_GT+(RandomLifeExpect(100,155)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.68085 && d>=0.66001)	{DateOfDeath=*p_GT+(RandomLifeExpect(150,200)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.66001 && d>=0.63158)	{DateOfDeath=*p_GT+(RandomLifeExpect(200,250)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.63158 && d>=0.60280)	{DateOfDeath=*p_GT+(RandomLifeExpect(250,300)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.60280 && d>=0.57351)	{DateOfDeath=*p_GT+(RandomLifeExpect(300,350)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.57351 && d>=0.54204)	{DateOfDeath=*p_GT+(RandomLifeExpect(350,400)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.54204 && d>=0.50629)	{DateOfDeath=*p_GT+(RandomLifeExpect(400,450)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.50629 && d>=0.46639)	{DateOfDeath=*p_GT+(RandomLifeExpect(450,500)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.46639 && d>=0.42032)	{DateOfDeath=*p_GT+(RandomLifeExpect(500,550)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.42032 && d>=0.36683)	{DateOfDeath=*p_GT+(RandomLifeExpect(550,600)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.36683 && d>=0.30307)	{DateOfDeath=*p_GT+(RandomLifeExpect(600,650/10));}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.30307 && d>=0.22953)	{DateOfDeath=*p_GT+(RandomLifeExpect(650,700)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.22953 && d>=0.14912)	{DateOfDeath=*p_GT+(RandomLifeExpect(700,750)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.14912 && d>=0.07713)	{DateOfDeath=*p_GT+(RandomLifeExpect(750,800)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.07713 && d>=0.02794)	{DateOfDeath=*p_GT+(RandomLifeExpect(800,850)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.02794 && d>=0)			{DateOfDeath=*p_GT+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+
+	if (*p_GT>=1950 && *p_GT<1955 && d<=1 && d>=0.86584)		{DateOfDeath=*p_GT+(RandomLifeExpect(0,10)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.86584 && d>=0.76647)	{DateOfDeath=*p_GT+(RandomLifeExpect(10,50)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.76647 && d>=0.72864)	{DateOfDeath=*p_GT+(RandomLifeExpect(50,100)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.72864 && d>=0.70934)	{DateOfDeath=*p_GT+(RandomLifeExpect(100,150)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.70934 && d>=0.68923)	{DateOfDeath=*p_GT+(RandomLifeExpect(150,200)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.68923 && d>=0.66662)	{DateOfDeath=*p_GT+(RandomLifeExpect(200,250)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.66662 && d>=0.64111)	{DateOfDeath=*p_GT+(RandomLifeExpect(250,300)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.64111 && d>=0.61281)	{DateOfDeath=*p_GT+(RandomLifeExpect(300,350)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.61281 && d>=0.58197)	{DateOfDeath=*p_GT+(RandomLifeExpect(350,400)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.58197 && d>=0.54948)	{DateOfDeath=*p_GT+(RandomLifeExpect(400,450)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.54948 && d>=0.51601)	{DateOfDeath=*p_GT+(RandomLifeExpect(450,500)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.51601 && d>=0.47711)	{DateOfDeath=*p_GT+(RandomLifeExpect(500,550)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.47711 && d>=0.42895)	{DateOfDeath=*p_GT+(RandomLifeExpect(550,600)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.42895 && d>=0.36682)	{DateOfDeath=*p_GT+(RandomLifeExpect(600,650)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.36682 && d>=0.28877)	{DateOfDeath=*p_GT+(RandomLifeExpect(650,700)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.28877 && d>=0.19851)	{DateOfDeath=*p_GT+(RandomLifeExpect(700,750)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.19851 && d>=0.11204)	{DateOfDeath=*p_GT+(RandomLifeExpect(750,800)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.11204 && d>=0.04643)	{DateOfDeath=*p_GT+(RandomLifeExpect(800,850)/10);}
+	if (*p_GT>=1950 && *p_GT<1955 && d<0.04643 && d>=0)			{DateOfDeath=*p_GT+(RandomLifeExpect(850,1000)/10);}}
+	}
 	
 		
 	

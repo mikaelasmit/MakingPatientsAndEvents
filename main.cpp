@@ -60,7 +60,7 @@ priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to e
 
 //// --- Function relating to New Entry - to be available externally ---
 const int final_number_people=10000;												// To determine the final size of the total population to be modeled 
-int init_pop = 10;
+int init_pop = 100;
 int total_population=init_pop;											// Update total population for output and for next new entry
 double new_entry=1;															// To add new people
 
@@ -186,14 +186,14 @@ int main(){
 		
 	
 	// --- give output of queue as it progresses ---
-	cout << endl << endl << "characteristics of the event queue:" << endl;
+	cout << endl << endl << "The characteristics of the event queue:" << endl;
 	cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
 	cout << "the size of the event queue is " << iQ.size() << endl;
 	
-	while(GlobalTime< 1952 /*|| !iQ.empty()*/){								// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
+	while(iQ.top()->time< 1952 /*|| !iQ.empty()*/){								// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
 		GlobalTime=iQ.top()->time;
 
-		cout << endl << endl << "an event has just ocurred.  " << endl;
+		cout << endl << endl << "An event has just ocurred.  " << endl;
 		cout << "it is " << iQ.top()->time << ".  " << endl;
 	 //if (iQ.top()->person_ID->Age==1)
 						iQ.top()-> p_fun(iQ.top()->person_ID);
