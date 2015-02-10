@@ -48,6 +48,9 @@ person::person()								// First 'person' class second constructor/variable and 
 	Age=-999;
 
 	ChildID=-999;								// Variables related to birth of first child
+	ChildID_1=-999;
+	ChildID_2=-999;
+	ChildIndex=0;
 	BirthFirstChild=9999;						// VERY IMPORTANT  this number needs to be HIGH as it entres EventQ...
 	MotherID=-999;
 
@@ -161,6 +164,594 @@ void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday
 
 void person::GetDateOfDeath(){							// --- Assign Date of death ---	
 	
+	double AgeTen=Age*10;
+
+	if (Age<1){
+	double	d = ((double) rand() / (RAND_MAX)) ;
+	if (Sex==1){
+	if (d<=1 && d>=0.84051)			{DateOfDeath=1950+(RandomLifeExpect(AgeTen,10)/10);}
+	if (d<0.84051 && d>=0.73751)	{DateOfDeath=1950+(RandomLifeExpect(10,50)/10);}
+	if (d<0.73751 && d>=0.69947)	{DateOfDeath=1950+(RandomLifeExpect(50,100)/10);}
+	if (d<0.69947 && d>=0.68085)	{DateOfDeath=1950+(RandomLifeExpect(100,150)/10);}
+	if (d<0.68085 && d>=0.66001)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.66001 && d>=0.63158)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.63158 && d>=0.60280)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+	if (d<=1 && d>=0.86584)			{DateOfDeath=1950+(RandomLifeExpect(AgeTen,10)/10);}
+	if (d<0.86584 && d>=0.76647)	{DateOfDeath=1950+(RandomLifeExpect(10,50)/10);}
+	if (d<0.76647 && d>=0.72864)	{DateOfDeath=1950+(RandomLifeExpect(50,100)/10);}
+	if (d<0.72864 && d>=0.70934)	{DateOfDeath=1950+(RandomLifeExpect(100,150)/10);}
+	if (d<0.70934 && d>=0.68923)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.68923 && d>=0.66662)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.66662 && d>=0.64111)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+	
+	if (Age>=1 && Age<5){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.84051){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.84051 && d>=0.73751)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,50)/10);}
+	if (d<0.73751 && d>=0.69947)	{DateOfDeath=1950+(RandomLifeExpect(50,100)/10);}
+	if (d<0.69947 && d>=0.68085)	{DateOfDeath=1950+(RandomLifeExpect(100,150)/10);}
+	if (d<0.68085 && d>=0.66001)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.66001 && d>=0.63158)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.63158 && d>=0.60280)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.86584){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.86584 && d>=0.76647)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,50)/10);}
+	if (d<0.76647 && d>=0.72864)	{DateOfDeath=1950+(RandomLifeExpect(50,100)/10);}
+	if (d<0.72864 && d>=0.70934)	{DateOfDeath=1950+(RandomLifeExpect(100,150)/10);}
+	if (d<0.70934 && d>=0.68923)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.68923 && d>=0.66662)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.66662 && d>=0.64111)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=5 && Age<10){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.73751){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.73751 && d>=0.69947)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,100)/10);}
+	if (d<0.69947 && d>=0.68085)	{DateOfDeath=1950+(RandomLifeExpect(100,150)/10);}
+	if (d<0.68085 && d>=0.66001)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.66001 && d>=0.63158)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.63158 && d>=0.60280)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.76647){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.76647 && d>=0.72864)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,100)/10);}
+	if (d<0.72864 && d>=0.70934)	{DateOfDeath=1950+(RandomLifeExpect(100,150)/10);}
+	if (d<0.70934 && d>=0.68923)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.68923 && d>=0.66662)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.66662 && d>=0.64111)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=10 && Age<15){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.69947){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.69947 && d>=0.68085)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,150)/10);}
+	if (d<0.68085 && d>=0.66001)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.66001 && d>=0.63158)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.63158 && d>=0.60280)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.72864){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.72864 && d>=0.70934)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,150)/10);}
+	if (d<0.70934 && d>=0.68923)	{DateOfDeath=1950+(RandomLifeExpect(150,200)/10);}
+	if (d<0.68923 && d>=0.66662)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.66662 && d>=0.64111)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=15 && Age<20){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.68085){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.68085 && d>=0.66001)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,200)/10);}
+	if (d<0.66001 && d>=0.63158)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.63158 && d>=0.60280)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.70934){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.70934 && d>=0.68923)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,200)/10);}
+	if (d<0.68923 && d>=0.66662)	{DateOfDeath=1950+(RandomLifeExpect(200,250)/10);}
+	if (d<0.66662 && d>=0.64111)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=20 && Age<25){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.66001){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.66001 && d>=0.63158)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,250)/10);}
+	if (d<0.63158 && d>=0.60280)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.68923){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.68923 && d>=0.66662)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,250)/10);}
+	if (d<0.66662 && d>=0.64111)	{DateOfDeath=1950+(RandomLifeExpect(250,300)/10);}
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=25 && Age<30){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.63158){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.63158 && d>=0.60280)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,300)/10);}
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.66662){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.66662 && d>=0.64111)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,300)/10);}
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(300,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=30 && Age<35){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.60280){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.60280 && d>=0.57351)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,350)/10);}
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.64111){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.64111 && d>=0.61281)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,350)/10);}
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(350,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=35 && Age<40){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.57351){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.57351 && d>=0.54204)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,400)/10);}
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.61281){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.61281 && d>=0.58197)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,400)/10);}
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(400,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=40 && Age<45){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.54204){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.54204 && d>=0.50629)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,450)/10);}
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.58197){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.58197 && d>=0.54948)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,450)/10);}
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(450,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=45 && Age<50){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.50629){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.50629 && d>=0.46639)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,500)/10);}
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.54948){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.54948 && d>=0.51601)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,500)/10);}
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(500,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=50 && Age<55){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.46639){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.46639 && d>=0.42032)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,550)/10);}
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.51601){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.51601 && d>=0.47711)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,550)/10);}
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(550,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=55 && Age<60){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.42032){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.42032 && d>=0.36683)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,600)/10);}
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(600,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.47711){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.47711 && d>=0.42895)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,600)/10);}
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(600,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=60 && Age<65){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.36683){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.36683 && d>=0.30307)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,650/10));}
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.42895){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.42895 && d>=0.36682)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,650)/10);}
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(650,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=65 && Age<70){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.30307){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.30307 && d>=0.22953)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,700)/10);}
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.36682){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.36682 && d>=0.28877)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,700)/10);}
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(700,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=70 && Age<75){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.22953){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.22953 && d>=0.14912)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,750)/10);}
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.28877){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.28877 && d>=0.19851)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,750)/10);}
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(750,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=75 && Age<80){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.14912){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.14912 && d>=0.07713)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,800)/10);}
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.19851){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.19851 && d>=0.11204)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,800)/10);}
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(800,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=80 && Age<85){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.07713){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.07713 && d>=0.02794)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,850)/10);}
+	if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.11204){d = ((double) rand() / (RAND_MAX));} 
+	if (d<0.11204 && d>=0.04643)	{DateOfDeath=1950+(RandomLifeExpect(AgeTen,850)/10);}
+	if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(850,1000)/10);}}
+	}
+
+	if (Age>=85){
+	if (Sex==1){	
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.02794){d = ((double) rand() / (RAND_MAX));} 
+		if (d<0.02794 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(AgeTen,100)/10);}}
+
+	if (Sex==2){
+		double d= ((double) rand() / (RAND_MAX));
+		while (d>=0.04643){d = ((double) rand() / (RAND_MAX));} 
+		if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(AgeTen,1000)/10);}}
+	}
+
+}
+	
+		
+	
+
+void person::GetDateOfHIVInfection(int min, int max){		// --- Assign Date of HIV infection ---		
+	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
+
+
+
+//// --- FUNCTIONS FOR NEW ENTRY --- ////
+void person::GetMyYearOfBirthNewEntry(){					// --- Assign Age for New Entry ---
+	AgeT0=0;												// Set all new entries as 'newborns' 
+	Age=AgeT0;
+	DoB=(*p_GT-AgeT0);}
+
+
+void person::GetNewDateOfDeath(){							// --- Assign Date of death to New Entry ---	
+
 	double	d = ((double) rand() / (RAND_MAX)) ;
 
 	if (Sex==1){
@@ -207,46 +798,6 @@ void person::GetDateOfDeath(){							// --- Assign Date of death ---
 	if (*p_GT>=1950 && *p_GT<1955 && d<0.11204 && d>=0.04643)	{DateOfDeath=*p_GT+(RandomLifeExpect(800,850)/10);}
 	if (*p_GT>=1950 && *p_GT<1955 && d<0.04643 && d>=0)			{DateOfDeath=*p_GT+(RandomLifeExpect(850,1000)/10);}}
 	}
-	
-		
-	
-
-void person::GetDateOfHIVInfection(int min, int max){		// --- Assign Date of HIV infection ---		
-	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
-
-
-
-//// --- FUNCTIONS FOR NEW ENTRY --- ////
-void person::GetMyYearOfBirthNewEntry(){					// --- Assign Age for New Entry ---
-	AgeT0=0;												// Set all new entries as 'newborns' 
-	Age=AgeT0;
-	DoB=(*p_GT-AgeT0);}
-
-
-void person::GetNewDateOfDeath(){							// --- Assign Date of death to New Entry ---	
-
-	double d = ((double) rand() / (RAND_MAX));
-	
-
-	if (d>=0 && d<0.03746)		{DateOfDeath=DoB+(RandomNEWLifeExpect(850,1000)/10);}
-	if (d>=0.03746 && d<0.0946)	{DateOfDeath=DoB+(RandomNEWLifeExpect(800,850)/10);}
-	if (d>=0.0946 && d<0.1732)	{DateOfDeath=DoB+(RandomNEWLifeExpect(750,800)/10);}
-	if (d>=0.1732 && d<0.2581)	{DateOfDeath=DoB+(RandomNEWLifeExpect(700,750)/10);}
-	if (d>=0.2581 && d<0.3336)	{DateOfDeath=DoB+(RandomNEWLifeExpect(650,700)/10);}
-	if (d>=0.3336 && d<0.3964)	{DateOfDeath=DoB+(RandomNEWLifeExpect(600,650)/10);}
-	if (d>=0.3964 && d<0.4472)	{DateOfDeath=DoB+(RandomNEWLifeExpect(550,600)/10);}
-	if (d>=0.4472 && d<0.4898)	{DateOfDeath=DoB+(RandomNEWLifeExpect(500,550)/10);}
-	if (d>=0.4898 && d<0.5268)	{DateOfDeath=DoB+(RandomNEWLifeExpect(450,500)/10);}
-	if (d>=0.5268 && d<0.5611)	{DateOfDeath=DoB+(RandomNEWLifeExpect(400,450)/10);}
-	if (d>=0.5611 && d<0.5924)	{DateOfDeath=DoB+(RandomNEWLifeExpect(350,400)/10);}
-	if (d>=0.5924 && d<0.6213)	{DateOfDeath=DoB+(RandomNEWLifeExpect(300,350)/10);}
-	if (d>=0.6213 && d<0.6485)	{DateOfDeath=DoB+(RandomNEWLifeExpect(250,300)/10);}
-	if (d>=0.6485 && d<0.6742)	{DateOfDeath=DoB+(RandomNEWLifeExpect(200,250)/10);}
-	if (d>=0.6742 && d<0.6947)	{DateOfDeath=DoB+(RandomNEWLifeExpect(150,200)/10);}
-	if (d>=0.6947 && d<0.7136)	{DateOfDeath=DoB+(RandomNEWLifeExpect(100,150)/10);}
-	if (d>=0.7136 && d<0.7516)	{DateOfDeath=DoB+(RandomNEWLifeExpect(50,100)/10);}
-	if (d>=0.7516 && d<0.8528)	{DateOfDeath=DoB+(RandomNEWLifeExpect(10,50)/10);}
-	if (d>=0.8528 && d<=1)		{DateOfDeath=DoB+(RandomNEWLifeExpect(0,10)/10);}}
 
 	
 

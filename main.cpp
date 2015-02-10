@@ -208,7 +208,7 @@ int main(){
 	//// --- Output the results in a csv file ---
 	FILE* csv_out = fopen("test.csv","w");
 	for (int i=0; i<total_population; i++) {								// Change the i< X here as well as the "%d!!
-		fprintf(csv_out,"%d,%d,%d,%f,%f,%d,%d,%f \n",
+		fprintf(csv_out,"%d,%d,%d,%f,%f,%d,%d,%d,%d, %f \n",
 			MyArrayOfPointersToPeople[i]->PersonID,
 			MyArrayOfPointersToPeople[i]->Sex,
 			MyArrayOfPointersToPeople[i]->DoB,
@@ -216,6 +216,8 @@ int main(){
 			MyArrayOfPointersToPeople[i]->BirthFirstChild,
 			MyArrayOfPointersToPeople[i]->MotherID,
 			MyArrayOfPointersToPeople[i]->ChildID, 
+			MyArrayOfPointersToPeople[i]->ChildID_1, 
+			MyArrayOfPointersToPeople[i]->ChildIndex,
 			MyArrayOfPointersToPeople[i]->DateOfDeath
 
 			//MyArrayOfPointersToPeople[i]->DateOfDeath/*,

@@ -28,6 +28,9 @@ public:
 	double Age; 
 
 	int ChildID;									// Variables related to the first birth
+	int ChildID_1;
+	int ChildID_2;
+	int ChildIndex;
 	double BirthFirstChild; 
 	int MotherID;
 	

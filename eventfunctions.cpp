@@ -65,28 +65,37 @@ void EventMyBirthDate(person *MyPointerToPerson){
 
 void EventNewEntry(person *MyPointerToPerson){	
 
-	cout << endl << "New person are being created" << endl;
 
-	cout << "The total population before was " << total_population << endl;
-
+	// Population information before and after new entry
+	cout << endl << "New person are being created.  The total population before was " << total_population << endl;
 	total_population=total_population+1;						// Update total population for output and for next new entry
-
 	cout << "The total population with the new person is " << total_population << endl;
 
+
+	// Creating a new person 
 	MyArrayOfPointersToPeople[total_population-1]=new person();
 	(MyArrayOfPointersToPeople[total_population-1])->PersonIDAssign(total_population-1);
 	(MyArrayOfPointersToPeople[total_population-1])->Alive=1;
 	(MyArrayOfPointersToPeople[total_population-1])->GenderDistribution();
 	(MyArrayOfPointersToPeople[total_population-1])->GetMyYearOfBirthNewEntry();
 	(MyArrayOfPointersToPeople[total_population-1])->GetNewDateOfDeath();
-	////(MyArrayOfPointersToPeople[total_population-1])->GetDateOfHIVInfection(1,2);
-	//
-	//// Link Mother and Child
-	(MyArrayOfPointersToPeople[total_population-1])->MotherID=MyPointerToPerson->PersonID;
-	MyPointerToPerson->ChildID=(MyArrayOfPointersToPeople[total_population-1])->PersonID;
+	////(MyArrayOfPointersToPeople[total_population-1])->GetDateOfHIVInfection(1,2); 
+	
+	// Link Mother and Child
+	(MyArrayOfPointersToPeople[total_population-1])->MotherID=MyPointerToPerson->PersonID;			// Give child their mothers ID
+	MyPointerToPerson->ChildID=(MyArrayOfPointersToPeople[total_population-1])->PersonID;			// Give mothers their child's ID
+	
+	if (MyPointerToPerson->ChildIndex==0){ 
+		MyPointerToPerson->ChildID_1=(MyArrayOfPointersToPeople[total_population-1])->PersonID;		// Give mothers their child's ID
+		MyPointerToPerson->ChildIndex=MyPointerToPerson->ChildIndex+1;
+		cout << "This is my " <<  MyPointerToPerson->ChildIndex << " child!" << endl;}
+
+	if (MyPointerToPerson->ChildIndex==1){ 
+		MyPointerToPerson->ChildID_2=(MyArrayOfPointersToPeople[total_population-1])->PersonID;		// Give mothers their child's ID
+		MyPointerToPerson->ChildIndex=MyPointerToPerson->ChildIndex+1;
+		cout << "This is my " <<  MyPointerToPerson->ChildIndex << " child!" << endl;}
 
 
-	//
 	cout << "Person " << MyPointerToPerson->ChildID << " has just been created and is " <<  (MyArrayOfPointersToPeople[total_population-1])->Age << " years old.  " << endl;
 	cout << "The total population is " << total_population << endl;
 }
