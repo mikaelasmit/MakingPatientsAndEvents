@@ -129,25 +129,25 @@ void EventBirthForTheYear(person *MyPointerToPerson){												// Set births f
 			
 		double f = ((double) rand() / (RAND_MAX));
 
-		if (MyPointerToPerson->Age>=15 && MyPointerToPerson->Age<20 /*&& f<0.169071*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,200)/10)-MyPointerToPerson->Age;
+		if (MyPointerToPerson->Age>=15 && MyPointerToPerson->Age<20 && f<0.169071){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,200)/10)-MyPointerToPerson->Age;
 				while (MyPointerToPerson->BirthFirstChild<*p_GT){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,200)/10)-MyPointerToPerson->Age;}}
 
-		if (MyPointerToPerson->Age>=20 && MyPointerToPerson->Age<25 /*&& f<0.351607*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,250)/10)-MyPointerToPerson->Age;
+		if (MyPointerToPerson->Age>=20 && MyPointerToPerson->Age<25 && f<0.351607){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,250)/10)-MyPointerToPerson->Age;
 				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,250)/10)-MyPointerToPerson->Age;}}
 		
-		if (MyPointerToPerson->Age>=25 && MyPointerToPerson->Age<30 /*&& f<0.338141*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,300)/10)-MyPointerToPerson->Age;
+		if (MyPointerToPerson->Age>=25 && MyPointerToPerson->Age<30 && f<0.338141){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,300)/10)-MyPointerToPerson->Age;
 				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,300)/10)-MyPointerToPerson->Age;}}
 		
-		if (MyPointerToPerson->Age>=30 && MyPointerToPerson->Age<35 /*&& f<0.284278*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,350)/10)-MyPointerToPerson->Age;
+		if (MyPointerToPerson->Age>=30 && MyPointerToPerson->Age<35 && f<0.284278){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,350)/10)-MyPointerToPerson->Age;
 				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,350)/10)-MyPointerToPerson->Age;}}
 
-		if (MyPointerToPerson->Age>=35 && MyPointerToPerson->Age<40 /*&& f<0.203483*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,400)/10)-MyPointerToPerson->Age;
+		if (MyPointerToPerson->Age>=35 && MyPointerToPerson->Age<40 && f<0.203483){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,400)/10)-MyPointerToPerson->Age;
 				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,400)/10)-MyPointerToPerson->Age;}}
 
-		if (MyPointerToPerson->Age>=40 && MyPointerToPerson->Age<45/* && f<0.110719*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,450)/10)-MyPointerToPerson->Age;
+		if (MyPointerToPerson->Age>=40 && MyPointerToPerson->Age<45 && f<0.110719){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,450)/10)-MyPointerToPerson->Age;
 				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,450)/10)-MyPointerToPerson->Age;}}
 
-		if (MyPointerToPerson->Age>=45 && MyPointerToPerson->Age<50 /*&& f<0.038901*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,500)/10)-MyPointerToPerson->Age;
+		if (MyPointerToPerson->Age>=45 && MyPointerToPerson->Age<50 && f<0.038901){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,500)/10)-MyPointerToPerson->Age;
 				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,500)/10)-MyPointerToPerson->Age;}}
 	
 			

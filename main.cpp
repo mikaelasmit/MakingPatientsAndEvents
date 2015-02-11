@@ -159,20 +159,18 @@ int main(){
 
 	//cout << endl;
 
-	//for(int i=0; i<total_population; i++){
-	//event * BabyBirth = new event;											// --- Birthday of First Child ---
-	//BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthFirstChild;
-	//BabyBirth->p_fun = &EventBirth;
-	//BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
-	////cout << "My birth of patient " << MyArrayOfPointersToPeople[i]->PersonID << " first child is " << BabyBirth->time << endl;
-	//iQ.push(BabyBirth);}	
+	for(int i=0; i<total_population; i++){
+	event * BabyBirth = new event;												// --- Birthday of First Child ---
+	BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthFirstChild;
+	BabyBirth->p_fun = &EventBirth;
+	BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
+	iQ.push(BabyBirth);}	
 
 	for(int i=0; i<total_population; i++){
-	event * BabyNewYear = new event;											// --- Birthday of First Child ---
-	BabyNewYear->time = 1951;
+	event * BabyNewYear = new event;											// --- Set first fertility scan for 1951 ---
+	BabyNewYear->time = 1951;													// this will run in its own loop after 1951
 	BabyNewYear->p_fun = &EventBirthForTheYear;
 	BabyNewYear->person_ID = MyArrayOfPointersToPeople[i];
-	//cout << "My birth of patient " << MyArrayOfPointersToPeople[i]->PersonID << " first child is " << BabyBirth->time << endl;
 	iQ.push(BabyNewYear);}
 
 	
@@ -195,7 +193,7 @@ int main(){
 
 		cout << endl << endl << "An event has just ocurred.  " << endl;
 		cout << "it is " << iQ.top()->time << ".  " << endl;
-	 //if (iQ.top()->person_ID->Age==1)
+		//if (iQ.top()->person_ID->Age==1)
 						iQ.top()-> p_fun(iQ.top()->person_ID);
 				
 		
