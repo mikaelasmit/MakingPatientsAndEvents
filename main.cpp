@@ -1,9 +1,9 @@
-////////////////////////////////////////////////////////////
-//  Mikaela Epidemiology Model							  //
-//														  //
-//  Created by Mikaela Smit on 7/11/2014.				  //
-//  Copyright (c) 2014 Mikael Smit. All rights reserved.  //
-////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+//    Mikaela Epidemiology Model							  //
+//    Created by Mikaela Smit on 7/11/2014.				      //
+//    Copyright (c) 2014 Mikaela Smit. All rights reserved.   //
+////////////////////////////////////////////////////////////////
+
 
 #include <iostream>
 #include <stdlib.h>
@@ -13,272 +13,224 @@
 #include "event.h"
 #include "eventQ.h"
 #include "eventfunctions.h"
-
 using namespace std;   
 
 
-//To Do List:
+//    To Do List:
+//  1.	Making a population (i.e. more than one person) and assign variables (Person ID, Sex, HIV status, Birthday, Date of Death,…) - DONE
+//  2.	Use simple distributions (e.g. uniform distribution, etc) to assign characteristics - DONE
+//  3.	Develop EventQ and play around with it – DONE
+//  4.	Insert events into the EventQ, e.g. HIV-infection, Death and Birthdays – DONE
+//  5.	Separate EventQ code into different .h and .cpp files – TOOK A WHILE BUT DONE
+//  6.	Insert a global time counter into the model to record time – DONE
+//  7.	Add global time to the EventQ – DONE
+//  8.	Make birthdays into recurrent event using pointers and global time  - DONE
+//  9.	Remove repeat code for EventQ and from main() and make into self-contained loop – DONE
+//  10.	Add stop time into the model for EventQ – DONE
+//  11.	Merge MakingPatients and EventQ code to make events happen to two different people – DONE
+//  12.	Give people an age using birthday and vice versa – DONE
+//  13.	Include Age at T0 to record age at start of model – DONE
+//  14.	Add ages to the EventQ and update every year – DONE
+//  15.	Make C++ output .csv  files to be able to run large populations and generate graphs – DONE
+//  16.	Find Kanyan age-distribution in 1950 - DONE
+//  17.	Add Kenyan age-distribution as per 1950s – DONE
+//  18.	Run model with this age distribution and generate population pyramids – DONE
+//  19. Add new entries to run population forward and simulate population growth - DONE 
+//  20.	Link deaths to age using UN data - DONE
+//  21.	Compare population to data in Kenya, improve as necessary - BUSY WITH
 //
-//1.	Making a patient population (i.e. more than one) and assign variables (Patient ID, Sex, HIV status, Birthday, Date of Death,…) - DONE
-//2.	Use simple distributions (e.g. uniform distribution, etc) to assign characteristics - DONE
-//3.	Develop EventQ and play around with it – DONE
-//4.	Insert events into the EventQ, e.g. HIV-infection, Death and Birthdays – DONE
-//5.	Separate EventQ code into different .h and .cpp files – TOOK A WHILE BUT DONE
-//6.	Insert a global time counter into the model to record time – DONE
-//7.	Add global time to the EventQ – DONE
-//8.	Make birthdays into recurrent event using pointers and global time  - DONE
-//9.	Remove repeat code for EventQ and from main() and make into self-contained loop – DONE
-//10.	Add stop time into the model for EventQ – DONE
-//11.	Merge MakingPatients and EventQ code to make events happen to two different patients – DONE
-//
-//Worked on in the last few days:
-//12.	Give patients an age using birthday and vice versa – DONE
-//13.	Include Age at T0 to record age at start of model – DONE
-//14.	Add ages to the EventQ and update every year – DONE
-//15.	Make C++ output .csv  files to be able to run large populations and generate graphs – DONE
-//16.	Find Kanyan age-distribution in 1950 - DONE
-//17.	Add Kenyan age-distribution as per 1950s – DONE
-//18.	Run model with this age distribution and generate population pyramids – DONE
-//19.   Add new entries to run population forward and simulate population growth - DONE IN SIMPLE WAY
-//20.	Make C++ run with Matlab – THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am looking at SJ’s code today to see how her model is set up with Matlab
-//
-//Still to do:
-//21.	Link deaths to age using a linear equation (increase age->increase death)
-//22.	Compare mortality to data in Kenya, improve mortality as necessary
-//23.	Improve new entry and discuss patient 'vector' with Tim (deal with bigger size)
-//24.	Add HIV status and update it as a function of HIV test 
-//25.	Add more aspects of HIV care cascade (diagnosis, start cART,…)
+//  Still to do:
+//  22.	Improve 'new entry' as expandable vector (deal with bigger population size)
+//  23. Improve code with arrays (e.g. death code and ChildID)
+//  24.	Add HIV status and update it as a function of HIV test 
+//  25.	Add more aspects of HIV care cascade (diagnosis, start cART,…)
+//  26. Think about class destructors
+//  20.	Make C++ run with Matlab – THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am going to look at SJ’s code for this
 
 
-// --- FUNCTIONS RELATED TO EVENTS ---
-double *p_GT;															// Pointer to global time
-double *p_SY;															// Pointer to start year of the model
-double StartYear=1950;													// Define Start Year if the model and set it to year of choice
-priority_queue<event*, vector<event*>, timeComparison> *p_PQ;			// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing
-																		// [...] as a result of 'primary' events in the queue, e.g. recurrent birthdays
+
+//// --- Function related to event - to be available externally ---
+double *p_GT;																// Pointer to global time
+double *p_SY;																// Pointer to start year of the model
+double StartYear=1950;														// Define Start Year if the model and set it to year of choice
+priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing
+
+																			// [...] as a result of 'primary' events in the queue, e.g. recurrent birthdays
+
+//// --- Function relating to New Entry - to be available externally ---
+const int final_number_people=10000;										// To determine the final size of the total population to be modeled 
+int init_pop = 100;														// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
+int total_population=init_pop;												// Update total population for output and for next new entry
+double new_entry=1;															// To add new people
+
+person** MyArrayOfPointersToPeople = new person*[final_number_people];		// First 'person*' is a pointer (address) and 'new person' and space for x person which will point to actual person below
+																			// Have to now change [init_pop] to [final_number_people] to give the final size of 'matrix'
 
 //// --- RUN THE MAIN MODEL ---
 int main(){
 
-	double GlobalTime=StartYear;												// Define Global Time and set it to 0 at the beginning of the model
-	p_GT=&GlobalTime;													// Define the location the pointer to Global time is pointing to
-	p_SY=&StartYear;													// Define the location of the pointer to Start Year is pointing to
-	srand(time(NULL));													// Random Number generator using PC time
-	priority_queue<event*, vector<event*>, timeComparison> iQ;			// Define th ePriority Q
-	p_PQ=&iQ;															// Define pointer to event Q
+	cout << "Hello, Mikaela!" << endl << endl ;								// Check if model is running
 
-	cout << "Hello, Mikaela!" << endl << endl ;							// Check if model is running
+
+	//// --- Some pointers ---
+	double GlobalTime=StartYear;											// Define Global Time and set it to 0 at the beginning of the model
+	p_GT=&GlobalTime;														// Define the location the pointer to Global time is pointing to
+	p_SY=&StartYear;														// Define the location of the pointer to Start Year is pointing to
+	srand(time(NULL));														// Random Number generator using PC time
+	priority_queue<event*, vector<event*>, timeComparison> iQ;				// Define th ePriority Q
+	p_PQ=&iQ;																// Define pointer to event Q
+	
+		
+	//// --- Making Population---
+	for(int i=0; i<final_number_people; i++){								// REMEMBER: this needs to stay "final_number_people" or it will give error with CSV FILES!!!!
+		MyArrayOfPointersToPeople[i]=new person();}							// The 'new person' the actual new person
 	
 
-	//// --- MAKING PATIENTS ---
-
-	int final_number_people=41000;										// To determine the final size of the total population to be modeled 
-	int no_patients = 3;
-	int total_population=no_patients;									// Update total population for output and for next new entry
-	double new_entry=1;														// To add new people
-	
-	patient** MyArrayOfPointersToPatients = new patient*[final_number_people];			// First 'patient*' is a pointer (address) and 'new patient' and space for 4 patients which will point to actual patienbt below
-																		// Have to now change [no_patients] to [final_number_people] to give the final size of 'matrix'
-
-
-	for(int i=0; i<final_number_people; i++){							// Remember to aslo give final size or it will give error 
-		MyArrayOfPointersToPatients[i]=new patient();}					// The 'new patient' the actual new patient
-					
-	
-	//// --- ASSIGN PATIENT CHARACTERISTICS ---
-	for(int i=0; i<no_patients; i++){												// --- Assign PatientID ---
+	//// --- Assign Population Characteristics ---
+	for(int i=0; i<total_population; i++){									// --- Assign PersonID ---
 		int a=i;
-		(MyArrayOfPointersToPatients[i])->PatientIDAssign(a);}
+		(MyArrayOfPointersToPeople[i])->PersonIDAssign(a);}
 
-	for(int i=0; i<no_patients; i++){												// --- Assign Sex- ---
-		(MyArrayOfPointersToPatients[i])->GenderDistribution();}
+	for(int i=0; i<total_population; i++){									// --- Assign PersonID ---
+		(MyArrayOfPointersToPeople[i])->Alive=1;}
+
+	for(int i=0; i<total_population; i++){									// --- Assign Sex- ---
+		(MyArrayOfPointersToPeople[i])->GenderDistribution();}
+
+	for(int i=0; i<total_population; i++){									// --- Assign DoB/Age --- 
+		(MyArrayOfPointersToPeople[i])->GetMyYearOfBirth();}
 	
-	for(int i=0; i<no_patients; i++){												// --- Assign DoB/Age --- 
-		(MyArrayOfPointersToPatients[i])->GetMyYearOfBirth();}
+	for(int i=0; i<total_population; i++){									// --- Assign Birth of First Baby- ---
+		if (MyArrayOfPointersToPeople[i]->Sex==2) {(MyArrayOfPointersToPeople[i])->GetDateOfMyFirstBaby();}}
 
-	for(int i=0; i<no_patients; i++){												// --- Assign DoB/Age --- 
-		(MyArrayOfPointersToPatients[i])->GetMyBirthday(1,12);}
+	for(int i=0; i<total_population; i++){									// --- Assign date of death ---  
+		(MyArrayOfPointersToPeople[i])->GetDateOfDeath();}
 
-	for(int i=0; i<no_patients; i++){												// --- Assign date of death ---  
-		(MyArrayOfPointersToPatients[i])->GetDateOfDeath(18,80);}
-
-	for(int i=0; i<no_patients; i++){												// --- Assign Date of HIV
-		(MyArrayOfPointersToPatients[i])->GetDateOfHIVInfection(1,2);}
+	for(int i=0; i<total_population; i++){									// --- Assign Date of HIV
+		(MyArrayOfPointersToPeople[i])->GetDateOfHIVInfection(1,2);}
 
 
-	// --- OUTPUT CHECKs ---
-	//cout<<endl<<"The patient's ID...."<< endl;							// --- Ouput all the patients' IDs ---
-	//for(int i=0; i<no_patients; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyPatientID();}		
+	//// --- OUTPUT CHECKs --- 
+	//cout << endl << "The person's ID...." << endl;						// --- Ouput all the peoples' IDs ---
+	//for(int i=0; i<init_pop; i++){
+	//	(MyArrayOfPointersToPeople[i])->TellMyPersonID();}	
+
+	//cout << endl << "The Life Status of person...." << endl;				// --- Ouput all the peoples' gender ---
+	//for(int i=0; i<init_pop; i++){
+	//	(MyArrayOfPointersToPeople[i])->TellMyLifeStatus(); }
 	//
-	//cout<<endl<<"The sex of patients...."<< endl;						// --- Ouput all the patients' gender ---
-	//for(int i=0; i<no_patients; i++){
- //       (MyArrayOfPointersToPatients[i])->TellMySex(); }
+	//cout << endl << "The sex of person...." << endl;						// --- Ouput all the peoples' gender ---
+	//for(int i=0; i<init_pop; i++){
+	//   (MyArrayOfPointersToPeople[i])->TellMySex(); }
 
- //   cout<<endl<<"The year of birth of the patients..." << endl;			// --- Ouput all the patients' ages ---
-	//for(int i=0; i<no_patients; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyDob(); }	
+	//cout << endl << "The date of the persons first child... " << endl;		// --- Output all the peoples' date of first child ---
+	//for(int i=0; i<total_population; i++){
+	//	(MyArrayOfPointersToPeople[i])->TellMyFirstChildBirth();}
 
-	//cout<<endl<<"The birthday of the patients..." << endl;				// --- Ouput all the patients' ages ---
-	//for(int i=0; i<no_patients; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyBD(); }
+	//cout << endl << "The year of birth of the person..." << endl;			// --- Ouput all the peoples' year of birth ---
+	//for(int i=0; i<init_pop; i++){
+	//	(MyArrayOfPointersToPeople[i])->TellMyYearOfBirth(); }	
+
+	//cout << endl << "The year of the person' death..." << endl;			// --- Ouput all the peoples' date of deaths ---
+	//for(int i=0; i<init_pop; i++){
+	//	(MyArrayOfPointersToPeople[i])->TellMyExpectedDeathDate(); }			
 	//
-	//cout<<endl<<"The year of the patients' death..." << endl;			// --- Ouput all the patients' date of deaths ---
-	//for(int i=0; i<no_patients; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
-	//
-	//cout<<endl<<"The dates of HIV infection..." << endl;
-	//for(int i=0; i<no_patients; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
+	//cout << endl << "The dates of the person's HIV infection..." << endl;
+	//for(int i=0; i<init_pop; i++){
+	//	(MyArrayOfPointersToPeople[i])->TellMyHivDateSTART();}
 
-
-	for(int i=no_patients+1; i<no_patients+new_entry; i++){
-		MyArrayOfPointersToPatients[i]=new patient();}					// The 'new patient' the actual new patient
-					
+		
+	//// --- EVENTQ ---
 	
-	//// --- CODE FOR NEW ENTRY (THE SIMPLE WAY!!) ---
-	if (GlobalTime>=1950 & GlobalTime<1955){
-		new_entry=335;}
-	if (GlobalTime>=1955 & GlobalTime<1960){
-		new_entry=388;}
-	if (GlobalTime>=1960 & GlobalTime<1965){
-		new_entry=449;}
-	if (GlobalTime>=1965 & GlobalTime<1970){
-		new_entry=525;}
-	if (GlobalTime>=1970 & GlobalTime<1975){
-		new_entry=628;}
-	if (GlobalTime>=1975 & GlobalTime<1980){
-		new_entry=743;}
-	if (GlobalTime>=1980 & GlobalTime<1985){
-		new_entry=869;}
-	if (GlobalTime>=1985 & GlobalTime<1990){
-		new_entry=972;}
-	if (GlobalTime>=1990 & GlobalTime<1995){
-		new_entry=1006;}
-	if (GlobalTime>=1995 & GlobalTime<2000){
-		new_entry=1123;}
-	if (GlobalTime>=2000 & GlobalTime<2005){
-		new_entry=1304;}
-	if (GlobalTime>=2005 & GlobalTime<2011){
-		new_entry=1455;}
-
-
-
-	//// --- ASSIGN PATIENT CHARACTERISTICS TO NEW PATIENTS --- 
-	for(int i=no_patients; i<no_patients+new_entry; i++){												// --- Assign PatientID ---
-		int a=i;
-		(MyArrayOfPointersToPatients[i])->PatientIDAssign(a);}
-
-	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign Sex- ---
-		(MyArrayOfPointersToPatients[i])->GenderDistribution();}
+	//for(int i=0; i<init_pop; i++){
+	//event * DeathDate = new event;										// --- Date of Death ---
+	//DeathDate->time = MyArrayOfPointersToPerson[i]->DateOfDeath;
+	//DeathDate->p_fun = &EventMyDeathDate;
+	//DeathDate->person_ID = MyArrayOfPointersToPerson[i];
+	//iQ.push(DeathDate);	}												
 	
-	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign DoB/Age --- 
-		(MyArrayOfPointersToPatients[i])->GetMyYearOfBirthNewEntry();}
+	//for(int i=0; i<init_pop; i++){
+	//event * BirthdayDate = new event;										// --- Birthday ---
+	//BirthdayDate->time = StartYear + MyArrayOfPointersToPeople[i]->Age - MyArrayOfPointersToPeople[i]->AgeT0;
+	//BirthdayDate->p_fun = &EventMyBirthDate;
+	//BirthdayDate->person_ID = MyArrayOfPointersToPeople[i];
+	//cout << "My next birthday of patient " << MyArrayOfPointersToPeople[i]->PersonID << " is " << BirthdayDate->time << endl;
+	//iQ.push(BirthdayDate);}		
 
-	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign DoB/Age --- 
-		(MyArrayOfPointersToPatients[i])->GetMyBirthday(1,12);}
+	//cout << endl;
 
-	for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign date of death ---  
-		(MyArrayOfPointersToPatients[i])->GetDateOfDeath(18,80);}
+	for(int i=0; i<total_population; i++){
+	event * BabyBirth = new event;												// --- Birthday of First Child ---
+	BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthFirstChild;
+	BabyBirth->p_fun = &EventBirth;
+	BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
+	iQ.push(BabyBirth);}	
 
-	//for(int i=no_patients; i<no_patients+new_entry; i++){				// --- Assign Date of HIV
-	//	(MyArrayOfPointersToPatients[i])->GetDateOfHIVInfection(1,2);}
+	for(int i=0; i<total_population; i++){
+	event * BabyNewYear = new event;											// --- Set first fertility scan for 1951 ---
+	BabyNewYear->time = 1951;													// this will run in its own loop after 1951
+	BabyNewYear->p_fun = &EventBirthForTheYear;
+	BabyNewYear->person_ID = MyArrayOfPointersToPeople[i];
+	iQ.push(BabyNewYear);}
 
-
-	//// --- OUTPUT CHECKs FOR NEW PATIENTS ---
-	//cout<<endl<<"The patient's ID...."<< endl;							// --- Ouput all the patients' IDs ---
-	//for(int i=no_patients; i<no_patients+new_entry; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyPatientID();}		
+	
+	//for(int i=0; i<init_pop; i++){
+	//event * HivTest = new event;											// --- HIV Testing ---
+	//HivTest->time = MyArrayOfPointersToPeople[i]->MyDateOfHIV;
+	//HivTest->p_fun = &TellMyHivStatus;
+	//HivTest->person_ID = MyArrayOfPointersToPerson[i];
+	//iQ.push(HivTest);}													// Add HIVTest to queue
 	//
-	//cout<<endl<<"The sex of patients...."<< endl;						// --- Ouput all the patients' gender ---
-	//for(int i=no_patients; i<no_patients+new_entry; i++){
- //       (MyArrayOfPointersToPatients[i])->TellMySex(); }
+		
+	
+	// --- give output of queue as it progresses ---
+	cout << endl << endl << "The characteristics of the event queue:" << endl;
+	cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
+	cout << "the size of the event queue is " << iQ.size() << endl;
+	
+	while(iQ.top()->time< 1952.01 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
+		GlobalTime=iQ.top()->time;
 
- //   cout<<endl<<"The year of birth of the patients..." << endl;			// --- Ouput all the patients' ages ---
-	//for(int i=no_patients; i<no_patients+new_entry; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyDob(); }	
-
-	//cout<<endl<<"The birthday of the patients..." << endl;				// --- Ouput all the patients' ages ---
-	//for(int i=no_patients; i<no_patients+new_entry; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyBD(); }
-	//
-	//cout<<endl<<"The year of the patients' death..." << endl;			// --- Ouput all the patients' date of deaths ---
-	//for(int i=no_patients; i<no_patients+new_entry; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyExpectedDeathDate(); }			
-	//
-	//cout<<endl<<"The dates of HIV infection..." << endl;
-	//for(int i=no_patients; i<no_patients+new_entry; i++){
-	//	(MyArrayOfPointersToPatients[i])->TellMyHivDateSTART();}
+		cout << endl << endl << "An event has just ocurred.  " << endl;
+		cout << "it is " << iQ.top()->time << ".  " << endl;
+		//if (iQ.top()->person_ID->Age==1)
+						iQ.top()-> p_fun(iQ.top()->person_ID);
+				
+		
+		//globaltime=iq.top()->time;										// careful with order of global time update - do not touch or touch and check!!
+		
+		iQ.pop();		
+		cout << endl << "this event has now been removed from the queue.  " << endl;}
 
 
-	total_population=no_patients+new_entry;								// Update total population for output and for next new entry
-
+	//// --- Output the results in a csv file ---
 	FILE* csv_out = fopen("test.csv","w");
-	for (int i=0; i<total_population; i++) {							// Change the i< X here as well as the "%d!!
-		fprintf(csv_out,"%d,%d,%d,%d,%d,%d/*,%d*/\n",
-			MyArrayOfPointersToPatients[i]->PatientID,
-			MyArrayOfPointersToPatients[i]->Sex,
-			MyArrayOfPointersToPatients[i]->DoB,
-			MyArrayOfPointersToPatients[i]->Age, 
-			MyArrayOfPointersToPatients[i]->DateOfDeath/*,
-			MyArrayOfPointersToPatients[i]->MyDateOfHIV*/);
-	}
+	for (int i=0; i<total_population; i++) {								// Change the i< X here as well as the "%d!!
+		fprintf(csv_out,"%d,%d,%d,%f,%f,%d,%d,%d,%d,%d, %f \n",
+			MyArrayOfPointersToPeople[i]->PersonID,
+			MyArrayOfPointersToPeople[i]->Sex,
+			MyArrayOfPointersToPeople[i]->DoB,
+			MyArrayOfPointersToPeople[i]->Age,
+			MyArrayOfPointersToPeople[i]->BirthFirstChild,
+			MyArrayOfPointersToPeople[i]->MotherID,
+			MyArrayOfPointersToPeople[i]->ChildID, 
+			MyArrayOfPointersToPeople[i]->ChildID_1, 
+			MyArrayOfPointersToPeople[i]->ChildIndex,
+			MyArrayOfPointersToPeople[i]->Breastfeeding,
+			MyArrayOfPointersToPeople[i]->DateOfDeath
 
+			//MyArrayOfPointersToPeople[i]->DateOfDeath/*,
+			//MyArrayOfPointersToPeople[i]->MyDateOfHIV*/
+			);}
 	fclose(csv_out);
 
 	
-		
-	////// --- EVENTQ ---
-	//for(int i=0; i<no_patients; i++){
-	//event * HivTest = new event;											// --- HIV Testing ---
-	//HivTest->time = MyArrayOfPointersToPatients[i]->MyDateOfHIV;
-	//HivTest->p_fun = &TellMyHivStatus;
-	//HivTest->patient_ID = MyArrayOfPointersToPatients[i];
-	//iQ.push(HivTest);}													// Add HIVTest to queue
-	//
-	//for(int i=0; i<no_patients; i++){
-	//event * DeathDate = new event;										// --- Date of Death ---
-	//DeathDate->time = MyArrayOfPointersToPatients[i]->DateOfDeath;
-	//DeathDate->p_fun = &TellMyDeathDate;
-	//DeathDate->patient_ID = MyArrayOfPointersToPatients[i];
-	//iQ.push(DeathDate);	}												// Add Date of Death to queue
-	//
-	//for(int i=0; i<no_patients; i++){
-	//event * BirthdayDate = new event;										// --- HIV Testing ---
-	//BirthdayDate->time = MyArrayOfPointersToPatients[i]->BirthdayY;
-	//BirthdayDate->p_fun = &TellMyBirthDate;
-	//BirthdayDate->patient_ID = MyArrayOfPointersToPatients[i];
-	//iQ.push(BirthdayDate);}												// Add HIVTest to queue
 
-	//event * NewEntry = new event;											// --- HIV Testing ---
-	//NewEntry->time = MyArrayOfPointersToPatients[i]->BirthdayY;
-	//NewEntry->p_fun = &TellMyBirthDate;
-	//NewEntry->patient_ID = MyArrayOfPointersToPatients[i];
-	//iQ.push(NewEntry);}	
-
-	
-	
-	////// --- GIVE OUTPUT OF QUEUE AS IT PROGRESSES ---
-	//cout << endl << endl << "Characteristics of the event queue:" << endl;
-	//cout << "The first event will ocurr  " << iQ.top()->time << " years after the start of model." << endl;
-	//cout << "The size of the event queue is " << iQ.size() << endl;
-	//
-	//while( GlobalTime< 5 /*|| !iQ.empty()*/){								// This loop throws up error because no recurrent birthday pushing GT over 5 yrs and iQ.pop means GT cannot be updated after pop
-	//	GlobalTime=iQ.top()->time;
-
-	//	cout << endl << endl << "An event has just ocurred.  " << endl;
-	//	cout << "It is " << iQ.top()->time << " years after the start of the model.  " << endl 
-	//		 << "Patient " ; iQ.top()-> p_fun(iQ.top()->patient_ID);
-	//	
-	//	GlobalTime=iQ.top()->time;											// CAREFUL WITH ORDER OF GLOBAL TIME UPDATE - DO NOT TOUCH OR TOUCH AND CHECK!!
-	//	
-	//	iQ.pop();		
-	//	cout << endl << "This event has now been removed from the queue.  " << endl;}
-
-
-	// --- END CODE ---
+	// --- End of code ---
     cout << endl << "Hi Jack, so sorry\n";
 	system("pause");
     return 0;
-    
 }
+
+
+

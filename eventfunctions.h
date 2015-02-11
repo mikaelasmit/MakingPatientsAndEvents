@@ -1,18 +1,26 @@
-//
-//  Created by Mikaela Smit on 07/11/2014. 
-//  Copyright (c) 2014 Mikaela Smit. All rights reserved.
-//  These event are added to the EventQ
-//
+/////////////////////////////////////////////////////////////////
+//    Created by Mikaela Smit on 07/11/2014.				   //	
+//    Copyright (c) 2014 Mikaela Smit. All rights reserved.    //
+//    These event are added to the EventQ.					   //
+/////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include "person.h"
-
 using namespace std;
 
 
-	//// ---- HIV EVENTS ---
+	//// --- Get Birth of First Child ---
+	//void GetDateOfMyFirstBaby (person *MyPointerToPerson);
+
+	//// --- HIV Events --- 
+	double GetDateOfHIVInfection(int x, int y);							// Function to get date of HIV infection
+	void EventMyHivStatus(person *MyPointerToPerson);					// Function to be executed when HIV infection occurs
 	
-	//double GetDateOfHIVInfection(int x, int y);						// Function to get date of HIV infection
-	void TellMyHivStatus(patient *MyPointerToPatient);					// Function to be executed when HIV infection occurs
-	void TellMyDeathDate(patient *MyPointerToPatient);
-	void TellMyBirthDate(patient *MyPointerToPatient);
+	//// --- Life Events ---
+	void EventMyDeathDate(person *MyPointerToPerson);
+	void EventMyBirthDate(person *MyPointerToPerson);
+	
+	//// --- Birth ---
+	void EventBirth(person *MyPointerToPerson);
+	void EventStopBreastfeeding(person *MyPointerToPerson);
+	void EventBirthForTheYear(person *MyPointerToPerson);
