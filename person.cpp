@@ -16,24 +16,24 @@
 
 
 //// --- OUTSIDE INFORMATION --- ////
-extern double *p_GT;							// Tell this .cpp that there is pointer to Global Time defined externally
+extern double *p_GT;							// Tell this .cpp that there is pointer to Global Time defined externally 
 extern double *p_SY;										// Include here to be able to calculate peoples' age
 extern double StartYear;						// Include Start Year so only have to change it once in main()
 
 int RandomAge(int min, int max){				// Provide function for random number generator to asisgn age
 	return rand()%(max-min+1)+min;}
 
+double RandomMonthBD(int min, int max){			// Provides function for random number generator to assign birthdya month 
+	return rand()%(max-min+1)+min;}
+
 double RandomFirstBirth(int min, int max){		// Provides function for random number generator to assign first birth for women
 	return rand()%(max-min+1)+min;}
 
-double RandomMonthBD(int min, int max){			// Provides function for random number generator to assign birthdya month
+double RandomLifeExpect(int min, int max){		// Provides function for random number generator to assign Life expectancy
 	return rand()%(max-min+1)+min;}
 
-double RandomLifeExpect(int min, int max){			// Provides function for random number generator to assign Life expectancy
-	return rand()%(max-min+1)+min;}
-
-double RandomNEWLifeExpect(int min, int max){			// Provides function for random number generator to assign Life expectancy
-	return rand()%(max-min+1)+min;}
+double RandomNEWLifeExpect(int min, int max){	// Provides function for random number generator to assign Life expectancy
+	return rand()%(max-min+1)+min;} 
 
 
 //// --- CLASS (POPULATION) CONSTRUCTOR --- ////
@@ -53,8 +53,9 @@ person::person()								// First 'person' class second constructor/variable and 
 	ChildIndex=0;
 	BirthFirstChild=9999;						// VERY IMPORTANT  this number needs to be HIGH as it entres EventQ...
 	MotherID=-999;
+	Breastfeeding=0;							// Where 0=No and 1=Yes
 
-	DateOfDeath=-999;							// Varibles related to death 
+	DateOfDeath=9999;							// Varibles related to death VERY IMPORTANT this number needs to be HIGH as it entres EventQ
 	Alive=-999;									// Variable to update eventQ - global check to see if person is still alive
 		
 	HIVStatus=-999;								// Variables related to HIV-infection
@@ -93,7 +94,7 @@ void person::PersonIDAssign(int x){							// --- Assign Person ID ---
 
 void person::GenderDistribution(){							// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
-	if (r<=0/*0.5043*/){Sex=1;}									
+	if (r<=0.5043){Sex=1;}									
 	else {Sex=2;}
 }
 
@@ -138,8 +139,8 @@ double a = ((double) rand() / (RAND_MAX));
 	if (a>0.9866050 && a<=0.9952995){AgeT0 = RandomAge(75,79);}
 	if (a>0.9952995 && a<=1){AgeT0 = RandomAge(80,100);}
 
-	int GetMonth=RandomMonthBD(1,12);									// Helps 'distribute' birthdays across the year
-	double GetYearFraction=GetMonth/12.1;								// Assign year fraction of birth month, e.g. June is 0.5 of the year
+	int GetMonth=RandomMonthBD(1,12);						// Helps 'distribute' birthdays across the year
+	double GetYearFraction=GetMonth/12.1;					// Assign year fraction of birth month, e.g. June is 0.5 of the year
 	
 	//cout << "The Birthday will be  at " << GetYearFraction << " or Month " << GetMonth << endl;  /// POssible check code
 	
@@ -150,17 +151,30 @@ double a = ((double) rand() / (RAND_MAX));
 
 void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday
 															// This method already calculates the child's month of birth by providing a year of birth with decimal
-	double f = ((double) rand() / (RAND_MAX));
 	
-		if (Sex==2 && Age>=15 && Age<20 && f<0.169071){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,200)/10)-Age;}
-		if (Sex==2 && Age>=20 && Age<25 && f<0.351607){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,250)/10)-Age;}
-		if (Sex==2 && Age>=25 && Age<30 && f<0.338141){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,300)/10)-Age;}
-		if (Sex==2 && Age>=30 && Age<35 && f<0.284278){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,350)/10)-Age;}
-		if (Sex==2 && Age>=35 && Age<40 && f<0.203483){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,400)/10)-Age;}
-		if (Sex==2 && Age>=40 && Age<45 && f<0.110719){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,450)/10)-Age;}
-		if (Sex==2 && Age>=45 && Age<50 && f<0.038901){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10.05,500)/10)-Age;}
+	double f = ((double) rand() / (RAND_MAX));
+			
+		if (Sex==2 && Age>=15 && Age<20 && f<0.169071){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,200)/10)-Age;
+						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,200)/10)-Age;}}
+		
+		if (Sex==2 && Age>=20 && Age<25 && f<0.351607){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,250)/10)-Age;
+						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,250)/10)-Age;}}
+		
+		if (Sex==2 && Age>=25 && Age<30 && f<0.338141){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,300)/10)-Age;
+						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,300)/10)-Age;}}
+		
+		if (Sex==2 && Age>=30 && Age<35 && f<0.284278){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,350)/10)-Age;
+						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,350)/10)-Age;}}
 
-}
+		if (Sex==2 && Age>=35 && Age<40 && f<0.203483){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,400)/10)-Age;
+						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,400)/10)-Age;}}
+
+		if (Sex==2 && Age>=40 && Age<45 && f<0.110719){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,450)/10)-Age;
+						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,450)/10)-Age;}}
+
+		if (Sex==2 && Age>=45 && Age<50 && f<0.038901){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,500)/10)-Age;
+						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,500)/10)-Age;}}}
+
 
 void person::GetDateOfDeath(){							// --- Assign Date of death ---	
 	

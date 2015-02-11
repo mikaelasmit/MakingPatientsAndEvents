@@ -33,6 +33,7 @@ public:
 	int ChildIndex;
 	double BirthFirstChild; 
 	int MotherID;
+	int Breastfeeding;
 	
 
     double DateOfDeath;								// Variables related to death

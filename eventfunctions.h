@@ -20,5 +20,6 @@ using namespace std;
 	void EventMyDeathDate(person *MyPointerToPerson);
 	void EventMyBirthDate(person *MyPointerToPerson);
 	
-	//// --- New Entry Events ---
-	void EventNewEntry(person *MyPointerToPerson);
+	//// --- Birth ---
+	void EventBirth(person *MyPointerToPerson);
+	void EventStopBreastfeeding(person *MyPointerToPerson);
