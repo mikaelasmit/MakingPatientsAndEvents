@@ -59,7 +59,7 @@ priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to e
 
 //// --- Function relating to New Entry - to be available externally ---
 const int final_number_people=10000;										// To determine the final size of the total population to be modeled 
-int init_pop = 5909;														// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
+int init_pop = 100;														// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
 int total_population=init_pop;												// Update total population for output and for next new entry
 double new_entry=1;															// To add new people
 
@@ -159,13 +159,21 @@ int main(){
 
 	//cout << endl;
 
+	//for(int i=0; i<total_population; i++){
+	//event * BabyBirth = new event;											// --- Birthday of First Child ---
+	//BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthFirstChild;
+	//BabyBirth->p_fun = &EventBirth;
+	//BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
+	////cout << "My birth of patient " << MyArrayOfPointersToPeople[i]->PersonID << " first child is " << BabyBirth->time << endl;
+	//iQ.push(BabyBirth);}	
+
 	for(int i=0; i<total_population; i++){
-	event * BabyBirth = new event;											// --- Birthday of First Child ---
-	BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthFirstChild;
-	BabyBirth->p_fun = &EventBirth;
-	BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
+	event * BabyNewYear = new event;											// --- Birthday of First Child ---
+	BabyNewYear->time = 1951;
+	BabyNewYear->p_fun = &EventBirthForTheYear;
+	BabyNewYear->person_ID = MyArrayOfPointersToPeople[i];
 	//cout << "My birth of patient " << MyArrayOfPointersToPeople[i]->PersonID << " first child is " << BabyBirth->time << endl;
-	iQ.push(BabyBirth);}	
+	iQ.push(BabyNewYear);}
 
 	
 	//for(int i=0; i<init_pop; i++){
@@ -182,7 +190,7 @@ int main(){
 	cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
 	cout << "the size of the event queue is " << iQ.size() << endl;
 	
-	while(iQ.top()->time< 1955 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
+	while(iQ.top()->time< 1952.01 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
 		GlobalTime=iQ.top()->time;
 
 		cout << endl << endl << "An event has just ocurred.  " << endl;
@@ -197,7 +205,7 @@ int main(){
 		cout << endl << "this event has now been removed from the queue.  " << endl;}
 
 
-	// --- Output the results in a csv file ---
+	//// --- Output the results in a csv file ---
 	FILE* csv_out = fopen("test.csv","w");
 	for (int i=0; i<total_population; i++) {								// Change the i< X here as well as the "%d!!
 		fprintf(csv_out,"%d,%d,%d,%f,%f,%d,%d,%d,%d,%d, %f \n",

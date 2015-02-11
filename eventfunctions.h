@@ -23,3 +23,4 @@ using namespace std;
 	//// --- Birth ---
 	void EventBirth(person *MyPointerToPerson);
 	void EventStopBreastfeeding(person *MyPointerToPerson);
+	void EventBirthForTheYear(person *MyPointerToPerson);

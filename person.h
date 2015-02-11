@@ -23,7 +23,7 @@ public:
 	int Sex;
 
 
-	int DoB;										// Variables related to age
+	double DoB;										// Variables related to age
 	int AgeT0;
 	double Age; 
 

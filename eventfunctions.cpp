@@ -32,19 +32,18 @@ extern void MakeNewGenderDistribution();
 extern void MakeNewYearOfBirth();
 extern void MakeNewBirthdayM();
 
+double RandomBirthsNewYear(int min, int max){		// Provides function for random number generator to assign first birth for women
+	return rand()%(max-min+1)+min;}
 
 
 //// --- FUNCTIONS FOR EVENTS --- ////
-
 
 void EventMyHivStatus(person *MyPointerToPerson){						// The bit inside the bracket allows to link event to specific person using person pointer 						
 	 cout << "Person " << MyPointerToPerson->PersonID << " just got an HIV test.  " << endl;}
 
 
-
 void EventMyDeathDate(person *MyPointerToPerson){									
 	 cout << "Person " << MyPointerToPerson->PersonID << " just died.  "  << endl;}
-
 
 
 void EventMyBirthDate(person *MyPointerToPerson){									
@@ -62,8 +61,12 @@ void EventMyBirthDate(person *MyPointerToPerson){
 }
 
 
-
 void EventBirth(person *MyPointerToPerson){	
+
+	cout << "I, patient number " << MyPointerToPerson->PersonID << " am about to give birth to my " << MyPointerToPerson->ChildIndex+1 << " child and I am now breastfeeding " << MyPointerToPerson->Breastfeeding << endl;
+	
+	if (MyPointerToPerson->Alive==1 && MyPointerToPerson->BirthFirstChild<9999){
+	
 
 	// Update the population count
 	total_population=total_population+1;						// Update total population for output and for next new entry
@@ -84,67 +87,87 @@ void EventBirth(person *MyPointerToPerson){
 	MyPointerToPerson->ChildID=(MyArrayOfPointersToPeople[total_population-1])->PersonID;			// Give mothers their child's ID
 	
 	if (MyPointerToPerson->ChildIndex==0){ 
-		MyPointerToPerson->ChildID_1=(MyArrayOfPointersToPeople[total_population-1])->PersonID;		// Give mothers their child's ID
-		//MyPointerToPerson->ChildIndex=MyPointerToPerson->ChildIndex+1;
-		//cout << "This is my " <<  MyPointerToPerson->ChildIndex << " child!" << endl;}
-	}
+		MyPointerToPerson->ChildID_1=(MyArrayOfPointersToPeople[total_population-1])->PersonID;}	// Give mothers their child's ID
+		
 	
 	if (MyPointerToPerson->ChildIndex==1){ 
-		MyPointerToPerson->ChildID_2=(MyArrayOfPointersToPeople[total_population-1])->PersonID;		// Give mothers their child's ID
-		/*cout << "This is my " <<  MyPointerToPerson->ChildIndex << " child!" << endl;*/}
+		MyPointerToPerson->ChildID_2=(MyArrayOfPointersToPeople[total_population-1])->PersonID;}	// Give mothers their child's ID
+		
 
-		// Update my child Index (number of children I have) and reset BirthFirst Child so can have another chile
-								// update Child Index so can give birth again
-	MyPointerToPerson->ChildIndex=MyPointerToPerson->ChildIndex+1;
-	MyPointerToPerson->BirthFirstChild=9999;							// Update "BirthFirstChild" so can give birth again
-	cout << "I, " << MyPointerToPerson->PersonID << " have " << MyPointerToPerson->ChildIndex << " children!!! And The Birth of my next child is " <<  MyPointerToPerson->BirthFirstChild << endl;
+	// Update my child Index (number of children I have) and reset BirthFirst Child so can have another chile
+	MyPointerToPerson->ChildIndex=MyPointerToPerson->ChildIndex+1;		// update Child Index so can give birth again
 	
+
 	// Scheudle breastfeeding
 	MyPointerToPerson->Breastfeeding=1;
-	cout << "I, " << MyPointerToPerson->PersonID << " have just started breastfeeding after having my " << (MyArrayOfPointersToPeople[total_population-1])->ChildIndex << " child" << endl;
+	
 
-	//event * BreastfeedingFinish = new event;						// --- Schedule end of Breastfeeding ---
-	//BreastfeedingFinish->time = *p_GT + 0.25;						// Re-use code as in main to add recurrent BD to the queue (incl time and function pointer)
-	//BreastfeedingFinish->p_fun = &EventStopBreastfeeding;
-	//BreastfeedingFinish->person_ID=MyPointerToPerson;
-	//p_PQ->push(BreastfeedingFinish);
+	event * BreastfeedingFinish = new event;														// --- Schedule end of Breastfeeding ---
+	BreastfeedingFinish->time = *p_GT + 0.25;														// Re-use code as in main to add recurrent BD to the queue (incl time and function pointer)
+	BreastfeedingFinish->p_fun = &EventStopBreastfeeding;
+	BreastfeedingFinish->person_ID=MyPointerToPerson;
+	p_PQ->push(BreastfeedingFinish);
 
+	cout << "I, patient number " << MyPointerToPerson->PersonID << " have had my " << MyPointerToPerson->ChildIndex << " child and I am now breastfeeding " << MyPointerToPerson->Breastfeeding << endl;
+
+	}}
+
+void EventStopBreastfeeding(person *MyPointerToPerson){
+	MyPointerToPerson->Breastfeeding=0;																// Reset breastfeeding status to NOT feeding so woman can have a child
+	MyPointerToPerson->BirthFirstChild=9999;														// Reset BirthOfChild so can have another Child
+	cout << "I, " << MyPointerToPerson->PersonID << " have just stopped breastfeeding after having my " << MyPointerToPerson->ChildIndex << " child" << endl;
+}
+							
+
+void EventBirthForTheYear(person *MyPointerToPerson){												// Set births for the coming year
+
+	cout << "I, patient number " << MyPointerToPerson->PersonID << "have a fertility status of: " << MyPointerToPerson->BirthFirstChild << " and my age is " << MyPointerToPerson->Age << endl; 
+
+	MyPointerToPerson->Age= (*p_GT - MyPointerToPerson->DoB);
+
+	if (MyPointerToPerson->Sex==2 && MyPointerToPerson->Alive==1 && MyPointerToPerson->BirthFirstChild==9999 && MyPointerToPerson->Age>=15 && MyPointerToPerson->Age<50){					// Only set fertily for those not scheduled to give birth this year and those not breastfeeding
+			
+		double f = ((double) rand() / (RAND_MAX));
+
+		if (MyPointerToPerson->Age>=15 && MyPointerToPerson->Age<20 /*&& f<0.169071*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,200)/10)-MyPointerToPerson->Age;
+				while (MyPointerToPerson->BirthFirstChild<*p_GT){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,200)/10)-MyPointerToPerson->Age;}}
+
+		if (MyPointerToPerson->Age>=20 && MyPointerToPerson->Age<25 /*&& f<0.351607*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,250)/10)-MyPointerToPerson->Age;
+				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,250)/10)-MyPointerToPerson->Age;}}
+		
+		if (MyPointerToPerson->Age>=25 && MyPointerToPerson->Age<30 /*&& f<0.338141*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,300)/10)-MyPointerToPerson->Age;
+				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,300)/10)-MyPointerToPerson->Age;}}
+		
+		if (MyPointerToPerson->Age>=30 && MyPointerToPerson->Age<35 /*&& f<0.284278*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,350)/10)-MyPointerToPerson->Age;
+				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,350)/10)-MyPointerToPerson->Age;}}
+
+		if (MyPointerToPerson->Age>=35 && MyPointerToPerson->Age<40 /*&& f<0.203483*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,400)/10)-MyPointerToPerson->Age;
+				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,400)/10)-MyPointerToPerson->Age;}}
+
+		if (MyPointerToPerson->Age>=40 && MyPointerToPerson->Age<45/* && f<0.110719*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,450)/10)-MyPointerToPerson->Age;
+				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,450)/10)-MyPointerToPerson->Age;}}
+
+		if (MyPointerToPerson->Age>=45 && MyPointerToPerson->Age<50 /*&& f<0.038901*/){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,500)/10)-MyPointerToPerson->Age;
+				while (MyPointerToPerson->BirthFirstChild<1950){MyPointerToPerson->BirthFirstChild=*p_GT+(RandomBirthsNewYear(MyPointerToPerson->Age*10,500)/10)-MyPointerToPerson->Age;}}
+	
+			
+			if (MyPointerToPerson->BirthFirstChild<9999){
+			event * BabyBirth = new event;											// --- Add new births to EventQ ---									
+			BabyBirth->time = MyPointerToPerson->BirthFirstChild;
+			BabyBirth->p_fun = &EventBirth;
+			BabyBirth->person_ID = MyPointerToPerson;
+			p_PQ->push(BabyBirth);}
+			cout << "I, patient number " << MyPointerToPerson->PersonID << "have just scheduled by next birth for " << MyPointerToPerson->BirthFirstChild << endl; }
+
+			event * EventBirthForTheYear2 = new event;											// --- Add new births to EventQ ---									
+			EventBirthForTheYear2->time = *p_GT+1;
+			EventBirthForTheYear2->p_fun = &EventBirthForTheYear;
+			EventBirthForTheYear2->person_ID = MyPointerToPerson;
+			p_PQ->push(EventBirthForTheYear2);
+			cout << "I, patient number "<< MyPointerToPerson->PersonID << "will have my fertily next evaluated in " << EventBirthForTheYear2->time << " and my fertility is " << MyPointerToPerson->BirthFirstChild << endl; 
 }
 
-//void EventStopBreastfeeding(person *MyPointerToPerson){
-//	MyPointerToPerson->Breastfeeding=1;								// Reset breastfeeding status to NOT feeding so woman can have a child
-//	cout << "I, " << MyPointerToPerson->PersonID << " have just stopped breastfeeding after having my " << (MyArrayOfPointersToPeople[total_population-1])->ChildIndex << " child" << endl;}
 
-//void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday
-//															// This method already calculates the child's month of birth by providing a year of birth with decimal
-//	
-//	double f = ((double) rand() / (RAND_MAX));
-
-//for(int i=0; i<total_population; i++){									// --- Assign PersonID ---
-//		int a=i;
-//		(MyArrayOfPointersToPeople[i])->PersonIDAssign(a);}
-//
-//if Death>*p_GT && (MyArrayOfPointersToPeople[total_population-1])->BirthFirstChild==9999
-////			
-////		if (Sex==2 && Age>=15 && Age<20 && f<0.169071){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,200)/10)-Age;
-//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,200)/10)-Age;}}
-//		
-//		if (Sex==2 && Age>=20 && Age<25 && f<0.351607){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,250)/10)-Age;
-//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,250)/10)-Age;}}
-//		
-//		if (Sex==2 && Age>=25 && Age<30 && f<0.338141){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,300)/10)-Age;
-//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,300)/10)-Age;}}
-//		
-//		if (Sex==2 && Age>=30 && Age<35 && f<0.284278){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,350)/10)-Age;
-//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,350)/10)-Age;}}
-//
-//		if (Sex==2 && Age>=35 && Age<40 && f<0.203483){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,400)/10)-Age;
-//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,400)/10)-Age;}}
-//
-//		if (Sex==2 && Age>=40 && Age<45 && f<0.110719){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,450)/10)-Age;
-//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,450)/10)-Age;}}
-//
-//		if (Sex==2 && Age>=45 && Age<50 && f<0.038901){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,500)/10)-Age;
-//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,500)/10)-Age;}}}
-
+	
+		
 

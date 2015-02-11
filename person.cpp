@@ -94,7 +94,7 @@ void person::PersonIDAssign(int x){							// --- Assign Person ID ---
 
 void person::GenderDistribution(){							// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
-	if (r<=0.5043){Sex=1;}									
+	if (r<=0/*0.5043*/){Sex=1;}									
 	else {Sex=2;}
 }
 
@@ -749,12 +749,9 @@ void person::GetDateOfDeath(){							// --- Assign Date of death ---
 
 }
 	
-		
-	
 
 void person::GetDateOfHIVInfection(int min, int max){		// --- Assign Date of HIV infection ---		
 	MyDateOfHIV=*p_GT + (rand()%(max-min+1)+min);}
-
 
 
 //// --- FUNCTIONS FOR NEW ENTRY --- ////
