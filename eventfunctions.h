@@ -18,9 +18,21 @@ using namespace std;
 	
 	//// --- Life Events ---
 	void EventMyDeathDate(person *MyPointerToPerson);
-	void EventMyBirthDate(person *MyPointerToPerson);
+
 	
 	//// --- Birth ---
 	void EventBirth(person *MyPointerToPerson);
 	void EventStopBreastfeeding(person *MyPointerToPerson);
 	void EventBirthForTheYear(person *MyPointerToPerson);
+
+	//// --- New Year ---
+	void EventTellNewYear(person *MyPointerToPerson);					// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!
+
+
+
+
+
+	
+	/////////////////  OLDER CODE AND FUNCITONS ///////////////////
+
+	//void EventMyBirthDate(person *MyPointerToPerson);

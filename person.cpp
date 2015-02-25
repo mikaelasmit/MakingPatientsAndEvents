@@ -17,7 +17,7 @@
 
 //// --- OUTSIDE INFORMATION --- ////
 extern double *p_GT;							// Tell this .cpp that there is pointer to Global Time defined externally 
-extern double *p_SY;										// Include here to be able to calculate peoples' age
+extern double *p_SY;							// Include here to be able to calculate peoples' age
 extern double StartYear;						// Include Start Year so only have to change it once in main()
 
 int RandomAge(int min, int max){				// Provide function for random number generator to asisgn age
@@ -32,8 +32,8 @@ double RandomFirstBirth(int min, int max){		// Provides function for random numb
 double RandomLifeExpect(int min, int max){		// Provides function for random number generator to assign Life expectancy
 	return rand()%(max-min+1)+min;}
 
-double RandomNEWLifeExpect(int min, int max){	// Provides function for random number generator to assign Life expectancy
-	return rand()%(max-min+1)+min;} 
+//double RandomNEWLifeExpect(int min, int max){	// Provides function for random number generator to assign Life expectancy
+//	return rand()%(max-min+1)+min;} 
 
 
 //// --- CLASS (POPULATION) CONSTRUCTOR --- ////
@@ -50,6 +50,14 @@ person::person()								// First 'person' class second constructor/variable and 
 	ChildID=-999;								// Variables related to birth of first child
 	ChildID_1=-999;
 	ChildID_2=-999;
+	ChildID_3=-999;
+	ChildID_4=-999;
+	ChildID_5=-999;
+	ChildID_6=-999;
+	ChildID_7=-999;
+	ChildID_8=-999;
+	ChildID_9=-999;
+	ChildID_10=-999;
 	ChildIndex=0;
 	BirthFirstChild=9999;						// VERY IMPORTANT  this number needs to be HIGH as it entres EventQ...
 	MotherID=-999;
@@ -61,31 +69,6 @@ person::person()								// First 'person' class second constructor/variable and 
 	HIVStatus=-999;								// Variables related to HIV-infection
 	MyDateOfHIV=-999;
 }
-
-
-
-//// --- FUNCTION TO GENERATE OUTPUT --- ////
-void person::TellMyPersonID(){																		// --- Tell PersonID ---
-	cout << "The ID of person " << PersonID << " is " << PersonID << endl;}
-
-void person::TellMyLifeStatus(){
-	cout << "The Life Status of person " << PersonID << " is " << Alive << endl;}
-
-void person::TellMySex(){																			// --- Tell Sex ---
-	cout << "The sex of person " << PersonID << " is " << Sex << endl;}	
-
-void person::TellMyFirstChildBirth(){																// --- Tell Birth My First Child ---
-	cout << "My Sex is " << Sex << " and I will have my first baby on " << BirthFirstChild << endl;}
-
-void person::TellMyYearOfBirth(){																	// --- Tell Year of Birth ---	
-	cout << "The year of birth of person " << PersonID << " is " << DoB << " and their age is " << Age << endl;}
-
-void person::TellMyExpectedDeathDate(){																// --- Tell Expected Date of Death ---		
-	cout << "I, person " << PersonID << ", will die in" << DateOfDeath << endl;}
-
-void person::TellMyHivDateSTART(){																	// --- Tell Date of HIV Infection ---					
-	cout << "I, person " << PersonID << ", will acquiere HIV in " << MyDateOfHIV << endl;}
-
 
 
 //// --- FUNCTION TO ASSIGN CHARACTERISTIC FOR INITIAL POPULATION --- ////
@@ -101,85 +84,54 @@ double	r = ((double) rand() / (RAND_MAX)) ;
 void person::GetMyYearOfBirth(){							// --- Assign Year Of Birth, Age, etc ---		
 double a = ((double) rand() / (RAND_MAX));
 
-	if (Sex==1);
-	if (a<=0.1729813){AgeT0 = RandomAge(0,4);}				// Using the Kenyan age-distribution as per UN data
-	if (a>0.1729813 && a<=0.2885448){AgeT0 = RandomAge(5,9);}
-	if (a>0.2885448 && a<=0.3952457){AgeT0 = RandomAge(10,14);}
-	if (a>0.3952457 && a<=0.4984330){AgeT0 = RandomAge(15,19);}
-	if (a>0.4984330 && a<=0.5870602){AgeT0 = RandomAge(20,24);}
-	if (a>0.5870602 && a<=0.6623300){AgeT0 = RandomAge(25,29);}
-	if (a>0.6623300 && a<=0.7275660){AgeT0 = RandomAge(30,34);}
-	if (a>0.7275660 && a<=0.7861866){AgeT0 = RandomAge(35,39);}
-	if (a>0.7861866 && a<=0.8383183){AgeT0 = RandomAge(40,44);}
-	if (a>0.8383183 && a<=0.8815241){AgeT0 = RandomAge(45,49);}
-	if (a>0.8815241 && a<=0.9174181){AgeT0 = RandomAge(50,54);}
-	if (a>0.9174181 && a<=0.9459054){AgeT0 = RandomAge(55,59);}
-	if (a>0.9459054 && a<=0.9680306){AgeT0 = RandomAge(60,64);}
-	if (a>0.9680306 && a<=0.9836036){AgeT0 = RandomAge(65,69);}
-	if (a>0.9836036 && a<=0.9929412){AgeT0 = RandomAge(70,74);}
-	if (a>0.9929412 && a<=0.9977840){AgeT0 = RandomAge(75,79);}
-	if (a>0.9977840 && a<=1){AgeT0 = RandomAge(80,100);}
+	if (Sex==1){
+	double Age1950Array[17] = {0.1729813, 0.2885448, 0.3952457, 0.4984330, 0.5870602, 0.6623300, 0.7275660, 0.7861866, 0.8383183, 0.8815241, 0.9174181, 0.9459054, 0.9680306, 0.9836036, 0.9929412, 0.9977840, 1};
+	int ArratMin[17] = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80};
+	int ArratMax[17] = {4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 100};
+	int i=0;
 
-	if (Sex==2);
-	if (a<=0.1746637){AgeT0 = RandomAge(0,4);}
-	if (a>0.1746637 && a<=0.2917179){AgeT0 = RandomAge(5,9);}
-	if (a>0.2917179 && a<=0.4002065){AgeT0 = RandomAge(10,14);}
-	if (a>0.4002065 && a<=0.5020936){AgeT0 = RandomAge(15,19);}
-	if (a>0.5020936 && a<=0.5866883){AgeT0 = RandomAge(20,24);}
-	if (a>0.5866883 && a<=0.6556006){AgeT0 = RandomAge(25,29);}
-	if (a>0.6556006 && a<=0.7150133){AgeT0 = RandomAge(30,34);}
-	if (a>0.7150133 && a<=0.7665365){AgeT0 = RandomAge(35,39);}
-	if (a>0.7665365 && a<=0.8131972){AgeT0 = RandomAge(40,44);}
-	if (a>0.8131972 && a<=0.8565411){AgeT0 = RandomAge(45,49);}
-	if (a>0.8565411 && a<=0.8951191){AgeT0 = RandomAge(50,54);}
-	if (a>0.8951191 && a<=0.9273211){AgeT0 = RandomAge(55,59);}
-	if (a>0.9273211 && a<=0.9533403){AgeT0 = RandomAge(60,64);}
-	if (a>0.9533403 && a<=0.9733055){AgeT0 = RandomAge(65,69);}
-	if (a>0.9733055 && a<=0.9866050){AgeT0 = RandomAge(70,74);}
-	if (a>0.9866050 && a<=0.9952995){AgeT0 = RandomAge(75,79);}
-	if (a>0.9952995 && a<=1){AgeT0 = RandomAge(80,100);}
+	while (a>Age1950Array[i] && i<17){i++;}
+	AgeT0 = RandomAge(ArratMin[i],ArratMax[i]);
+	}
+	
 
+	if (Sex==2){
+	double Age1950Array[17] = {0.1746637, 0.2917179, 0.4002065, 0.5020936, 0.5866883, 0.6556006, 0.7150133, 0.7665365, 0.8131972, 0.8565411, 0.8951191, 0.9273211, 0.9533403, 0.9733055, 0.9866050, 0.9952995, 1};
+	int ArratMin[17] = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80};
+	int ArratMax[17] = {4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 100};
+	int i=0;
+
+	while (a>Age1950Array[i] && i<17){i++;}
+	AgeT0 = RandomAge(ArratMin[i],ArratMax[i]);
+	}
+	
 	int GetMonth=RandomMonthBD(1,12);						// Helps 'distribute' birthdays across the year
 	double GetYearFraction=GetMonth/12.1;					// Assign year fraction of birth month, e.g. June is 0.5 of the year
-	
-	//cout << "The Birthday will be  at " << GetYearFraction << " or Month " << GetMonth << endl;  /// POssible check code
-	
+		
 	Age=AgeT0+GetYearFraction;
+	AgeT0=Age;												// To make sure that age at T0 also has a fraction in it
 	DoB=(StartYear-Age);
-	
 }
 
-void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday
-															// This method already calculates the child's month of birth by providing a year of birth with decimal
+void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday - This method already calculates the child's month of birth by providing a year of birth with decimal
 	
-	double f = ((double) rand() / (RAND_MAX));
-			
-		if (Sex==2 && Age>=15 && Age<20 && f<0.169071){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,200)/10)-Age;
-						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,200)/10)-Age;}}
-		
-		if (Sex==2 && Age>=20 && Age<25 && f<0.351607){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,250)/10)-Age;
-						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,250)/10)-Age;}}
-		
-		if (Sex==2 && Age>=25 && Age<30 && f<0.338141){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,300)/10)-Age;
-						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,300)/10)-Age;}}
-		
-		if (Sex==2 && Age>=30 && Age<35 && f<0.284278){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,350)/10)-Age;
-						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,350)/10)-Age;}}
+	if (Sex==2){
 
-		if (Sex==2 && Age>=35 && Age<40 && f<0.203483){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,400)/10)-Age;
-						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,400)/10)-Age;}}
+	double f = ((double) rand() / (RAND_MAX));				// to see if they will have a baby this year - the next bit assigns the birth over the year.  
+	
+	double AgeArray[7]={20,25,30,35,40,45,50};
+	double FertilityArray[7] = {0.169071, 0.351607, 0.338141, 0.284278, 0.203483, 0.110719, 0.038901};		// Yearly fertility for 1950-1955
+	int i=0;
 
-		if (Sex==2 && Age>=40 && Age<45 && f<0.110719){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,450)/10)-Age;
-						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,450)/10)-Age;}}
-
-		if (Sex==2 && Age>=45 && Age<50 && f<0.038901){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,500)/10)-Age;
-						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,500)/10)-Age;}}}
-
+	if (Age>=15 && Age<50){while (Age > AgeArray[i] && i < 7){i++;}											// Find the right age cat to find corresponding fertility cut-off - CAREFULL WITH > and <!!!
+	if (f<FertilityArray[i]){BirthFirstChild=*p_GT+((RandomMonthBD(1,12))/12.1);};};}						// Assigns next birth over the next 12 months
+}
+	
 
 void person::GetDateOfDeath(){							// --- Assign Date of death ---	
 	
-	double AgeTen=Age*10;
-
+	double AgeTen=Age*10;								// This is done by assigning life expactancy according to age in 1950
+														// CONVERT THIS CODE A NEAT ARRAY!!!
 	if (Age<1){
 	double	d = ((double) rand() / (RAND_MAX)) ;
 	if (Sex==1){
@@ -746,7 +698,6 @@ void person::GetDateOfDeath(){							// --- Assign Date of death ---
 		while (d>=0.04643){d = ((double) rand() / (RAND_MAX));} 
 		if (d<0.04643 && d>=0)			{DateOfDeath=1950+(RandomLifeExpect(AgeTen,1000)/10);}}
 	}
-
 }
 	
 
@@ -810,5 +761,95 @@ void person::GetNewDateOfDeath(){							// --- Assign Date of death to New Entry
 	if (*p_GT>=1950 && *p_GT<1955 && d<0.04643 && d>=0)			{DateOfDeath=*p_GT+(RandomLifeExpect(850,1000)/10);}}
 	}
 
-	
 
+
+
+//////////  OLDER CODE AND FUNCTIONS ///////////////////
+//void person::GetDateOfMyFirstBaby(){						// Get My First Child's Birthday
+//															// This method already calculates the child's month of birth by providing a year of birth with decimal
+//	
+//	double f = ((double) rand() / (RAND_MAX));
+//			
+//		if (Sex==2 && Age>=15 && Age<20 && f<0.169071){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;
+//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;}}
+//		
+//		if (Sex==2 && Age>=20 && Age<25 && f<0.351607){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;
+//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;}}
+//		
+//		if (Sex==2 && Age>=25 && Age<30 && f<0.338141){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;
+//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;}}
+//		
+//		if (Sex==2 && Age>=30 && Age<35 && f<0.284278){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;
+//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;}}
+//
+//		if (Sex==2 && Age>=35 && Age<40 && f<0.203483){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;
+//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;}}
+//
+//		if (Sex==2 && Age>=40 && Age<45 && f<0.110719){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;
+//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;}}
+//
+//		if (Sex==2 && Age>=45 && Age<50 && f<0.038901){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;
+//						while (BirthFirstChild<1950){BirthFirstChild=*p_GT+(RandomFirstBirth(Age*10,((Age+0.75)*10))/10)-Age;}}}
+//
+//	
+
+
+//// --- FUNCTION TO GENERATE OUTPUT --- ////
+//void person::TellMyPersonID(){																		// --- Tell PersonID ---
+//	cout << "The ID of person " << PersonID << " is " << PersonID << endl;}
+
+//void person::TellMyLifeStatus(){
+//	cout << "The Life Status of person " << PersonID << " is " << Alive << endl;}
+
+//void person::TellMySex(){																			// --- Tell Sex ---
+//	cout << "The sex of person " << PersonID << " is " << Sex << endl;}	
+
+//void person::TellMyFirstChildBirth(){																// --- Tell Birth My First Child ---
+//	cout << "My Sex is " << Sex << " and I will have my first baby on " << BirthFirstChild << endl;}
+
+//void person::TellMyYearOfBirth(){																	// --- Tell Year of Birth ---	
+//	cout << "The year of birth of person " << PersonID << " is " << DoB << " and their age is " << Age << endl;}
+
+//void person::TellMyExpectedDeathDate(){																// --- Tell Expected Date of Death ---		
+//	cout << "I, person " << PersonID << ", will die in" << DateOfDeath << endl;}
+
+//void person::TellMyHivDateSTART(){																	// --- Tell Date of HIV Infection ---					
+//	cout << "I, person " << PersonID << ", will acquiere HIV in " << MyDateOfHIV << endl;}
+
+//if (a<=0.1729813){AgeT0 = RandomAge(0,4);}				// Using the Kenyan age-distribution as per UN data
+//	if (a>0.1729813 && a<=0.2885448){AgeT0 = RandomAge(5,9);}
+//	if (a>0.2885448 && a<=0.3952457){AgeT0 = RandomAge(10,14);}
+//	if (a>0.3952457 && a<=0.4984330){AgeT0 = RandomAge(15,19);}
+//	if (a>0.4984330 && a<=0.5870602){AgeT0 = RandomAge(20,24);}
+//	if (a>0.5870602 && a<=0.6623300){AgeT0 = RandomAge(25,29);}
+//	if (a>0.6623300 && a<=0.7275660){AgeT0 = RandomAge(30,34);}
+//	if (a>0.7275660 && a<=0.7861866){AgeT0 = RandomAge(35,39);}
+//	if (a>0.7861866 && a<=0.8383183){AgeT0 = RandomAge(40,44);}
+//	if (a>0.8383183 && a<=0.8815241){AgeT0 = RandomAge(45,49);}
+//	if (a>0.8815241 && a<=0.9174181){AgeT0 = RandomAge(50,54);}
+//	if (a>0.9174181 && a<=0.9459054){AgeT0 = RandomAge(55,59);}
+//	if (a>0.9459054 && a<=0.9680306){AgeT0 = RandomAge(60,64);}
+//	if (a>0.9680306 && a<=0.9836036){AgeT0 = RandomAge(65,69);}
+//	if (a>0.9836036 && a<=0.9929412){AgeT0 = RandomAge(70,74);}
+//	if (a>0.9929412 && a<=0.9977840){AgeT0 = RandomAge(75,79);}
+//	if (a>0.9977840 && a<=1){AgeT0 = RandomAge(80,100);}
+//
+//	if (Sex==2);
+//	if (a<=0.1746637){AgeT0 = RandomAge(0,4);}
+//	if (a>0.1746637 && a<=0.2917179){AgeT0 = RandomAge(5,9);}
+//	if (a>0.2917179 && a<=0.4002065){AgeT0 = RandomAge(10,14);}
+//	if (a>0.4002065 && a<=0.5020936){AgeT0 = RandomAge(15,19);}
+//	if (a>0.5020936 && a<=0.5866883){AgeT0 = RandomAge(20,24);}
+//	if (a>0.5866883 && a<=0.6556006){AgeT0 = RandomAge(25,29);}
+//	if (a>0.6556006 && a<=0.7150133){AgeT0 = RandomAge(30,34);}
+//	if (a>0.7150133 && a<=0.7665365){AgeT0 = RandomAge(35,39);}
+//	if (a>0.7665365 && a<=0.8131972){AgeT0 = RandomAge(40,44);}
+//	if (a>0.8131972 && a<=0.8565411){AgeT0 = RandomAge(45,49);}
+//	if (a>0.8565411 && a<=0.8951191){AgeT0 = RandomAge(50,54);}
+//	if (a>0.8951191 && a<=0.9273211){AgeT0 = RandomAge(55,59);}
+//	if (a>0.9273211 && a<=0.9533403){AgeT0 = RandomAge(60,64);}
+//	if (a>0.9533403 && a<=0.9733055){AgeT0 = RandomAge(65,69);}
+//	if (a>0.9733055 && a<=0.9866050){AgeT0 = RandomAge(70,74);}
+//	if (a>0.9866050 && a<=0.9952995){AgeT0 = RandomAge(75,79);}
+//	if (a>0.9952995 && a<=1){AgeT0 = RandomAge(80,100);}
+//
