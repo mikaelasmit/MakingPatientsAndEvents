@@ -9,13 +9,6 @@
 using namespace std;
 
 
-	//// --- Get Birth of First Child ---
-	//void GetDateOfMyFirstBaby (person *MyPointerToPerson);
-
-	//// --- HIV Events --- 
-	double GetDateOfHIVInfection(int x, int y);							// Function to get date of HIV infection
-	void EventMyHivStatus(person *MyPointerToPerson);					// Function to be executed when HIV infection occurs
-	
 	//// --- Life Events ---
 	void EventMyDeathDate(person *MyPointerToPerson);
 
@@ -25,14 +18,11 @@ using namespace std;
 	void EventStopBreastfeeding(person *MyPointerToPerson);
 	void EventBirthForTheYear(person *MyPointerToPerson);
 
+
 	//// --- New Year ---
 	void EventTellNewYear(person *MyPointerToPerson);					// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!
 
 
-
-
-
-	
-	/////////////////  OLDER CODE AND FUNCITONS ///////////////////
-
-	//void EventMyBirthDate(person *MyPointerToPerson);
+	//// --- HIV Events --- 
+	double GetDateOfHIVInfection(int x, int y);							// Function to get date of HIV infection
+	void EventMyHivStatus(person *MyPointerToPerson);					// Function to be executed when HIV infection occurs

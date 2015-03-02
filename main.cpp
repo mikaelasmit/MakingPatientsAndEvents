@@ -13,6 +13,7 @@
 #include "event.h"
 #include "eventQ.h"
 #include "eventfunctions.h"
+#include "coutmacro.h"
 using namespace std;   
 
 
@@ -59,7 +60,7 @@ priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to e
 
 //// --- Function relating to New Entry - to be available externally ---
 const int final_number_people=10000;										// To determine the final size of the total population to be modeled 
-int init_pop = 59;														// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
+int init_pop = 30;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
 int total_population=init_pop;												// Update total population for output and for next new entry
 double new_entry=1;															// To add new people
 
@@ -70,7 +71,7 @@ person** MyArrayOfPointersToPeople = new person*[final_number_people];		// First
 int main(){
 
 	cout << "Hello, Mikaela!" << endl << endl ;								// Check if model is running
-
+	D(cout << "The Macro is working" << endl);
 
 	//// --- Some pointers ---
 	double GlobalTime=StartYear;											// Define Global Time and set it to 0 at the beginning of the model
@@ -85,60 +86,46 @@ int main(){
 	for(int i=0; i<final_number_people; i++){								// REMEMBER: this needs to stay "final_number_people" or it will give error with CSV FILES!!!!
 		MyArrayOfPointersToPeople[i]=new person();}							// The 'new person' the actual new person
 	
-
+	//cout << " We got to place 1 " << endl;
 	//// --- Assign Population Characteristics ---
 	for(int i=0; i<total_population; i++){									// --- Assign PersonID ---
 		int a=i;
 		(MyArrayOfPointersToPeople[i])->PersonIDAssign(a);}
 
+	//cout << " We got to place 2" << endl;
+
 	for(int i=0; i<total_population; i++){									// --- Assign PersonID ---
 		(MyArrayOfPointersToPeople[i])->Alive=1;}
+	cout << " We got to place 3 " << endl;
 
 	for(int i=0; i<total_population; i++){									// --- Assign Sex- ---
 		(MyArrayOfPointersToPeople[i])->GenderDistribution();}
+	cout << " We got to place 4 " << endl;
 
 	for(int i=0; i<total_population; i++){									// --- Assign DoB/Age --- 
 		(MyArrayOfPointersToPeople[i])->GetMyYearOfBirth();}
+	//cout << " We got to place 5 " << endl;
 	
 	for(int i=0; i<total_population; i++){									// --- Assign Birth of First Baby- ---
-		if (MyArrayOfPointersToPeople[i]->Sex==2) {(MyArrayOfPointersToPeople[i])->GetDateOfMyFirstBaby();}}
+		if (MyArrayOfPointersToPeople[i]->Sex==2) {(MyArrayOfPointersToPeople[i])->GetDateOfBaby();}}
+	//cout << " We got to place 6 " << endl;
 
 	for(int i=0; i<total_population; i++){									// --- Assign date of death ---  
 		(MyArrayOfPointersToPeople[i])->GetDateOfDeath();}
+	//cout << " We got to place 7 " << endl;
 
 	for(int i=0; i<total_population; i++){									// --- Assign Date of HIV
 		(MyArrayOfPointersToPeople[i])->GetDateOfHIVInfection(1,2);}
+	//cout << " We got to place 8 " << endl;
+
 
 
 	//// --- OUTPUT CHECKs --- 
-	//cout << endl << "The person's ID...." << endl;						// --- Ouput all the peoples' IDs ---
-	//for(int i=0; i<init_pop; i++){
-	//	(MyArrayOfPointersToPeople[i])->TellMyPersonID();}	
+	D(cout << endl << "The person profile...." << endl);						// --- Ouput all the peoples' IDs ---
+	D(for(int i=0; i<init_pop; i++){
+		(MyArrayOfPointersToPeople[i])->TellMyPerson();})	
 
-	//cout << endl << "The Life Status of person...." << endl;				// --- Ouput all the peoples' gender ---
-	//for(int i=0; i<init_pop; i++){
-	//	(MyArrayOfPointersToPeople[i])->TellMyLifeStatus(); }
-	//
-	//cout << endl << "The sex of person...." << endl;						// --- Ouput all the peoples' gender ---
-	//for(int i=0; i<init_pop; i++){
-	//   (MyArrayOfPointersToPeople[i])->TellMySex(); }
-
-	//cout << endl << "The date of the persons first child... " << endl;		// --- Output all the peoples' date of first child ---
-	//for(int i=0; i<total_population; i++){
-	//	(MyArrayOfPointersToPeople[i])->TellMyFirstChildBirth();}
-
-	//cout << endl << "The year of birth of the person..." << endl;			// --- Ouput all the peoples' year of birth ---
-	//for(int i=0; i<init_pop; i++){
-	//	(MyArrayOfPointersToPeople[i])->TellMyYearOfBirth(); }	
-
-	//cout << endl << "The year of the person' death..." << endl;			// --- Ouput all the peoples' date of deaths ---
-	//for(int i=0; i<init_pop; i++){
-	//	(MyArrayOfPointersToPeople[i])->TellMyExpectedDeathDate(); }			
-	//
-	//cout << endl << "The dates of the person's HIV infection..." << endl;
-	//for(int i=0; i<init_pop; i++){
-	//	(MyArrayOfPointersToPeople[i])->TellMyHivDateSTART();}
-
+	
 		
 	//// --- EVENTQ ---
 	
@@ -160,18 +147,28 @@ int main(){
 	//cout << endl;
 
 	for(int i=0; i<total_population; i++){
+	if(MyArrayOfPointersToPeople[i]->Sex==2 && MyArrayOfPointersToPeople[i]->BirthChild<9990){
 	event * BabyBirth = new event;												// --- Birthday of First Child ---
-	BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthFirstChild;
+	BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthChild;
 	BabyBirth->p_fun = &EventBirth;
 	BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
-	iQ.push(BabyBirth);}	
+	iQ.push(BabyBirth);}};
 
 	for(int i=0; i<total_population; i++){
+	if(MyArrayOfPointersToPeople[i]->Sex==2){
 	event * BabyNewYear = new event;											// --- Set first fertility scan for 1951 ---
 	BabyNewYear->time = 1951;													// this will run in its own loop after 1951
 	BabyNewYear->p_fun = &EventBirthForTheYear;
 	BabyNewYear->person_ID = MyArrayOfPointersToPeople[i];
-	iQ.push(BabyNewYear);}
+	iQ.push(BabyNewYear);}};
+
+	for(int i=0; i<total_population; i++){
+	if(MyArrayOfPointersToPeople[i]->Alive==1){
+	event * DeathEvent = new event;												// --- Include death into the Event Q  ---
+	DeathEvent->time = MyArrayOfPointersToPeople[i]->DateOfDeath;													
+	DeathEvent->p_fun = &EventMyDeathDate;
+	DeathEvent->person_ID = MyArrayOfPointersToPeople[i];
+	iQ.push(DeathEvent);}};
 
 	
 	event * TellNewYear = new event;											// --- Tell me every time  a new year start ---
@@ -190,41 +187,40 @@ int main(){
 		
 	
 	// --- give output of queue as it progresses ---
-	//cout << endl << endl << "The characteristics of the event queue:" << endl;
-	//cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
-	//cout << "the size of the event queue is " << iQ.size() << endl;
-	//
-	//while(iQ.top()->time< 1955 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
-	//	GlobalTime=iQ.top()->time;
+	cout << endl << endl << "The characteristics of the event queue:" << endl;
+	cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
+	cout << "the size of the event queue is " << iQ.size() << endl;
+	
+	while(iQ.top()->time< 1955 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
+		GlobalTime=iQ.top()->time;
 
-	//	//cout << endl << endl << "An event has just ocurred.  " << endl;
-	//	//cout << "it is " << iQ.top()->time << ".  " << endl;
-	//	//if (iQ.top()->person_ID->Age==1)
-	//					iQ.top()-> p_fun(iQ.top()->person_ID);
-	//			
-	//	
-	//	//globaltime=iq.top()->time;										// careful with order of global time update - do not touch or touch and check!!
-	//	
-	//	iQ.pop();		
-	//	//cout << endl << "this event has now been removed from the queue.  " << endl;
-	//}
+		//cout << endl << endl << "An event has just ocurred.  " << endl;
+		//cout << "it is " << iQ.top()->time << ".  " << endl;
+		//if (iQ.top()->person_ID->Age==1)
+						iQ.top()-> p_fun(iQ.top()->person_ID);
+				
+		
+		//globaltime=iq.top()->time;										// careful with order of global time update - do not touch or touch and check!!
+		
+		iQ.pop();		
+		//cout << endl << "this event has now been removed from the queue.  " << endl;
+	}
 
 
 	//// --- Output the results in a csv file ---
 	FILE* csv_out = fopen("test.csv","w");
 	for (int i=0; i<total_population; i++) {								// Change the i< X here as well as the "%d!!
-		fprintf(csv_out,"%d,%d,%f,%f,%f,%d,%d,%d,%d,%d, %f \n",
+		fprintf(csv_out,"%d,%d,%f,%f,%f,%d,%d,%d, %f, %f \n",
 			MyArrayOfPointersToPeople[i]->PersonID,
 			MyArrayOfPointersToPeople[i]->Sex,
 			MyArrayOfPointersToPeople[i]->DoB,
 			MyArrayOfPointersToPeople[i]->Age,
-			MyArrayOfPointersToPeople[i]->BirthFirstChild,
+			MyArrayOfPointersToPeople[i]->BirthChild,
 			MyArrayOfPointersToPeople[i]->MotherID,
-			MyArrayOfPointersToPeople[i]->ChildID, 
-			MyArrayOfPointersToPeople[i]->ChildID_1, 
 			MyArrayOfPointersToPeople[i]->ChildIndex,
 			MyArrayOfPointersToPeople[i]->Breastfeeding,
-			MyArrayOfPointersToPeople[i]->DateOfDeath
+			MyArrayOfPointersToPeople[i]->DateOfDeath,
+			MyArrayOfPointersToPeople[i]->AgeAtDeath
 
 			//MyArrayOfPointersToPeople[i]->DateOfDeath/*,
 			//MyArrayOfPointersToPeople[i]->MyDateOfHIV*/
@@ -232,7 +228,7 @@ int main(){
 	fclose(csv_out);
 
 	
-
+	// Iq!!!!
 	// --- End of code ---
     cout << endl << "Hi Jack, so sorry\n";
 	system("pause");
