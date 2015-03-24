@@ -36,7 +36,7 @@ public:
 	
     double DateOfDeath;								// Variables related to death
 	int Alive;
-	double AgeAtDeath;
+	int AgeAtDeath;
 
 	int HIVStatus;									// Variables related to HIV
 	int MyDateOfHIV;

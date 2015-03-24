@@ -11,13 +11,14 @@ using namespace std;
 
 	//// --- Life Events ---
 	void EventMyDeathDate(person *MyPointerToPerson);
+	void EventTellAgeCohort(person *MyPointerToPerson);
 
 	
 	//// --- Birth ---
 	void EventBirth(person *MyPointerToPerson);
 	void EventStopBreastfeeding(person *MyPointerToPerson);
 	void EventBirthForTheYear(person *MyPointerToPerson);
-
+	void EventTellBirthByAge(person *MyPointerToPerson);
 
 	//// --- New Year ---
 	void EventTellNewYear(person *MyPointerToPerson);					// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!
