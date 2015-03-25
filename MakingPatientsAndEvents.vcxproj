@@ -81,6 +81,7 @@
     <ClCompile Include="person.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="coutmacro.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="eventfunctions.h" />
     <ClInclude Include="eventQ.h" />
