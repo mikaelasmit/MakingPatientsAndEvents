@@ -64,7 +64,7 @@ priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to e
 
 //// --- Function relating to New Entry - to be available externally ---
 const int final_number_people=100000;										// To determine the final size of the total population to be modeled 
-int init_pop =6100;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
+int init_pop =6200;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
 int total_population=init_pop;												// Update total population for output and for next new entry
 double new_entry=1;															// To add new people
 
@@ -155,7 +155,7 @@ int main(){
 
 
 	event * TellBirthByAge = new event;											// --- For output of array on birth by age cohort ---
-	TellBirthByAge->time = 1954.99;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
+	TellBirthByAge->time = 1954.9999;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
 	TellBirthByAge->p_fun = &EventTellBirthByAge;								// Being ALIVE here doesn't matter as its quantified when give birth and checks there if alive
 	iQ.push(TellBirthByAge);
 

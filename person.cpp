@@ -71,11 +71,11 @@ void person::PersonIDAssign(int x){					// --- Assign Person ID ---
 
 void person::GenderDistribution(){					// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
-	if (r<=0.5043){Sex=1;}								// 0.5043 is original UN value
+	if (r<=0.5043){Sex=1;}							// 0.5043 is original UN value
 	else {Sex=2;}}
 
 
-void person::GetMyYearOfBirth(){					// --- Assign Year Of Birth, Age, etc ---		
+void person::GetMyYearOfBirth(){ 					// --- Assign Year Of Birth, Age, etc ---		
 double a = ((double) rand() / (RAND_MAX));
 
 	double Age1950Array[2][17] = {					// Note these will give random age between 0-4 (for example) but then year fraction (up to 4 yrs and 11 months) is added late to correct
@@ -161,7 +161,7 @@ void person::GetDateOfDeath(){						// --- Assign Date of death ---	// This is d
 	double NewProportion;
 	if (sum>0) { NewProportion=1/sum;};
 	if (sum==0) { NewProportion=0.0001;};
-	if (NewProportion>1){NewProportion==1;}
+	if (NewProportion>1){NewProportion=1;}
 	int length=19-i;
 
 	D(cout << "The length is: " << length << endl << endl);
@@ -176,7 +176,7 @@ void person::GetDateOfDeath(){						// --- Assign Date of death ---	// This is d
 	if(i<17) {while (f<(length)){FinalDeathArray.push_back(SurvivalArray[Sex-1][a]*NewProportion); D(cout << "The loop is running. I: " << a << " F: " << f << " New element is: " << FinalDeathArray[f] << endl); a++; f++;};};
 	if (i==18){FinalDeathArray.resize(0);FinalDeathArray.push_back(0); D(cout << "The First nr: " << FinalDeathArray.at(0)  << endl << endl);};
 	if (i==17){FinalDeathArray.resize(0);FinalDeathArray.push_back(0.5); D(cout << "The First nr: " << FinalDeathArray.at(0)); FinalDeathArray.push_back(0); D(cout << "The Second nr: " << FinalDeathArray.at(1) << endl << endl);};
-	while(d<FinalDeathArray[j] && j<length){j++;}							// Now get exact d to get min and max for life expactancy assignment
+	while(d<FinalDeathArray[j] && j<length){j++;}						// Now get exact d to get min and max for life expactancy assignment
 		
 	D(cout << "D: " << d << "\t\tJ: " << j << "\t\ti+j=: " << i + j << endl << endl);
 
