@@ -71,7 +71,7 @@ void person::PersonIDAssign(int x){					// --- Assign Person ID ---
 
 void person::GenderDistribution(){					// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
-	if (r<=0.5043){Sex=1;}									
+	if (r<=0.5043){Sex=1;}								// 0.5043 is original UN value
 	else {Sex=2;}}
 
 
@@ -124,7 +124,7 @@ void person::GetDateOfBaby(){						// Get My First Child's Birthday - This metho
 	  
 
 }
-	
+	 
 
 void person::GetDateOfDeath(){						// --- Assign Date of death ---	// This is done by assigning life expactancy according to age in 1950
 													
@@ -144,7 +144,7 @@ void person::GetDateOfDeath(){						// --- Assign Date of death ---	// This is d
 		{0.86584, 0.76647, 0.72864, 0.70934, 0.68923, 0.66662, 0.64111, 0.61281, 0.58197, 0.54948, 0.51601, 0.47711, 0.42895, 0.36682, 0.28877, 0.19851, 0.11204, 0.04643, 0}};
 	
 	
-	
+	 
 	int MinArray[19]		= {0,		1,		 5,		  10,	   15,		20,		 25,	  30,	   35,		40,		 45,	  50,	   55,		60,		 65,	  70,	   75,		80,		 85};
 	int MaxArray[19]		= {1,		5,		 10,	  15,	   20,		25,		 30,	  35,	   40,		45,		 50,	  55,	   60,		65,		 70,	  75,	   80,		85,		 100};
 	int i=0;

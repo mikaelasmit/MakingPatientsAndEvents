@@ -57,26 +57,19 @@ void EventMyDeathDate(person *MyPointerToPerson){						//// --- DEATH EVENT --- 
 
 void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKING NEW PERSON --- ////
 
-	cout << "A new year has started and fertility is being evaluated, it is now " << *p_GT << endl;
-
-	if (MyPointerToPerson->Alive==1 && MyPointerToPerson->BirthChild<9999){
-	
+	// Update key information
 	total_population=total_population+1;								// Update total population for output and for next new entry
-	
-
-	// Make a Birth Array for age at birth for validation
-	int i=0;
-	D(cout << "My age is : " << MyPointerToPerson->Age << " and my i is: " << i << endl);
+	MyPointerToPerson->Age= (*p_GT - MyPointerToPerson->DoB);			// Update Age  - very important!!
 	
 
 	// Code to keep track of the birth cohort for model validation
+	int i=0;
 	int AgeArray1950[7]	= {20,    25,    30,    35,    40,    45,    51};			
 	while(MyPointerToPerson->Age>AgeArray1950[i] && i<7){i++;}							// First get the age cat "i" to make sure d (life expectancy) is not below age using AGEARRAY above
 	BirthCohortArray.at(i)=BirthCohortArray.at(i)++;
-	D(cout << "15-20: " << BirthCohortArray.at(0) << " \t\ 20-25: " << BirthCohortArray.at(1) << " \t\ 25-30: " << BirthCohortArray.at(2) << "\t\ 30-35: " << BirthCohortArray.at(3) << "\t\ 35-40: " << BirthCohortArray.at(4) << "\t\ 40-45: " << BirthCohortArray.at(5) << "\t\ 45-50: " << BirthCohortArray.at(6) << endl);
-
-
-
+	D(cout << "My age is : " << MyPointerToPerson->Age << " Fertility: " << MyPointerToPerson->BirthChild << " and my i is: " << i << endl;
+	cout << "15-20: " << BirthCohortArray.at(0) << " \t\ 20-25: " << BirthCohortArray.at(1) << " \t\ 25-30: " << BirthCohortArray.at(2) << "\t\ 30-35: " << BirthCohortArray.at(3) << "\t\ 35-40: " << BirthCohortArray.at(4) << "\t\ 40-45: " << BirthCohortArray.at(5) << "\t\ 45-50: " << BirthCohortArray.at(6) << endl);
+	
 
 	// Creating a new person 
 	MyArrayOfPointersToPeople[total_population-1]=new person();			
@@ -110,19 +103,20 @@ void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKI
 	
 
 	// Scheudle breastfeeding 
-	MyPointerToPerson->Breastfeeding=1; 
+	//MyPointerToPerson->Breastfeeding=1; 
+	MyPointerToPerson->BirthChild=9999;									// Use this when Breastfeeding is commented out
 	
 
-	event * BreastfeedingFinish = new event;							// --- Schedule end of Breastfeeding ---
-	BreastfeedingFinish->time = *p_GT + 0.25;							// Re-use code as in main to add recurrent BD to the queue (incl time and function pointer)
-	BreastfeedingFinish->p_fun = &EventStopBreastfeeding;
-	BreastfeedingFinish->person_ID=MyPointerToPerson;
-	p_PQ->push(BreastfeedingFinish);
+	//event * BreastfeedingFinish = new event;							// --- Schedule end of Breastfeeding ---
+	//BreastfeedingFinish->time = *p_GT + 0.25;							// Re-use code as in main to add recurrent BD to the queue (incl time and function pointer)
+	//BreastfeedingFinish->p_fun = &EventStopBreastfeeding;
+	//BreastfeedingFinish->person_ID=MyPointerToPerson;
+	//p_PQ->push(BreastfeedingFinish);
 	
 	//D(cout << "My child is " << MyPointerToPerson->ChildIDVector.at(MyPointerToPerson->ChildIndex) << endl);		// FIX THIS!!
 	D(cout << "Nr 1: " << MyPointerToPerson->ChildIndex << "\t\tNr 2: " << MyPointerToPerson->ChildIDVector.size() << "\t\tBreastfeeding " << MyPointerToPerson->Breastfeeding << endl << endl);
 	
-}}
+}
 
 void EventStopBreastfeeding(person *MyPointerToPerson){
 	MyPointerToPerson->Breastfeeding=0;									// Reset breastfeeding status to NOT feeding so woman can have a child
@@ -134,32 +128,35 @@ void EventStopBreastfeeding(person *MyPointerToPerson){
 
 void EventBirthForTheYear(person *MyPointerToPerson){					// Set births for the coming year
 		
-	MyPointerToPerson->Age= (*p_GT - MyPointerToPerson->DoB);			// Update Age  - very important!!
+	cout << "A new year has started and fertility is being evaluated, it is now " << *p_GT << endl;
+	
+	for(int p=0; p<total_population; p++){
+	if(MyArrayOfPointersToPeople[p]->Alive==1 && MyArrayOfPointersToPeople[p]->Sex==2 && MyArrayOfPointersToPeople[p]->BirthChild==9999 && MyArrayOfPointersToPeople[p]->Age>=15 && MyArrayOfPointersToPeople[p]->Age<50){	// Only set fertily for those not scheduled to give birth this year and those not breastfeeding
+	MyArrayOfPointersToPeople[p]->Age= (*p_GT - MyArrayOfPointersToPeople[p]->DoB);			// Update Age  - very important!!
 
-	if (MyPointerToPerson->Sex==2 && MyPointerToPerson->Alive==1 && MyPointerToPerson->BirthChild==9999 && MyPointerToPerson->Age>=15 && MyPointerToPerson->Age<50 && MyPointerToPerson->ChildIndex<10){					// Only set fertily for those not scheduled to give birth this year and those not breastfeeding
-			
-		double f = ((double) rand() / (RAND_MAX));
+	
+	// Basic things to schedule annual fertiliy 
+	double f = ((double) rand() / (RAND_MAX));
+	double Fertility1950[7] = {0.169071, 0.351607, 0.338141, 0.284278, 0.203483, 0.110719, 0.038901};
+	int	   AgeArray[7]		= {20,		 25,	   30,		 35,	   40,		 45,	   50};
+	int i=0;
 
-		double Fertility1950[7] = {0.169071, 0.351607, 0.338141, 0.284278, 0.203483, 0.110719, 0.038901};
-		int	   AgeArray[7]		= {20,		 25,	   30,		 35,	   40,		 45,	   50};
-		int i=0;
-
-		while (MyPointerToPerson->Age>AgeArray[i] && i<7){i++;D(cout <<  "The loop is running " << endl);} ;
-		if (f < Fertility1950[i]){MyPointerToPerson->BirthChild=*p_GT+((RandomMonth2(1,12)/12.1));};
+	while (MyArrayOfPointersToPeople[p]->Age>AgeArray[i] && i<7){i++;D(cout <<  "The loop is running " << endl);} ;
+	if (f < Fertility1950[i]){MyArrayOfPointersToPeople[p]->BirthChild=*p_GT+((RandomMonth2(1,12)/12.1));};
 
 	D(cout << "Schedule fertility for the year:" << endl;
 	  cout << "The value of i is: " << i << endl;
-	  cout << "ID: " << MyPointerToPerson->PersonID << "\t\tSex: " << MyPointerToPerson->Sex << "Age: " << MyPointerToPerson->Age << endl; 
-	  cout << "F: " << f << "\tBirth: " << MyPointerToPerson->BirthChild << endl << endl);
+	  cout << "ID: " << MyPointerToPerson[p]->PersonID << "\t\tSex: " << MyPointerToPerson[p]->Sex << "Age: " << MyPointerToPerson[p]->Age << endl; 
+	  cout << "F: " << f << "\tBirth: " << MyPointerToPerson[p]->BirthChild << endl << endl);
 			
 			//// --- Add new birth to Event Q --- ////
-			if (MyPointerToPerson->BirthChild<9999){
+			if (MyArrayOfPointersToPeople[p]->BirthChild<9999){
 			event * BabyBirth = new event;																			
-			BabyBirth->time = MyPointerToPerson->BirthChild;
+			BabyBirth->time = MyArrayOfPointersToPeople[p]->BirthChild;
 			BabyBirth->p_fun = &EventBirth;
-			BabyBirth->person_ID = MyPointerToPerson;
+			BabyBirth->person_ID = MyArrayOfPointersToPeople[p];
 			p_PQ->push(BabyBirth);}
-	}
+	}}
 			//// --- Schedule fertility scan for next year --- ////
 			event * EventBirthForTheYear2 = new event;																			
 			EventBirthForTheYear2->time = *p_GT+1;
@@ -175,24 +172,31 @@ void EventBirthForTheYear(person *MyPointerToPerson){					// Set births for the 
 //	 cout << "Person " << MyPointerToPerson->PersonID << " just got an HIV test.  " << endl;}
 
 
-////// SPIT OUT RESULTS /////
+////// SPIT OUT RESULTS /////  
 
 void EventTellAgeCohort(person *MyPointerToPerson){
 
+	cout << "Tell me the age cohort" << endl;
 	// Make a Birth Array for age at birth for validation
-	int i=0;
-	int ArrayArray1950[17] =  {5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 100};	
-	while(MyPointerToPerson->Age>ArrayArray1950[i] && i<17){i++;};
-	D(cout << "Age is : " << MyPointerToPerson->Age << " Sex: " << MyPointerToPerson->Sex << " i: " << i << endl);
-	
-	if(MyPointerToPerson->Alive==1 && MyPointerToPerson->DateOfDeath>*p_GT){
-		if(MyPointerToPerson->Sex==1){
-			AgeCohortMen.at(i)=AgeCohortMen.at(i)++;};
-		if (MyPointerToPerson->Sex==2){
-			AgeCohortWomen.at(i)=AgeCohortWomen.at(i)++;};};
+	for(int p=0; p<total_population; p++){
+		if(MyArrayOfPointersToPeople[p]->Alive==1){	// Only set fertily for those not scheduled to give birth this year and those not breastfeeding
+	MyArrayOfPointersToPeople[p]->Age= (*p_GT - MyArrayOfPointersToPeople[p]->DoB);
 
-			if(MyPointerToPerson->Alive==0){SumDeath=SumDeath++;};
-}
+	int i=0;
+	int ArrayArray1950[17] =  {5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 110};	
+	while(MyArrayOfPointersToPeople[p]->Age>ArrayArray1950[i] && i<17){i++;};
+	D(cout << "Age is : " << MyArrayOfPointersToPeople[p]->Age << " Sex: " << MyArrayOfPointersToPeople[p]->Sex << " i: " << i << endl);
+	
+	if(MyArrayOfPointersToPeople[p]->Alive==1 && MyArrayOfPointersToPeople[p]->DateOfDeath>*p_GT){
+		if(MyArrayOfPointersToPeople[p]->Sex==1){
+			AgeCohortMen.at(i)=AgeCohortMen.at(i)++;};
+		if (MyArrayOfPointersToPeople[p]->Sex==2){
+			AgeCohortWomen.at(i)=AgeCohortWomen.at(i)++;};}
+
+			if(MyArrayOfPointersToPeople[p]->Alive==0){SumDeath=SumDeath++;};
+		};}; 
+
+cout << "We have fdinished telling the age of cohort " << endl;} 
 
 
 
