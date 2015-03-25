@@ -172,7 +172,7 @@ void EventBirthForTheYear(person *MyPointerToPerson){					// Set births for the 
 //	 cout << "Person " << MyPointerToPerson->PersonID << " just got an HIV test.  " << endl;}
 
 
-////// SPIT OUT RESULTS /////
+////// SPIT OUT RESULTS ///// 
 
 void EventTellAgeCohort(person *MyPointerToPerson){
 
