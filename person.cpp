@@ -71,7 +71,7 @@ void person::PersonIDAssign(int x){					// --- Assign Person ID ---
 
 void person::GenderDistribution(){					// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
-	if (r<=0.5043){Sex=1;}									
+	if (r<=0.5043){Sex=1;}								// 0.5043 is original UN value
 	else {Sex=2;}}
 
 
