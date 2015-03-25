@@ -124,7 +124,7 @@ void person::GetDateOfBaby(){						// Get My First Child's Birthday - This metho
 	  
 
 }
-	
+	 
 
 void person::GetDateOfDeath(){						// --- Assign Date of death ---	// This is done by assigning life expactancy according to age in 1950
 													

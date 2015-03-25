@@ -56,7 +56,7 @@ using namespace std;
 
 
 //// --- Function related to event - to be available externally ---
-double *p_GT;	 															// Pointer to global time
+double *p_GT;	  															// Pointer to global time
 double *p_SY;																// Pointer to start year of the model
 double StartYear=1950;														// Define Start Year if the model and set it to year of choice
 priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing
