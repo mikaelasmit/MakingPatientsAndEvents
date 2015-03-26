@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////
+ï»¿////////////////////////////////////////////////////////////////
 //    Mikaela Epidemiology Model							  //
 //    Created by Mikaela Smit on 7/11/2014.				      //
 //    Copyright (c) 2014 Mikaela Smit. All rights reserved.   //
@@ -18,24 +18,24 @@ using namespace std;
 
 
 //    To Do List:
-//  1.	Making a population (i.e. more than one person) and assign variables (Person ID, Sex, HIV status, Birthday, Date of Death,…) - DONE
+//  1.	Making a population (i.e. more than one person) and assign variables (Person ID, Sex, HIV status, Birthday, Date of Death,ï¿½) - DONE
 //  2.	Use simple distributions (e.g. uniform distribution, etc) to assign characteristics - DONE
-//  3.	Develop EventQ and play around with it – DONE
-//  4.	Insert events into the EventQ, e.g. HIV-infection, Death and Birthdays – DONE
-//  5.	Separate EventQ code into different .h and .cpp files – TOOK A WHILE BUT DONE
-//  6.	Insert a global time counter into the model to record time – DONE
-//  7.	Add global time to the EventQ – DONE
+//  3.	Develop EventQ and play around with it ï¿½ DONE
+//  4.	Insert events into the EventQ, e.g. HIV-infection, Death and Birthdays ï¿½ DONE
+//  5.	Separate EventQ code into different .h and .cpp files ï¿½ TOOK A WHILE BUT DONE
+//  6.	Insert a global time counter into the model to record time ï¿½ DONE
+//  7.	Add global time to the EventQ ï¿½ DONE
 //  8.	Make birthdays into recurrent event using pointers and global time  - DONE
-//  9.	Remove repeat code for EventQ and from main() and make into self-contained loop – DONE
-//  10.	Add stop time into the model for EventQ – DONE
-//  11.	Merge MakingPatients and EventQ code to make events happen to two different people – DONE
-//  12.	Give people an age using birthday and vice versa – DONE
-//  13.	Include Age at T0 to record age at start of model – DONE
-//  14.	Add ages to the EventQ and update every year – DONE
-//  15.	Make C++ output .csv  files to be able to run large populations and generate graphs – DONE
+//  9.	Remove repeat code for EventQ and from main() and make into self-contained loop ï¿½ DONE
+//  10.	Add stop time into the model for EventQ ï¿½ DONE
+//  11.	Merge MakingPatients and EventQ code to make events happen to two different people ï¿½ DONE
+//  12.	Give people an age using birthday and vice versa ï¿½ DONE
+//  13.	Include Age at T0 to record age at start of model ï¿½ DONE
+//  14.	Add ages to the EventQ and update every year ï¿½ DONE
+//  15.	Make C++ output .csv  files to be able to run large populations and generate graphs ï¿½ DONE
 //  16.	Find Kanyan age-distribution in 1950 - DONE
-//  17.	Add Kenyan age-distribution as per 1950s – DONE
-//  18.	Run model with this age distribution and generate population pyramids – DONE
+//  17.	Add Kenyan age-distribution as per 1950s ï¿½ DONE
+//  18.	Run model with this age distribution and generate population pyramids ï¿½ DONE
 //  19. Add new entries to run population forward and simulate population growth - DONE 
 //  20.	Link deaths to age using UN data - DONE
 //  21.	Compare population to data in Kenya, improve as necessary - BUSY WITH
@@ -49,22 +49,22 @@ using namespace std;
 //  4. Write code to empty Event Q after every model run
 //  5. Write code to optain ChildID from vector or pointer to person class!!
 //  6.	Add HIV status and update it as a function of HIV test 
-//  7.	Add more aspects of HIV care cascade (diagnosis, start cART,…)
+//  7.	Add more aspects of HIV care cascade (diagnosis, start cART,ï¿½)
 //  8. Think about class destructors
-//  9.	Make C++ run with Matlab – THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am going to look at SJ’s code for this
+//  9.	Make C++ run with Matlab ï¿½ THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am going to look at SJï¿½s code for this
 
 
 
 //// --- Function related to event - to be available externally ---
-double *p_GT;	  															// Pointer to global time
+double *p_GT;																// Pointer to global time
 double *p_SY;																// Pointer to start year of the model
-double StartYear=1950;														// Define Start Year if the model and set it to year of choice
+double StartYear=1950.5;														// Define Start Year if the model and set it to year of choice
 priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing
 																			// [...] as a result of 'primary' events in the queue, e.g. recurrent birthdays
 
 //// --- Function relating to New Entry - to be available externally ---
-const int final_number_people=100000;										// To determine the final size of the total population to be modeled 
-int init_pop =6200;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
+const int final_number_people=10000;										// To determine the final size of the total population to be modeled 
+int init_pop =5910;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
 int total_population=init_pop;												// Update total population for output and for next new entry
 double new_entry=1;															// To add new people
 
@@ -137,6 +137,7 @@ int main(){
 	event * BabyNewYear = new event;											// --- Set first fertility scan for 1951 ---
 	BabyNewYear->time = 1951;													// this will run in its own loop after 1951
 	BabyNewYear->p_fun = &EventBirthForTheYear;
+	//BabyNewYear->person_ID = MyArrayOfPointersToPeople[p];
 	iQ.push(BabyNewYear);
 
 	for(int i=0; i<total_population; i++){
@@ -155,15 +156,17 @@ int main(){
 
 
 	event * TellBirthByAge = new event;											// --- For output of array on birth by age cohort ---
-	TellBirthByAge->time = 1954.9999;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
+	TellBirthByAge->time = 1954.999;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
 	TellBirthByAge->p_fun = &EventTellBirthByAge;								// Being ALIVE here doesn't matter as its quantified when give birth and checks there if alive
 	iQ.push(TellBirthByAge);
 
-	
+	for(int i=0; i<total_population; i++){
+	if(MyArrayOfPointersToPeople[i]->Alive==1){
 	event * TellAgeCohort = new event;											// --- For output of array on age categories of cohort ---
 	TellAgeCohort->time = 1950.5;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
 	TellAgeCohort->p_fun = &EventTellAgeCohort;
-	iQ.push(TellAgeCohort);;
+	TellAgeCohort->person_ID = MyArrayOfPointersToPeople[i];
+	iQ.push(TellAgeCohort);}}; 
 
 	
 	//for(int i=0; i<init_pop; i++){
@@ -223,6 +226,5 @@ int main(){
 	system("pause");
     return 0;
 }
-
 
 
