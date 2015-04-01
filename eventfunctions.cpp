@@ -201,6 +201,7 @@ void EventTellBirthByAge(person *MyPointerToPerson){
 	cout << "35-40: " << BirthCohortArray.at(4) << "\t\ 40-45: " << BirthCohortArray.at(5) << endl;
 	cout << "45-50: " << BirthCohortArray.at(6) << endl << endl;
 	
+	cout << "Age groups in June 1950:" << endl;
 	cout << "MEN: " << endl;
 	cout << "0-4: " << AgeCohortMen.at(0) << "\t\ 5-10: " << AgeCohortMen.at(1) << endl;
 	cout << "10-15: " << AgeCohortMen.at(2) << "\t\ 15-20: " << AgeCohortMen.at(3) << endl;
@@ -212,7 +213,7 @@ void EventTellBirthByAge(person *MyPointerToPerson){
 	cout << "70-75: " << AgeCohortMen.at(14) << "\t\ 75-80: " << AgeCohortMen.at(15) << endl;
 	cout << "Over 80: " << AgeCohortMen.at(16)  << endl << endl;;
 
-	cout << "WomEN: " << endl;
+	cout << "WOMEN: " << endl;
 	cout << "0-4: " << AgeCohortWomen.at(0) << "\t\ 5-10: " << AgeCohortWomen.at(1) << endl;
 	cout << "10-15: " << AgeCohortWomen.at(2) << "\t\ 15-20: " << AgeCohortWomen.at(3) << endl;
 	cout << "20-25: " << AgeCohortWomen.at(4) << "\t\ 325-30: " << AgeCohortWomen.at(5) << endl;

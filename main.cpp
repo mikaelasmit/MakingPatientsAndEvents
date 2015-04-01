@@ -58,13 +58,13 @@ using namespace std;
 //// --- Function related to event - to be available externally ---
 double *p_GT;																// Pointer to global time
 double *p_SY;																// Pointer to start year of the model
-double StartYear=1950.5;														// Define Start Year if the model and set it to year of choice
+double StartYear=1950;														// Define Start Year if the model and set it to year of choice
 priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing
 																			// [...] as a result of 'primary' events in the queue, e.g. recurrent birthdays
 
 //// --- Function relating to New Entry - to be available externally ---
 const int final_number_people=10000;										// To determine the final size of the total population to be modeled 
-int init_pop =5910;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
+int init_pop =6200;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
 int total_population=init_pop;												// Update total population for output and for next new entry
 double new_entry=1;															// To add new people
 
