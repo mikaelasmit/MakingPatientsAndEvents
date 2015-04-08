@@ -225,7 +225,7 @@ void EventTellBirthByAge(person *MyPointerToPerson){
 	cout << "Over 80: " << AgeCohortWomen.at(16)  << endl;
 
 
-	cout << "Deaths until 1st Jul 9150: " << SumDeath << endl;}
+	cout << "Deaths until 1st Jul 1950: " << SumDeath << endl;}
 
 
 
