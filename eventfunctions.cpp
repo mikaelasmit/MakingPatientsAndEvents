@@ -68,8 +68,8 @@ void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKI
 	int AgeArray1950[7]	= {20,    25,    30,    35,    40,    45,    51};			
 	while(MyPointerToPerson->Age>AgeArray1950[i] && i<7){i++;}							// First get the age cat "i" to make sure d (life expectancy) is not below age using AGEARRAY above
 	BirthCohortArray.at(i)=BirthCohortArray.at(i)++;
-	D(cout << "My age is : " << MyPointerToPerson->Age << " Fertility: " << MyPointerToPerson->BirthChild << " and my i is: " << i << endl;
-		cout << "15-20: " << BirthCohortArray.at(0) << " \t\ 20-25: " << BirthCohortArray.at(1) << " \t\ 25-30: " << BirthCohortArray.at(2) << "\t\ 30-35: " << BirthCohortArray.at(3) << "\t\ 35-40: " << BirthCohortArray.at(4) << "\t\ 40-45: " << BirthCohortArray.at(5) << "\t\ 45-50: " << BirthCohortArray.at(6) << endl);
+	/*D(cout << "My age is : " << MyPointerToPerson->Age << " and my i is: " << i << endl;
+		cout << "15-20: " << BirthCohortArray.at(0) << " \t\ 20-25: " << BirthCohortArray.at(1) << " \t\ 25-30: " << BirthCohortArray.at(2) << "\t\ 30-35: " << BirthCohortArray.at(3) << "\t\ 35-40: " << BirthCohortArray.at(4) << "\t\ 40-45: " << BirthCohortArray.at(5) << "\t\ 45-50: " << BirthCohortArray.at(6) << endl);*/
 
 
 	// Creating a new person 
@@ -77,7 +77,7 @@ void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKI
 	(MyArrayOfPointersToPeople[total_population-1])->PersonIDAssign(total_population-1);
 	(MyArrayOfPointersToPeople[total_population-1])->Alive=1;
 	(MyArrayOfPointersToPeople[total_population-1])->GenderDistribution();
-	(MyArrayOfPointersToPeople[total_population-1])->GetMyYearOfBirthNewEntry();
+	(MyArrayOfPointersToPeople[total_population-1])->GetMyDoBNewEntry();
 	(MyArrayOfPointersToPeople[total_population-1])->GetDateOfDeath();
 	////(MyArrayOfPointersToPeople[total_population-1])->GetDateOfHIVInfection(1,2); 
 	D(cout << "A new person is born and its: " << *p_GT << endl;
@@ -105,7 +105,7 @@ void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKI
 
 	// Scheudle breastfeeding 
 	//MyPointerToPerson->Breastfeeding=1;								// When commenting this out then ensure the next line is uncommented
-	MyPointerToPerson->BirthChild=9999;
+	//MyPointerToPerson->BirthChild=9999;
 
 	//event * BreastfeedingFinish = new event;							// --- Schedule end of Breastfeeding ---
 	//BreastfeedingFinish->time = *p_GT + 0.25;							// Re-use code as in main to add recurrent BD to the queue (incl time and function pointer)
@@ -120,55 +120,55 @@ void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKI
 
 void EventStopBreastfeeding(person *MyPointerToPerson){
 	MyPointerToPerson->Breastfeeding=0;									// Reset breastfeeding status to NOT feeding so woman can have a child
-	MyPointerToPerson->BirthChild=9999;									// Reset BirthOfChild so can have another Child
+	//MyPointerToPerson->BirthChild=9999;									// Reset BirthOfChild so can have another Child
 	D(cout << "Breastfeeding: " << endl;
 	  cout << "I, " << MyPointerToPerson->PersonID << " have just stopped breastfeeding after having my " << MyPointerToPerson->ChildIndex << " child" << endl);
 }
 							
-
-void EventBirthForTheYear(person *MyPointerToPerson){	 				// Set births for the coming year
-	
-	cout << "A new year has started and fertility is being evaluated, it is now " << *p_GT << endl;
-
-	// Scan fertility for the whole female population of childbearing age 
-	for(int p=0; p<total_population; p++){
-		MyArrayOfPointersToPeople[p]->Age= (*p_GT - MyArrayOfPointersToPeople[p]->DoB);			// Update Age  - very important!!
-	if (MyArrayOfPointersToPeople[p]->Sex==2 && MyArrayOfPointersToPeople[p]->Alive==1 && MyArrayOfPointersToPeople[p]->BirthChild==9999 && MyArrayOfPointersToPeople[p]->Age>=15 && MyArrayOfPointersToPeople[p]->Age<50){					// Only set fertily for those not scheduled to give birth this year and those not breastfeeding
-		
-		
-		// Basic things ti schedule annual fertility
-		double f = ((double) rand() / (RAND_MAX));
-		double Fertility1950[7] = {0.169071, 0.351607, 0.338141, 0.284278, 0.203483, 0.110719, 0.038901};
-		int	   AgeArray[7]		= {20,		 25,	   30,		 35,	   40,		 45,	   50};
-		int i=0;
-		while (MyArrayOfPointersToPeople[p]->Age>AgeArray[i] && i<7){i++;D(cout <<  "The loop is running " << endl);} ;
-		if (f < Fertility1950[i]){MyArrayOfPointersToPeople[p]->BirthChild=*p_GT+((RandomMonth2(1,12)/12.1));};
-
-		
-	D(cout << "Schedule fertility for the year:" << endl;
-	  cout << "The value of i is: " << i << endl;
-	  cout << "ID: " << MyArrayOfPointersToPeople[p]->PersonID << "\t\tSex: " << MyArrayOfPointersToPeople[p]->Sex << "Age: " << MyArrayOfPointersToPeople[p]->Age << endl; 
-	  cout << "F: " << f << "\tBirth: " << MyArrayOfPointersToPeople[p]->BirthChild << endl << endl);
-			
-			//// --- Add new birth to Event Q --- ////
-			if (MyArrayOfPointersToPeople[p]->BirthChild<9999){
-			event * BabyBirth = new event;																			
-			BabyBirth->time = MyArrayOfPointersToPeople[p]->BirthChild;
-			BabyBirth->p_fun = &EventBirth;
-			BabyBirth->person_ID = MyArrayOfPointersToPeople[p];
-			p_PQ->push(BabyBirth);}
-	};}
-			//// --- Schedule fertility scan for next year --- ////
-			event * EventBirthForTheYear2 = new event;																			
-			EventBirthForTheYear2->time = *p_GT+1;
-			EventBirthForTheYear2->p_fun = &EventBirthForTheYear;
-			p_PQ->push(EventBirthForTheYear2);
-	}
-
-
-//////// HIV EVENTS ///////////////////			TO DO!!!
-//void EventMyHivStatus(person *MyPointerToPerson){						// The bit inside the bracket allows to link event to specific person using person pointer 						
-//	 cout << "Person " << MyPointerToPerson->PersonID << " just got an HIV test.  " << endl;}
+//
+//void EventBirthForTheYear(person *MyPointerToPerson){	 				// Set births for the coming year
+//	
+//	cout << "A new year has started and fertility is being evaluated, it is now " << *p_GT << endl;
+//
+//	// Scan fertility for the whole female population of childbearing age 
+//	for(int p=0; p<total_population; p++){
+//		MyArrayOfPointersToPeople[p]->Age= (*p_GT - MyArrayOfPointersToPeople[p]->DoB);			// Update Age  - very important!!
+//	//if (MyArrayOfPointersToPeople[p]->Sex==2 && MyArrayOfPointersToPeople[p]->Alive==1 && MyArrayOfPointersToPeople[p]->BirthChild==9999 && MyArrayOfPointersToPeople[p]->Age>=15 && MyArrayOfPointersToPeople[p]->Age<50){					// Only set fertily for those not scheduled to give birth this year and those not breastfeeding
+//		
+//		
+//		// Basic things ti schedule annual fertility
+//		double f = ((double) rand() / (RAND_MAX));
+//		double Fertility1950[7] = {0.169071, 0.351607, 0.338141, 0.284278, 0.203483, 0.110719, 0.038901};
+//		int	   AgeArray[7]		= {20,		 25,	   30,		 35,	   40,		 45,	   50};
+//		int i=0;
+//		while (MyArrayOfPointersToPeople[p]->Age>AgeArray[i] && i<7){i++;D(cout <<  "The loop is running " << endl);} ;
+//		if (f < Fertility1950[i]){MyArrayOfPointersToPeople[p]->BirthChild=*p_GT+((RandomMonth2(1,12)/12.1));};
+//
+//		
+//	D(cout << "Schedule fertility for the year:" << endl;
+//	  cout << "The value of i is: " << i << endl;
+//	  cout << "ID: " << MyArrayOfPointersToPeople[p]->PersonID << "\t\tSex: " << MyArrayOfPointersToPeople[p]->Sex << "Age: " << MyArrayOfPointersToPeople[p]->Age << endl; 
+//	  cout << "F: " << f << "\tBirth: " << MyArrayOfPointersToPeople[p]->BirthChild << endl << endl);
+//			
+//			//// --- Add new birth to Event Q --- ////
+//			if (MyArrayOfPointersToPeople[p]->BirthChild<9999){
+//			event * BabyBirth = new event;																			
+//			//BabyBirth->time = MyArrayOfPointersToPeople[p]->BirthChild;
+//			BabyBirth->p_fun = &EventBirth;
+//			BabyBirth->person_ID = MyArrayOfPointersToPeople[p];
+//			p_PQ->push(BabyBirth);}
+//	};}
+//			//// --- Schedule fertility scan for next year --- ////
+//			/*event * EventBirthForTheYear2 = new event;																			
+//			EventBirthForTheYear2->time = *p_GT+1;
+//			EventBirthForTheYear2->p_fun = &EventBirthForTheYear;
+//			p_PQ->push(EventBirthForTheYear2);*/
+//	/*}*/
+//
+//
+////////// HIV EVENTS ///////////////////			TO DO!!!
+////void EventMyHivStatus(person *MyPointerToPerson){						// The bit inside the bracket allows to link event to specific person using person pointer 						
+////	 cout << "Person " << MyPointerToPerson->PersonID << " just got an HIV test.  " << endl;}
 
 
 ////// SPIT OUT RESULTS /////

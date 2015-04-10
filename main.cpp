@@ -64,7 +64,7 @@ priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to e
 
 //// --- Function relating to New Entry - to be available externally ---
 const int final_number_people=10000;										// To determine the final size of the total population to be modeled 
-int init_pop =5910;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
+int init_pop =10;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
 int total_population=init_pop;												// Update total population for output and for next new entry
 double new_entry=1;															// To add new people
 
@@ -105,7 +105,7 @@ int main(){
 		(MyArrayOfPointersToPeople[i])->GenderDistribution();}
 	cout << "We got to section 4" << endl ;
 	for(int i=0; i<total_population; i++){									// --- Assign DoB/Age --- 
-		(MyArrayOfPointersToPeople[i])->GetMyYearOfBirth();}
+		(MyArrayOfPointersToPeople[i])->GetMyDoB();}
 	cout << "We got to section 5" << endl ;	
 	for(int i=0; i<total_population; i++){									// --- Assign Birth of First Baby- ---
 		if (MyArrayOfPointersToPeople[i]->Sex==2) {(MyArrayOfPointersToPeople[i])->GetDateOfBaby();}}
@@ -113,9 +113,9 @@ int main(){
 	for(int i=0; i<total_population; i++){									// --- Assign date of death ---  
 		(MyArrayOfPointersToPeople[i])->GetDateOfDeath();}
 	cout << "We got to section 7" << endl ;
-	for(int i=0; i<total_population; i++){									// --- Assign Date of HIV
-		(MyArrayOfPointersToPeople[i])->GetDateOfHIVInfection(1,2);}
-	cout << "We got to section 8" << endl ;
+	//for(int i=0; i<total_population; i++){									// --- Assign Date of HIV
+	//	(MyArrayOfPointersToPeople[i])->GetDateOfHIVInfection(1,2);}
+	//cout << "We got to section 8" << endl ;
 	D(cout << "We got to Stage 2 of the model " << endl << endl);			// Check for model run
 
 	//// --- OUTPUT CHECKs --- 
@@ -126,47 +126,47 @@ int main(){
 	
 	cout << "We got to section 9" << endl ;	
 	//// --- EVENTQ ---
-	for(int i=0; i<total_population; i++){
-	if(MyArrayOfPointersToPeople[i]->Alive==1 && MyArrayOfPointersToPeople[i]->Sex==2 && MyArrayOfPointersToPeople[i]->BirthChild<9990){
-	event * BabyBirth = new event;												// --- Birthday of First Child ---
-	BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthChild;
-	BabyBirth->p_fun = &EventBirth;
-	BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
-	iQ.push(BabyBirth);}};
+	//for(int i=0; i<total_population; i++){
+	//if(MyArrayOfPointersToPeople[i]->Alive==1 && MyArrayOfPointersToPeople[i]->Sex==2 && MyArrayOfPointersToPeople[i]->BirthChild<9990){
+	//event * BabyBirth = new event;												// --- Birthday of First Child ---
+	//BabyBirth->time = MyArrayOfPointersToPeople[i]->BirthChild;
+	//BabyBirth->p_fun = &EventBirth;
+	//BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
+	//iQ.push(BabyBirth);}};
 
-	event * BabyNewYear = new event;											// --- Set first fertility scan for 1951 ---
-	BabyNewYear->time = 1951;													// this will run in its own loop after 1951
-	BabyNewYear->p_fun = &EventBirthForTheYear;
-	//BabyNewYear->person_ID = MyArrayOfPointersToPeople[p];
-	iQ.push(BabyNewYear);
+	//event * BabyNewYear = new event;											// --- Set first fertility scan for 1951 ---
+	//BabyNewYear->time = 1951;													// this will run in its own loop after 1951
+	//BabyNewYear->p_fun = &EventBirthForTheYear;
+	////BabyNewYear->person_ID = MyArrayOfPointersToPeople[p];
+	//iQ.push(BabyNewYear);
 
-	for(int i=0; i<total_population; i++){
-	if(MyArrayOfPointersToPeople[i]->Alive==1){
-	event * DeathEvent = new event;												// --- Include death into the Event Q  ---
-	DeathEvent->time = MyArrayOfPointersToPeople[i]->DateOfDeath;													
-	DeathEvent->p_fun = &EventMyDeathDate;
-	DeathEvent->person_ID = MyArrayOfPointersToPeople[i];
-	iQ.push(DeathEvent);}};
+	//for(int i=0; i<total_population; i++){
+	//if(MyArrayOfPointersToPeople[i]->Alive==1){
+	//event * DeathEvent = new event;												// --- Include death into the Event Q  ---
+	//DeathEvent->time = MyArrayOfPointersToPeople[i]->DateOfDeath;													
+	//DeathEvent->p_fun = &EventMyDeathDate;
+	//DeathEvent->person_ID = MyArrayOfPointersToPeople[i];
+	//iQ.push(DeathEvent);}};
 
-	
-	event * TellNewYear = new event;											// --- Tell me every time  a new year start ---
-	TellNewYear->time = 1951;													// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
-	TellNewYear->p_fun = &EventTellNewYear;
-	iQ.push(TellNewYear);
+	//
+	//event * TellNewYear = new event;											// --- Tell me every time  a new year start ---
+	//TellNewYear->time = 1951;													// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
+	//TellNewYear->p_fun = &EventTellNewYear;
+	//iQ.push(TellNewYear);
 
 
-	event * TellBirthByAge = new event;											// --- For output of array on birth by age cohort ---
-	TellBirthByAge->time = 1954.999;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
-	TellBirthByAge->p_fun = &EventTellBirthByAge;								// Being ALIVE here doesn't matter as its quantified when give birth and checks there if alive
-	iQ.push(TellBirthByAge);
+	//event * TellBirthByAge = new event;											// --- For output of array on birth by age cohort ---
+	//TellBirthByAge->time = 1954.999;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
+	//TellBirthByAge->p_fun = &EventTellBirthByAge;								// Being ALIVE here doesn't matter as its quantified when give birth and checks there if alive
+	//iQ.push(TellBirthByAge);
 
-	for(int i=0; i<total_population; i++){
-	if(MyArrayOfPointersToPeople[i]->Alive==1){
-	event * TellAgeCohort = new event;											// --- For output of array on age categories of cohort ---
-	TellAgeCohort->time = 1950.5;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
-	TellAgeCohort->p_fun = &EventTellAgeCohort;
-	TellAgeCohort->person_ID = MyArrayOfPointersToPeople[i];
-	iQ.push(TellAgeCohort);}}; 
+	//for(int i=0; i<total_population; i++){
+	//if(MyArrayOfPointersToPeople[i]->Alive==1){
+	//event * TellAgeCohort = new event;											// --- For output of array on age categories of cohort ---
+	//TellAgeCohort->time = 1950.5;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
+	//TellAgeCohort->p_fun = &EventTellAgeCohort;
+	//TellAgeCohort->person_ID = MyArrayOfPointersToPeople[i];
+	//iQ.push(TellAgeCohort);}}; 
 
 	
 	//for(int i=0; i<init_pop; i++){
@@ -177,26 +177,26 @@ int main(){
 	//iQ.push(HivTest);}													// Add HIVTest to queue
 	//
 		
-	
-	//// --- GIVE OUTPUT OF QUEUE AS IT HAPPENS --- ////
-	cout << endl << endl << "The characteristics of the event queue:" << endl;
-	cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
-	cout << "the size of the event queue is " << iQ.size() << endl;
-	
-	while(iQ.top()->time< 1955 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
-		GlobalTime=iQ.top()->time;
+	//
+	////// --- GIVE OUTPUT OF QUEUE AS IT HAPPENS --- ////
+	//cout << endl << endl << "The characteristics of the event queue:" << endl;
+	//cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
+	//cout << "the size of the event queue is " << iQ.size() << endl;
+	//
+	//while(iQ.top()->time< 1955 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
+	//	GlobalTime=iQ.top()->time;
 
-		//cout << endl << endl << "An event has just ocurred.  " << endl;
-		//cout << "it is " << iQ.top()->time << ".  " << endl;
-		//if (iQ.top()->person_ID->Age==1)
-						iQ.top()-> p_fun(iQ.top()->person_ID);
-				
-		
-		//globaltime=iq.top()->time;										// careful with order of global time update - do not touch or touch and check!!
-		
-		iQ.pop();		
-		//cout << endl << "this event has now been removed from the queue.  " << endl;
-	} 
+	//	//cout << endl << endl << "An event has just ocurred.  " << endl;
+	//	//cout << "it is " << iQ.top()->time << ".  " << endl;
+	//	//if (iQ.top()->person_ID->Age==1)
+	//					iQ.top()-> p_fun(iQ.top()->person_ID);
+	//			
+	//	
+	//	//globaltime=iq.top()->time;										// careful with order of global time update - do not touch or touch and check!!
+	//	
+	//	iQ.pop();		
+	//	//cout << endl << "this event has now been removed from the queue.  " << endl;
+	//} 
 
 
 	//// --- Output the results in a csv file ---
