@@ -16,8 +16,6 @@ using namespace std;
 	
 	//// --- Birth ---
 	void EventBirth(person *MyPointerToPerson);
-	void EventStopBreastfeeding(person *MyPointerToPerson);
-	void EventBirthForTheYear(person *MyPointerToPerson);
 	void EventTellBirthByAge(person *MyPointerToPerson);
 
 	//// --- New Year ---
@@ -25,5 +23,5 @@ using namespace std;
 
 
 	//// --- HIV Events --- 
-	double GetDateOfHIVInfection(int x, int y);							// Function to get date of HIV infection
-	void EventMyHivStatus(person *MyPointerToPerson);					// Function to be executed when HIV infection occurs
+	//double GetDateOfHIVInfection(int x, int y);							// Function to get date of HIV infection
+	//void EventMyHivStatus(person *MyPointerToPerson);					// Function to be executed when HIV infection occurs

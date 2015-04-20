@@ -20,9 +20,13 @@
 extern double *p_GT;								// Tell this .cpp that there is pointer to Global Time defined externally 
 extern double *p_SY;								// Include here to be able to calculate peoples' age
 extern double StartYear;							// Include Start Year so only have to change it once in main()
+extern int *p_FF;									// 
+extern int *p_CFP;
+extern int *p_FF;
 
 int RandomMinMax(int min, int max){					// Provide function for random number generator between min and max number 
 	return rand()%(max-min+1)+min;}					// Not if min=0 and max=4 it will generate 0,1,2,3,4
+
 
 
 //// --- CLASS (POPULATION) CONSTRUCTOR --- ////
@@ -36,17 +40,14 @@ person::person()									// First 'person' class second constructor/variable and
 	Age=-999;
 
 	ChildIndex=0;									// Variables related to birth of children
+	MotherID=-999;									// Dummy value (i.e. those born before 1950 will not have the ID of mother)
 	ChildIDVector.resize(0);						// Vector to store pointer to children.  Make sure it's starting size is 0 at the beginning
 	BirthChild.resize(0);							// This will be used to push in all births of every child
-	MotherID=-999;									// Dummy value (i.e. those born before 1950 will not have the ID of mother)
-	Breastfeeding=0;								// Where 0=No and 1=Yes
-
+		
 	DateOfDeath=9999;								// Varibles related to death VERY IMPORTANT this number needs to be HIGH as it entres EventQ
 	Alive=-999;										// Variable to update eventQ - global check to see if person is still alive
 	AgeAtDeath=-999;
 		
-	HIVStatus=-999;									// Variables related to HIV-infection
-	MyDateOfHIV=-999;
 }
 
 
@@ -54,18 +55,21 @@ person::person()									// First 'person' class second constructor/variable and
 void person::TellMyPerson(){						// --- Tell Patient Profile (can be switched on and off in macro) ---
 	cout << "Patient ID: \t" << PersonID << " \t Sex: \t\t" << Sex << "\t Alive: \t" << Alive << endl << endl << "Death: \t\t" << DateOfDeath << "\t Age at Death:  " << AgeAtDeath << endl << endl;
 	cout << "DoB: \t\t" << DoB << "\t Age: \t\t" << Age << endl << endl;
-	cout << "ChildIndex: \t" << ChildIndex <<  "\t Childre IDs: \t " << ChildIDVector.size() << endl << endl << endl;}
+	cout << "ChildIndex: \t" << ChildIndex <<  "\t Childre IDs: \t " << ChildIDVector.size() << endl << endl << endl;
+}
 
 
 //// --- FUNCTION TO ASSIGN CHARACTERISTIC FOR INITIAL POPULATION --- ////
 void person::PersonIDAssign(int x){					// --- Assign Person ID ---
-	PersonID=x+1;}
+	PersonID=x+1;
+}
 
 
 void person::GenderDistribution(){					// --- Assign Gender Distribution ---
 double	r = ((double) rand() / (RAND_MAX)) ;
-	if (r<=0/*0.5043*/){Sex=1;}							// Where 1 = man and 2= woman					
-	else {Sex=2;}}
+	if (r<=0.5043){Sex=1;}							// Where 1 = man and 2= woman					
+	else {Sex=2;}
+}
 
 
 void person::GetMyDoB(){							// --- Assign Year Of Birth, Age, etc ---		
@@ -81,11 +85,11 @@ double a = ((double) rand() / (RAND_MAX));
 	while (a>Age1950Array[Sex-1][i] && i<17){i++;}  
 	Age = RandomMinMax(ArrayMin[i],ArrayMax[i]);
 		
-	int GetMonth=RandomMinMax(1,12);				// HeTellBirthByAgelps 'distribute' birthdays across the year
+	int GetMonth=RandomMinMax(1,12);				// This gets month of birth
 	double GetYearFraction=GetMonth/12.1;			// Assign year fraction of birth month, e.g. June is 0.5 of the year
 		
 	//Age=RandomMinMax(100,110);					// Dummy code to test different ages - comment out above and line below
-	Age=Age+GetYearFraction;
+	Age=Age+GetYearFraction;						// This 'distributes' birthdays across the year as per month of birth (see above)
 	DoB=(StartYear-Age);
 
 	D(cout << "Schedule Age and DoB for initial population:" << endl << "Sex: " << Sex << "\t\tA: " << a << "Age: " << Age << endl);
@@ -96,27 +100,38 @@ double a = ((double) rand() / (RAND_MAX));
 
 void person::GetDateOfBaby(){						// Get My First Child's Birthday - This method already calculates the child's month of birth by providing a year of birth with decimal
 	
-//double TRF[12]={7.481, 7.785, 8.065, 8.11, 7.99, 7.64, 7.216, 6.538, 5.566, 5.072, 5, 4.8};
-double TRF[12]={7, 8, 8, 8, 8, 8, 7, 7, 6, 5, 5, 5};
+	double TRF_Real[2][12] = {						// Raw from UN: {7.481, 7.785, 8.065, 8.11, 7.99, 7.64, 7.216, 6.538, 5.566, 5.072, 5, 4.8};
+		{ 7, 7, 8, 8, 8, 7, 7, 6, 5, 5, 5, 4 },		// Min TRF
+		{ 8, 8, 9, 9, 8, 8, 8, 7, 6, 6, 5, 5 }};	// Max TRF
 
-int t;
-if (*p_GT<1955){t=0;};
-if (*p_GT>=1955 && *p_GT<1960){t=1;};
-if (*p_GT>=1960 && *p_GT<1965){t=2;};
-if (*p_GT>=1965 && *p_GT<1970){t=3;};
-if (*p_GT>=1970 && *p_GT<1975){t=4;};
-if (*p_GT>=1975 && *p_GT<1980){t=5;};
-if (*p_GT>=1980 && *p_GT<1985){t=6;};
-if (*p_GT>=1985 && *p_GT<1990){t=7;};
-if (*p_GT>=1990 && *p_GT<1995){t=8;};
-if (*p_GT>=1995 && *p_GT<2000){t=9;};
-if (*p_GT>=2000 && *p_GT<2005){t=10;};
-if (*p_GT>=2005 ){t=11;};
+	int index = -9999;								// this will become the index for either the 'Min' or 'Max' in TRF-Real
+	if (*p_CFP <= *p_FF){ index = 1; }				// If its the first women use max
+	if (*p_CFP >  *p_FF){ index = 0; }				// otherwise use min
+
+	D(cout << "The Fraction of women is: " << *p_CFP << ", and we are at: " << *p_FF << " and index: " << index << endl;);
+	
+	int t;											// This is to get the right TRF for the year
+	if (*p_GT<1955){t=0;};							// NOTE!!!!!!!!!!!! This doesn't seem quite right yet, as for some this will be determined at birth and other in middle ages
+	if (*p_GT>=1955 && *p_GT<1960){t=1;};			// [...] Furthermore the births are distributed from 15 to 50 years old and TRF is only fixed at one point in time....
+	if (*p_GT>=1960 && *p_GT<1965){t=2;};
+	if (*p_GT>=1965 && *p_GT<1970){t=3;};
+	if (*p_GT>=1970 && *p_GT<1975){t=4;};
+	if (*p_GT>=1975 && *p_GT<1980){t=5;};
+	if (*p_GT>=1980 && *p_GT<1985){t=6;};
+	if (*p_GT>=1985 && *p_GT<1990){t=7;};
+	if (*p_GT>=1990 && *p_GT<1995){t=8;};
+	if (*p_GT>=1995 && *p_GT<2000){t=9;};
+	if (*p_GT>=2000 && *p_GT<2005){t=10;};
+	if (*p_GT>=2005 ){t=11;};
+
+	D(cout << "The number of kids are: " << TRF_Real[index][t] << endl;);
+
+	vector<double> AgeBirthChild;					// Hold age at child birth
+	AgeBirthChild.resize(0);
 
 
 double BirthArray[201][35]	= {
-// Have to remove first line to avoid infinite loop as this person is 50 years old in 1950
-// Also have to remove all the zeros and all the ones as C++ cannot handle it
+// Hhave to remove all the zeros and all the ones as C++ cannot handle it
 {0.169071000000000, 0.309556996959000, 0.426290885926145, 0.523288459551726, 0.603886556406856, 0.743162815968311, 0.833468567734141, 0.892022185038843, 0.929987940623890, 0.954604670784946, 0.969954692801054, 0.980114243022613, 0.986838432772703, 0.991288898276509, 0.994234478924392, 0.995873489724724, 0.997046565812759, 0.997886162176639, 0.998487079765389, 0.998917169703844, 0.999137507260996, 0.999313009871007, 0.999452800683425, 0.999564146441960, 0.999652835231510, 0.999691272967513, 0.999725454915823, 0.999755852272998, 0.999782884065184, 0.999806922924371, 0.999814433815690, 0.999821652525825, 0.999828590420918, 0.999835258424954, 0.999841667036965},
 {0.169071000000000, 0.309556996959000, 0.426290885926145, 0.523288459551726, 0.603886556406856, 0.743162815968311, 0.833468567734141, 0.892022185038843, 0.929987940623890, 0.954604670784946, 0.969954692801054, 0.980114243022613, 0.986838432772703, 0.991288898276509, 0.994234478924392, 0.995873489724724, 0.997046565812759, 0.997886162176639, 0.998487079765389, 0.998917169703844, 0.999137507260996, 0.999313009871007, 0.999452800683425, 0.999564146441960, 0.999652835231510, 0.999691272967513, 0.999725454915823, 0.999755852272998, 0.999782884065184, 0.999806922924371, 0.999814433815690, 0.999821652525825, 0.999828590420918, 0.999835258424954, 0.999841667036965},
 {0.169071000000000, 0.309556996959000, 0.426290885926145, 0.523288459551726, 0.603886556406856, 0.743162815968311, 0.833468567734141, 0.892022185038843, 0.929987940623890, 0.954604670784946, 0.969954692801054, 0.980114243022613, 0.986838432772703, 0.991288898276509, 0.994234478924392, 0.995873489724724, 0.997046565812759, 0.997886162176639, 0.998487079765389, 0.998917169703844, 0.999137507260996, 0.999313009871007, 0.999452800683425, 0.999564146441960, 0.999652835231510, 0.999691272967513, 0.999725454915823, 0.999755852272998, 0.999782884065184, 0.999806922924371, 0.999814433815690, 0.999821652525825, 0.999828590420918, 0.999835258424954, 0.999841667036965},
@@ -320,54 +335,75 @@ double BirthArray[201][35]	= {
 {0.100224000000000, 0.190403149824000, 0.271544184536039, 0.344552940185099, 0.410244466307988, 0.548502035582474, 0.654347606376803, 0.735379588318676, 0.797415080669953, 0.844907468478334, 0.880357898963431, 0.907705211849965, 0.928801585346148, 0.945075834174067, 0.957630180301895, 0.965089980237222, 0.971236377956736, 0.976300616308161, 0.980473224598481, 0.983911186782774, 0.985965406454350, 0.987757343358258, 0.989320485758276, 0.990684046136659, 0.991873507125931, 0.992322869675895, 0.992747384274297, 0.993148424913465, 0.993527289609450, 0.993885204603206, 0.994115903603936, 0.994337898792767, 0.994551518547114, 0.994757078855368, 0.9949548837843131},
 };
 
-	int p=(DoB-1901);								// To find corresponding year of birth from mortality array
-	int j=0;
-	Age=*p_GT-DoB;
-	int m=0;
+	int p=(DoB-1901);								// To find corresponding year of birth from  array - NOTE!!!! Have to use 1901 to avoid infinite loop as this person is 50 years old in 1950
+	int j=0;										// Index to read of fertility randomly generated
+	int m=0;										// Index for the number of children in the ChildVector
 	double BirthChildTest=-9999;
+	double AgeBirthChildTest = -9999;
 
 	
-	cout << endl << "Birth values for this person: " << endl;
-	cout << "The value of m: " << m << " ChildBirth: " << BirthChild.size() << endl;
-	cout << "Patient ID: " << PersonID << " Age: " << Age << endl;
-	cout << "The value of p is: " << p << " and DOB: " << DoB << endl;
+	D(cout << endl << "Birth values for this person: " << endl;);
+	D(cout << "The value of m: " << m << " ChildBirth: " << BirthChild.size() << endl;);
+	D(cout << "Patient ID: " << PersonID << " Age: " << Age << endl;);
+	D(cout << "The value of p is: " << p << " and DOB: " << DoB << endl;);
 
-	if (Sex==2 && p>=0) {
-	while (m<TRF[t]){
-		double	f = ((double) rand() / (RAND_MAX)) ;
-		int j=0;
-		cout << "f: " << f << ", j:" << j << endl;
-		while(f>BirthArray[p][j] && j<35){j++;};
-		
-		BirthChildTest=(DoB+j+15);
-		BirthChild.push_back(BirthChildTest);
-		cout << "The date of Birth is: " << BirthChild.at(m) <<  " f: " << f << " j:" << j << " Age at birth: " << j+15 << endl;
+	if (Sex == 2 && p >= 0) {
+		while (m<TRF_Real[index][t]){ 
+			double	f = ((double)rand() / (RAND_MAX));
+			int j = 0;
+			D(cout << "f: " << f << ", j:" << j << endl;);
+			while (f>BirthArray[p][j] && j<35){ j++; };
 
-		if(BirthChild.size()>0){
-			int n=0;
-			while (n<m){
-				cout << "N: " << n << endl;
-				double Diff=BirthChild.at(n)-BirthChild.at(m);
-				cout << "Difference between 2 biths: " << Diff << endl;
-				if (BirthChild.at(n)-BirthChild.at(m) > -0.75 && BirthChild.at(n)-BirthChild.at(m)<0.75){
-					double	f = ((double) rand() / (RAND_MAX)) ;
-					int j=0;
-					cout << "Lets check if next birth is too close " << endl;
-					cout << "f: " << f << ", j:" << j << endl;
-					while(f>BirthArray[p][j] && j<35){j++;};
+			BirthChildTest = (DoB + j + 15);
+			AgeBirthChildTest = BirthChildTest - DoB;
+			BirthChild.push_back(BirthChildTest);
+			AgeBirthChild.push_back(AgeBirthChildTest);
+			D(if (AgeBirthChildTest >= 50){ 
+				cout << "The Age if over 50: " << endl;
+				cout << "Patient : " << PersonID << " Age: " << Age << " Dob: " << DoB << endl;
+				cout << "J: " << j << " f: " << f << endl;};);
+			D(cout << " Date Birth Child: " << BirthChildTest << ", Age Birth: " << AgeBirthChildTest << endl;);
+			D(cout << "The date of Birth is: " << BirthChild.at(m) << " f: " << f << " j:" << j << " Age at birth: " << j + 15 << endl;);
 
-					BirthChildTest=(DoB+j+15);
-					BirthChild.at(m)=BirthChildTest;
-					double Diff=BirthChild.at(n)-BirthChild.at(m);
-					cout << "Diff: " << Diff << endl;
-					cout << "The date of Birth is: " << BirthChild.at(m) <<  " f: " << f << " j:" << j << " Age at birth: " << j+15 << endl;
-				};n++;};};
-		
-		m++;cout << "The value of m: " << m << endl;};
+			if (BirthChild.size()>0){
+				int n = 0;
+				while (n<m){
+					D(cout << "N: " << n << endl;);
+					double Diff_1 = BirthChild.at(n) - BirthChild.at(m);
+					double Diff_2 = BirthChild.at(n) - BirthChild.at(m);
+					D(cout << "Difference between 2 biths: " << Diff_1 << "\t and " << Diff_2 << endl;);
+					while (BirthChild.at(n) - BirthChild.at(m) > -0.75 && BirthChild.at(n) - BirthChild.at(m)<0.75){
+						double	f = ((double)rand() / (RAND_MAX));
+						int j = 0;
+						D(cout << "Lets check if next birth is too close " << endl;);
+						D(cout << "f: " << f << ", j:" << j << endl;);
+						while (f>BirthArray[p][j] && j<35){ j++; };
 
-		cout << "Size: " << BirthChild.size() << endl;
-		cout << "The dates of birth are: " << BirthChild.at(0) << "\t\ " << BirthChild.at(1) << "\t\ " << BirthChild.at(2) << endl;
-		cout << BirthChild.at(3) << "\t\ " << BirthChild.at(4) << "\t\ " << BirthChild.at(5) <<  "\t\ " << BirthChild.at(6) << endl;
+						BirthChildTest = (DoB + j + 15);
+						AgeBirthChildTest = BirthChildTest - DoB;
+						BirthChild.at(m) = BirthChildTest;
+						AgeBirthChild.at(m) = AgeBirthChildTest;
+						double Diff_2 = BirthChild.at(n) - BirthChild.at(m);
+						D(if (AgeBirthChildTest >= 50){ cout << "The Age if over 50: " << AgeBirthChildTest; };);
+						D(cout << "Diff 1: " << Diff_1 << " Diff 2: " << Diff_2 << endl;);
+						D(cout << "The date of Birth is: " << BirthChild.at(m) << " f: " << f << " j:" << j << " Age at birth: " << j + 15 << endl;);
+					}; 
+					   if (Diff_1 == Diff_2){ n++; };
+					   if (Diff_1 =! Diff_2){n = 0;};
+					   D(cout << "At the end, N: " << n << endl;);
+				};
+			};
+
+			m++; D(cout << "The value of m: " << m << endl;);
+		};
+
+		D(cout << endl << endl << "Size: " << BirthChild.size() << endl;);
+		D(cout << "The dates of birth are: " << endl;);
+		D(cout << BirthChild.at(0) << "\t\ " << BirthChild.at(1) << "\t\ " << BirthChild.at(2) << endl;);
+		D(cout << BirthChild.at(3) << "\t\ " << BirthChild.at(4) << "\t\ " << BirthChild.at(5) << "\t\ " << BirthChild.at(6) << endl;);
+		D(cout << "The Age at Birth are: " << endl;);
+		D(cout << AgeBirthChild.at(0) << "\t\ " << AgeBirthChild.at(1) << "\t\ " << AgeBirthChild.at(2) << endl;);
+		D(cout << AgeBirthChild.at(3) << "\t\ " << AgeBirthChild.at(4) << "\t\ " << AgeBirthChild.at(5) << "\t\ " << AgeBirthChild.at(6) << endl;);
 	};
 }
 	  
