@@ -16,12 +16,21 @@
 #include "coutmacro.h"
 using namespace std;   
 
-// TO FIX
+// TO FIX - FERTILITY
 // 1. TRF at the moment is based on DoB - check if it represents fertility correctly - see eventfunction.cpp line ~113
-// 2. Throw output out every 5 years - need to reset every 5 years
+// 2. Have to fix fertility array - atm not enough old women giving birth
 // 3. Have to redo code for fertility (array) to make 49 years old=1 and not 50=1 to avoid 50 year old giving births!!
-// 4. Change population to vector instead of array
-// 5. When person dies, remove all related events
+// 4. Rerun the model check from 1950-2010 to see if fertility correct now
+
+
+// TO FIX GENERAL
+// 1. Throw output out every 5 years - need to reset every 5 years - DONE
+// 2. Change population to vector instead of array
+// 3. When person dies, remove all related events
+// 4. Make various event types (people/annual,...)
+// 5. Use 'const' in model to stop model from changing variables thta it shouldn't change
+// 6. Learn how to add a row to a vector (e.g every year it should add a new line for new year of output...
+// 7. Remove all unecessary code
 
 //    To Do List:
 //  1.	Making a population (i.e. more than one person) and assign variables (Person ID, Sex, HIV status, Birthday, Date of Death,�) - DONE
@@ -63,7 +72,7 @@ using namespace std;
 
 //// --- Function related to event - to be available externally ---
 double *p_GT;																// Pointer to global time
-double *p_SY;																// Pointer to start year of the model
+// REMOVE - double *p_SY;																// Pointer to start year of the model
 double StartYear=1950;													// Define Start Year if the model and set it to year of choice
 int *p_FF;																	// This is the fraction of the total female population that will be given the higher birth rate
 priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing
@@ -98,7 +107,7 @@ int main(){
 	//// --- Some pointers ---
 	double GlobalTime=StartYear;											// Define Global Time and set it to 0 at the beginning of the model
 	p_GT=&GlobalTime;														// Define the location the pointer to Global time is pointing to
-	p_SY=&StartYear;														// Define the location of the pointer to Start Year is pointing to
+	// REMOVE : p_SY=&StartYear;														// Define the location of the pointer to Start Year is pointing to
 	srand(time(NULL));														// Random Number generator using PC time
 	priority_queue<event*, vector<event*>, timeComparison> iQ;				// Define th ePriority Q
 	p_PQ=&iQ;																// Define pointer to event Q

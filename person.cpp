@@ -18,11 +18,10 @@
 
 //// --- OUTSIDE INFORMATION --- ////
 extern double *p_GT;								// Tell this .cpp that there is pointer to Global Time defined externally 
-extern double *p_SY;								// Include here to be able to calculate peoples' age
 extern double StartYear;							// Include Start Year so only have to change it once in main()
-extern int *p_FF;									// 
-extern int *p_CFP;
-extern int *p_FF;
+extern int *p_FF;									// Female fraction (female_pop * fraction_year = nr of women with max birth rate)
+extern int *p_CFP;									// CountFemalePopulation - pointer counts how many women we are at and when need to change fertility schedule
+
 
 int RandomMinMax(int min, int max){					// Provide function for random number generator between min and max number 
 	return rand()%(max-min+1)+min;}					// Not if min=0 and max=4 it will generate 0,1,2,3,4
