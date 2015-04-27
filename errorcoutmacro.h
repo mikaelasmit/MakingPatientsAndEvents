@@ -1,22 +1,20 @@
 /////////////////////////////////////////////////////////////////
-//    Created by Mikaela Smit on 02/03/2015.				   //
+//    Created by Mikaela Smit on 24/04/2015.				   //
 //    Code from Jack Olney from 20/10/2014					   //
 //    This script helps to switch cout statements on/off	   //
 /////////////////////////////////////////////////////////////////
 
-#ifndef priorityQ_macro_h
-#define priorityQ_macro_h
+#ifndef priorityQ_errormacro_h
+#define priorityQ_errormacro_h
 
-	/* Macro header file */
+/* Macro header file */
 
-//#define DEBUG_MODE			// Comment this out to stop D(x) x cout statement
+#define DEBUG_MODE2			// Comment this out to stop D(x) x cout statement
 
-#ifdef DEBUG_MODE
-#define D(x) x
+#ifdef DEBUG_MODE2
+#define E(x) x
 #else
-#define D(x)
+#define E(x)
 #endif
 
 #endif
-
-

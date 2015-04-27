@@ -47,5 +47,8 @@
     <ClInclude Include="coutmacro.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="errorcoutmacro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

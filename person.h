@@ -1,6 +1,5 @@
 /////////////////////////////////////////////////////////////////
 //    Created by Mikaela Smit on 22/10/2014.				   //
-//    Copyright (c) 2014 Mikaela Smit. All rights reserved.	   //
 //    This script makes the people in the cohort.			   //
 /////////////////////////////////////////////////////////////////
 
@@ -10,6 +9,7 @@
 #include <vector>
 
 using namespace std;
+
 
 
 //// --- CREATING PEOPLE --- ////
@@ -38,9 +38,12 @@ public:
 	int AgeAtDeath;
 
 	
-//// --- FUNCTIONS ----				
+//// --- FUNCTIONS --- ////		
 	
-	// --- FOR INITIAL POPULATION ---
+
+
+	//// --- FOR INITIAL POPULATION --- ////
+
 	// --- Functions related to People ---
 	void PersonIDAssign(int x);						// Function to get Person ID
 	void TellMyPerson();							// Function to tell all patient's characteristics

@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="coutmacro.h" />
+    <ClInclude Include="errorcoutmacro.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="eventfunctions.h" />
     <ClInclude Include="eventQ.h" />
