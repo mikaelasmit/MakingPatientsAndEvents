@@ -56,20 +56,20 @@ void EventTellNewYear(person *MyPointerToPerson){						//// --- NEW YEAR FUNCTIO
 	if (*p_GT >= 2000 && *p_GT<2005){*p_PY = 10; };
 	if (*p_GT >= 2005){*p_PY = 11; };
 
-	D(cout << "*p_PY: " << *p_PY << " and Global Time: " << *p_GT << endl;)
+	cout << "Let's check relevant things have been updated... *p_PY: " << *p_PY << " and Global Time: " << *p_GT << endl;
 
 	event * RecurrentTellNewYear = new event;							// Schedule event for next year								
 	RecurrentTellNewYear->time = *p_GT + 1;													
 	RecurrentTellNewYear->p_fun = &EventTellNewYear;
 	p_PQ->push(RecurrentTellNewYear);
 
-	E(cout << "We have finished telling you the new year and setting fertility variables for the year." << endl;)		// Code in case something goes wrong, to check where error is happening 
+	cout << "We have finished telling you the new year and setting fertility variables for the year." << endl;		// Code in case something goes wrong, to check where error is happening 
 }
 
 
 void EventMyDeathDate(person *MyPointerToPerson){						//// --- DEATH EVENT --- ////	
 	MyPointerToPerson->Alive=0;
-	D(cout << "Person " << MyPointerToPerson->PersonID << " just died. Their life status now is: " << MyPointerToPerson->Alive << endl;)
+	E(cout << "Person " << MyPointerToPerson->PersonID << " just died. Their life status now is: " << MyPointerToPerson->Alive << endl;)
 
 }
 
@@ -126,8 +126,6 @@ void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKI
 	MyPointerToPerson->ChildIndex=MyPointerToPerson->ChildIndex+1;		// update Child Index so can give birth again
 	
 
-	//D(cout << "My child is " << MyPointerToPerson->ChildIDVector.at(MyPointerToPerson->ChildIndex) << endl);		// FIX THIS!!
-	D(cout << "Nr 1: " << MyPointerToPerson->ChildIndex << "\t\tNr 2: " << MyPointerToPerson->ChildIDVector.size() << "\t\tBreastfeeding " << MyPointerToPerson->Breastfeeding << endl << endl;)
 	E(cout << "We have finished giving birth " << endl;)
 	}
 }
@@ -136,17 +134,30 @@ void EventBirth(person *MyPointerToPerson){								//// --- BIRTH EVENT AND MAKI
 ////// SPIT OUT RESULTS /////
 void EventTellAgeCohort(person *MyPointerToPerson){
 
-	E(cout << "We are counting age " << endl;)
+	E(cout << "This section is counting age " << endl;)
+	
+		
+	// Let's reset the agearrays
+	int nr=0;
+	while (nr<17){
+		E(cout << "Before, Men: " << AgeCohortMen.at(nr) << " and Women: " << AgeCohortWomen.at(nr) << endl;)
+		AgeCohortMen.at(nr)=0;
+		AgeCohortWomen.at(nr)=0;
+		E(cout << "After, Men: " << AgeCohortMen.at(nr) << " and Women: " << AgeCohortWomen.at(nr) << endl;)
+		nr++;}
+	
+	E(cout << "We finished resetting age" << endl;)
+		
 	// Make a Birth Array for age at birth for validation
-
+	E(cout << "Total population" << total_population << endl;)
 	for(int p=0; p<total_population; p++){
 	if(MyArrayOfPointersToPeople[p]->Alive==1){
-	
+		E(cout << "Patient ID: " << MyArrayOfPointersToPeople[p]->PersonID << "\tAlive: " << MyArrayOfPointersToPeople[p]->Alive << "\tSex: " << MyArrayOfPointersToPeople[p]->Sex << endl;)
 	MyArrayOfPointersToPeople[p]->Age= (*p_GT - MyArrayOfPointersToPeople[p]->DoB);			// Update age to get age at birth for output
 	int i=0;
 	int ArrayArray1950[17] =  {5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 110};	
 	while(MyArrayOfPointersToPeople[p]->Age>=ArrayArray1950[i] && i<17){i++;};
-	D(cout << "Age is : " << MyPointerToPerson[p]->Age << " Sex: " << MyPointerToPerson[p]->Sex << " i: " << i << endl);
+	//D(cout << "Age is : " << MyPointerToPerson[p]->Age << " Sex: " << MyPointerToPerson[p]->Sex << " i: " << i << endl);
 	
 		if(MyArrayOfPointersToPeople[p]->Sex==1){
 			AgeCohortMen.at(i)=AgeCohortMen.at(i)++;};
@@ -179,6 +190,10 @@ void EventTellAgeCohort(person *MyPointerToPerson){
 	cout << "60-65: " << AgeCohortWomen.at(12) << "\t\ 65-70: " << AgeCohortWomen.at(13) << endl;
 	cout << "70-75: " << AgeCohortWomen.at(14) << "\t\ 75-80: " << AgeCohortWomen.at(15) << endl;
 	cout << "Over 80: " << AgeCohortWomen.at(16)  << endl << endl;
+
+	int stop;
+    cout << "Press any key to continue: ";
+    cin >> stop;
 	
 	event * TellAgeCohort = new event;											// --- For output of array on age categories of cohort ---
 	TellAgeCohort->time = *p_GT+5;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
@@ -193,12 +208,15 @@ void EventTellBirthByAge(person *MyPointerToPerson){
 	
 	E(cout << "We are about to tell you how many babies were born in this period" << endl;)
 		
-		cout << "The birth cohort from " <<  *p_GT-5 << " to " << *p_GT << endl;
+	cout << "The birth cohort from " <<  *p_GT-5 << " to " << *p_GT << endl;
 	cout << "15-20: " << BirthCohortArray[*p_PY][0] << "\t\ 20-25: " << BirthCohortArray[*p_PY][1] << endl;
 	cout << "25-30: " << BirthCohortArray[*p_PY][2] << "\t\ 30-35: " << BirthCohortArray[*p_PY][3] << endl;
 	cout << "35-40: " << BirthCohortArray[*p_PY][4] << "\t\ 40-45: " << BirthCohortArray[*p_PY][5] << endl;
 	cout << "45-50: " << BirthCohortArray[*p_PY][6] << endl << endl;
 	
+	int stop;
+    cout << "Press any key to continue: ";
+    cin >> stop;
 	
 	event * TellBirthByAge = new event;											// --- For output of array on birth by age cohort ---
 	TellBirthByAge->time = *p_GT + 5;												// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					

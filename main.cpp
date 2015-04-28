@@ -33,41 +33,16 @@ using namespace std;
 // 6. Learn how to add a row to a vector (e.g every year it should add a new line for new year of output...
 // 7. Remove all unecessary code
 
-//    To Do List:
-//  1.	Making a population (i.e. more than one person) and assign variables (Person ID, Sex, HIV status, Birthday, Date of Death,�) - DONE
-//  2.	Use simple distributions (e.g. uniform distribution, etc) to assign characteristics - DONE
-//  3.	Develop EventQ and play around with it � DONE
-//  4.	Insert events into the EventQ, e.g. HIV-infection, Death and Birthdays � DONE
-//  5.	Separate EventQ code into different .h and .cpp files � TOOK A WHILE BUT DONE
-//  6.	Insert a global time counter into the model to record time � DONE
-//  7.	Add global time to the EventQ � DONE
-//  8.	Make birthdays into recurrent event using pointers and global time  - DONE
-//  9.	Remove repeat code for EventQ and from main() and make into self-contained loop � DONE
-//  10.	Add stop time into the model for EventQ � DONE
-//  11.	Merge MakingPatients and EventQ code to make events happen to two different people � DONE
-//  12.	Give people an age using birthday and vice versa � DONE
-//  13.	Include Age at T0 to record age at start of model � DONE
-//  14.	Add ages to the EventQ and update every year � DONE
-//  15.	Make C++ output .csv  files to be able to run large populations and generate graphs � DONE
-//  16.	Find Kanyan age-distribution in 1950 - DONE
-//  17.	Add Kenyan age-distribution as per 1950s � DONE
-//  18.	Run model with this age distribution and generate population pyramids � DONE
-//  19. Add new entries to run population forward and simulate population growth - DONE 
-//  20.	Link deaths to age using UN data - DONE
-//  21.	Compare population to data in Kenya, improve as necessary - BUSY WITH
-//  22.	Improve 'new entry' as expandable vector (deal with bigger population size) - DONE
-//  23. Improve code with arrays (e.g. death code and ChildID) - DONE
-//
-//	STILL TO DO:
+//  To Do List:
 //	1. Expand model from 1950 to 2010!!!
 //  2. Change population to expandable vector
 //  3. Check that the Event Q is is not unnecessarily getting clogged up and slowing down model
 //  4. Write code to empty Event Q after every model run
 //  5. Write code to optain ChildID from vector or pointer to person class!!
-//  6.	Add HIV status and update it as a function of HIV test
-//  7.	Add more aspects of HIV care cascade (diagnosis, start cART,�)
+//  6. Add HIV status and update it as a function of HIV test
+//  7. Add more aspects of HIV care cascade (diagnosis, start cART,�)
 //  8. Think about class destructors
-//  9.	Make C++ run with Matlab � THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am going to look at SJ�s code for this
+//  9. Make C++ run with Matlab � THIS IS TAKING A WHILE AND I AM STILL BUSY WITH THIS.  I am going to look at SJ�s code for this
 
 
 
@@ -139,14 +114,14 @@ int main(){
 
 	cout << "We got to section 5" << endl;
 
-	for (int i = 0; i < total_population; i++){								// --- Assign Birth of all Children- ---
-		if (MyArrayOfPointersToPeople[i]->Sex == 2) {(MyArrayOfPointersToPeople[i])->GetDateOfBaby();}
-	}
-
-	cout << "We got to section 6" << endl;
-
 	for(int i=0; i<total_population; i++){									// --- Assign date of death ---  
 		(MyArrayOfPointersToPeople[i])->GetDateOfDeath();
+	}
+	
+	cout << "We got to section 6" << endl;
+
+	for (int i = 0; i < total_population; i++){								// --- Assign Birth of all Children- ---
+		if (MyArrayOfPointersToPeople[i]->Sex == 2) {(MyArrayOfPointersToPeople[i])->GetDateOfBaby();}
 	}
 	
 	cout << "We got to section 7" << endl;
@@ -202,7 +177,7 @@ int main(){
 
 	
 	event * TellNewYear = new event;											// --- Tell me every time  a new year start ---
-	TellNewYear->time = StartYear;													// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
+	TellNewYear->time = StartYear+0.0001;													// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
 	TellNewYear->p_fun = &EventTellNewYear;
 	iQ.push(TellNewYear);
 
@@ -227,7 +202,7 @@ int main(){
 	
 
 
-	while(iQ.top()->time< 1975 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
+	while(iQ.top()->time< 2010 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
 		GlobalTime=iQ.top()->time;											// careful with order of global time update - do not touch or touch and check!!
 		iQ.top()-> p_fun(iQ.top()->person_ID);
 		iQ.pop();		
