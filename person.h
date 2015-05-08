@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 //    Created by Mikaela Smit on 22/10/2014.				   //
 //    This script makes the people in the cohort.			   //
 /////////////////////////////////////////////////////////////////
@@ -26,11 +26,10 @@ public:
 	
 	double DoB;										// Variables related to age
 	double Age; 
-
-	int ChildIndex;									// Variables related to the birth of children - ChildIndex holds how many Children a mother has
+													// Variables related to the birth of children - ChildIndex holds how many Children a mother has
 	int MotherID;									// Holds ID of the mother
 	vector<person*> ChildIDVector;					// ChildIDVector is its name <now holds 'people pointer'> of type vector which is the structure
-	vector<double> BirthChild;						// Hold dates of the birth of all children - vector
+	vector<double> DatesBirth;						// Hold dates of the birth of all children - vector
 	
 	
     double DateOfDeath;								// Variables related to death
@@ -39,15 +38,11 @@ public:
 
 	
 //// --- FUNCTIONS --- ////		
-	
-
-
-	//// --- FOR INITIAL POPULATION --- ////
+		
 
 	// --- Functions related to People ---
 	void PersonIDAssign(int x);						// Function to get Person ID
-	void TellMyPerson();							// Function to tell all patient's characteristics
-
+	
 
 	// --- Sex ---
 	void GenderDistribution();						// Function to assign sex
@@ -65,13 +60,8 @@ public:
 	void GetDateOfDeath();							// Function to get date of Death - this is done by using UN Life expectancy by age in 1950 and random numbers (see person.cpp)
 	
 
-
-
-
-
-
-	// --- FOR NEW ENTRY ---
-	void GetMyDoBNewEntry();				// Function to assign age
+	// --- Age for babies ---
+	void GetMyDoBNewEntry();						// Function to assign age 0 to babies
 	
 };	
 

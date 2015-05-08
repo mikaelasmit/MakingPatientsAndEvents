@@ -15,13 +15,13 @@
 #include "eventfunctions.h"
 #include"errorcoutmacro.h"
 #include "coutmacro.h"
+#include "demographmacro.h"
 
 
 //// --- OUTSIDE INFORMATION --- ////
 extern double *p_GT;								// Tell this .cpp that there is pointer to Global Time defined externally 
 extern double StartYear;							// Include Start Year so only have to change it once in main()
 extern int *p_PY;									// Pointer to show which year range we are on
-
 
 int RandomMinMax(int min, int max){					// Provide function for random number generator between min and max number 
 	return rand()%(max-min+1)+min;					// !!!!Note: if min=0 and max=4 it will generate 0,1,2,3,4
@@ -32,84 +32,70 @@ int RandomMinMax(int min, int max){					// Provide function for random number ge
 
 person::person()									// First 'person' class second constructor/variable and no return type means its a constructor
 {
-    PersonID=0;										// Peoples' basic information
+    PersonID=0;										// --- Peoples' basic information ---
 	Sex=-999;
 
-	DoB=-999;										// Varibales related to peoples' age and birthday
+	DoB=-999;										// --- Varibales related to peoples' age and birthday ---
 	Age=-999;
-
-	ChildIndex=0;									// Variables related to birth of children
+													// --- Variables related to birth of children ---
 	MotherID=-999;									// Dummy value (i.e. those born before 1950 will not have the ID of mother)
 	ChildIDVector.resize(0);						// Vector to store pointer to children.  Make sure it's starting size is 0 at the beginning
-	BirthChild.resize(0);							// This will be used to push in all births of every child
+	DatesBirth.resize(0);							// This will be used to push in all births of every child
 		
-	DateOfDeath=9999;								// Varibles related to death VERY IMPORTANT this number needs to be HIGH as it entres EventQ
+	DateOfDeath=9999;								// --- Varibles related to death ---
+	AgeAtDeath=-999;								// NOTE: VERY IMPORTANT this number needs to be HIGH as it entres EventQ
 	Alive=-999;										// Variable to update eventQ - global check to see if person is still alive
-	AgeAtDeath=-999;
-		
 }
-
-
-
-// --- FUNCTIONS TO VISUALISE OUTPUT ---
-void person::TellMyPerson(){						// --- Tell Patient Profile (can be switched on and off in macro) ---
-	cout << "Patient ID: \t" << PersonID << " \t Sex: \t\t" << Sex << "\t Alive: \t" << Alive << endl << endl << "Death: \t\t" << DateOfDeath << "\t Age at Death:  " << AgeAtDeath << endl << endl;
-	cout << "DoB: \t\t" << DoB << "\t Age: \t\t" << Age << endl << endl;
-	cout << "ChildIndex: \t" << ChildIndex <<  "\t Childre IDs: \t " << ChildIDVector.size() << endl << endl << endl;
-}
-
 
 
 //// --- FUNCTION TO ASSIGN CHARACTERISTIC FOR INITIAL POPULATION --- ////
-void person::PersonIDAssign(int x){					// --- Assign Person ID ---
+
+// --- Assign Person ID ---
+void person::PersonIDAssign(int x){					
 	E(cout << "We are assigning Patient ID!" << endl;)
 	PersonID=x+1;
 }
 
 
-void person::GenderDistribution(){					// --- Assign Gender Distribution ---
+// --- Assign Gender Distribution ---
+void person::GenderDistribution(){					
 	E(cout << "We are assigning gender!" << endl;)
-		double	r = ((double) rand() / (RAND_MAX)) ;
+	double	r = ((double) rand() / (RAND_MAX)) ;
 	if (r<=0.5043){Sex=1;}							// Where 1 = man and 2= woman					
 	else {Sex=2;}
 	E(cout << "We finished assigning gender!" << endl;)
 }
 
 
-void person::GetMyDoB(){							// --- Assign Year Of Birth, Age, etc ---		
+// --- Assign Year Of Birth, Age, etc ---
+void person::GetMyDoB(){									
+	
 	E(cout << "We are assigning DoB!" << endl;)
 		
 	double a = ((double) rand() / (RAND_MAX));
-	double Age1950Array[2][17] = {					// Note these will give random age between 0-4 (for example) but then year fraction (up to 4 yrs and 11 months) is added late to correct
-						{0.172981, 0.288545, 0.395246, 0.498433, 0.587060, 0.662330, 0.727566, 0.786187, 0.838318, 0.881524, 0.917418, 0.945905, 0.968031, 0.983604, 0.992941, 0.997784, 1},
-						{0.174664, 0.291718, 0.400206, 0.502094, 0.586688, 0.655601, 0.715013, 0.766536, 0.813197, 0.856541, 0.895119, 0.927321, 0.953340, 0.973306, 0.986605, 0.995300, 1}};
-		int ArrayMin[17] =  {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80};
+	double Age1950Array[2][17] = {					// Where the first row is men and the second is women 				
+		{0.172981, 0.288545, 0.395246, 0.498433, 0.587060, 0.662330, 0.727566, 0.786187, 0.838318, 0.881524, 0.917418, 0.945905, 0.968031, 0.983604, 0.992941, 0.997784, 1},
+		{0.174664, 0.291718, 0.400206, 0.502094, 0.586688, 0.655601, 0.715013, 0.766536, 0.813197, 0.856541, 0.895119, 0.927321, 0.953340, 0.973306, 0.986605, 0.995300, 1}};
+	int ArrayMin[17] =  {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80};
 	int ArrayMax[17] =  {4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 100};
 	
 	int i=0;
 	while (a>Age1950Array[Sex-1][i] && i<17){i++;}  
 	Age = RandomMinMax(ArrayMin[i],ArrayMax[i]);
-		
-	int GetMonth=RandomMinMax(1,12);				// This gets month of birth
-	double GetYearFraction=GetMonth/12.1;			// Assign year fraction of birth month, e.g. June is 0.5 of the year
-		
-	//Age=RandomMinMax(100,110);					// Dummy code to test different ages - comment out above and line below
-	Age=Age+GetYearFraction;						// This 'distributes' birthdays across the year as per month of birth (see above)
+	double YearFraction=(RandomMinMax(1,12))/12.1;	// This gets month of birth as a fraction of a year
+	Age=Age+YearFraction;							// This 'distributes' birthdays across the year as per month of birth (see above)
 	DoB=(StartYear-Age);
 
-	D(cout << "Schedule Age and DoB for initial population:" << endl << "Sex: " << Sex << "\t\tA: " << a << "Age: " << Age << endl);
-	D(cout << "Min: " << ArrayMin[i] << "\tMax: " << ArrayMax[i] << endl << "Age: " << Age << "\t\tDoB: " << DoB << endl << endl);
-	
 	E(cout << "We finished assigning DoB!" << endl;)
 }
 
 
-void person::GetDateOfBaby(){						// Get My First Child's Birthday - This method already calculates the child's month of birth by providing a year of birth with decimal
+// --- Get Dates of all my future babies ---
+void person::GetDateOfBaby(){						// This method already calculates the child's month of birth by providing a year of birth with decimal
 	
 	E(cout << "We are assigning Births!" << endl;)
 
 	Age= (*p_GT - DoB);								// Update age ... just in case
-	
 	if (Sex == 2 && Alive == 1 && Age<50 && AgeAtDeath>=15){
 	
 	//// --- Lets first see how many children I will have --- ////
@@ -121,19 +107,12 @@ void person::GetDateOfBaby(){						// Get My First Child's Birthday - This metho
 		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
 		{8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
 		{0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.49, 0.49, 0.49, 0.49, 0.50, 0.51, 0.51, 0.52, 0.53, 0.54, 0.56, 0.57, 0.58, 0.60, 0.62, 0.64, 0.66, 0.68, 0.70, 0.72, 0.74, 0.77, 0.79, 0.81, 0.82, 0.84, 0.86, 0.88, 0.88, 0.87, 0.87, 0.87, 0.87, 0.85, 0.84, 0.83, 0.81, 0.80, 0.71, 0.62, 0.53, 0.44, 0.35, 0.25, 0.15, 0.06, 0.96, 0.86, 0.73, 0.60, 0.47, 0.34, 0.21, 0.10, 0.99, 0.88, 0.77, 0.66, 0.58, 0.51, 0.43, 0.36, 0.28, 0.22, 0.16, 0.10, 0.03, 0.97, 0.95, 0.93, 0.91, 0.89, 0.87, 0.86, 0.85, 0.84, 0.83, 0.82, 0.82, 0.81, 0.81, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80}
-	};
-
+		};
 	
 	if (r_nr<NrChildrenArray[2][index]){NrChildren=NrChildrenArray[0][index];}
 	if (r_nr>=NrChildrenArray[2][index]){NrChildren=NrChildrenArray[1][index];}
 	
-	D(cout << endl << endl << "Lets check some code related to fertility: " << endl;)
-	D(cout << "ID: " << PersonID << "\tDoB: " << DoB  << "\tSexual debut: " << DoB+15 <<  "\tindex: " << index << endl;)
-	D(cout << "Date of Death: " << DateOfDeath << "\tAge at Death: " << AgeAtDeath << endl;)
-	if(NrChildren<0){cout << "Rand Nr Kids: " << r_nr << "\tNumber of Children: " << NrChildren << endl;};
-	D(cout << "Index: " << index << "\tProportion: " << NrChildrenArray[2][index] << endl;)
 	
-
 	//// --- Lets see when I will having all my children --- ////
 	double BirthArray[200][35]	= {
 	{0.02260, 0.04520, 0.06780, 0.09040, 0.11300, 0.16000, 0.20700, 0.25400, 0.30100, 0.34800, 0.39320, 0.43840, 0.48360, 0.52880, 0.57400, 0.61200, 0.65000, 0.68800, 0.72600, 0.76400, 0.79120, 0.81840, 0.84560, 0.87280, 0.90000, 0.91480, 0.92960, 0.94440, 0.95920, 0.97400, 0.97920, 0.98440, 0.98960, 0.99480, 1},
@@ -340,18 +319,12 @@ void person::GetDateOfBaby(){						// Get My First Child's Birthday - This metho
 
 	int m=0;														// Count of how many children I will have - can be used to manage ChildVector and loop
 	double DateOfBirthTest=-9999;
-	double AgeAtBirthTest=-9999;
 	int ChildBearingYears=AgeAtDeath-15;
-	vector<double> AgeBirthChild;									// Hold age at child birth - just to check and is deleted afterwards
-	AgeBirthChild.resize(0);										// Set it to 0 at the beginning
 	
-
-
-	//// --- Just in case th eperson is going to die early, lets let her have as many kdis as possible first --- ////
+	
+	//// --- Just in case the person is going to die early, lets let her have as many kdis as possible first --- ////
 	if(ChildBearingYears<NrChildren){
-		D(cout << "We need to reduce the number of children ("<< NrChildren << ") I will have, as I will die soon" << endl; )
 		NrChildren=ChildBearingYears;
-		D(cout << "New Nr Children: " << NrChildren << "\tChildbearing Years: "<< ChildBearingYears << endl;)
 	}
 	
 
@@ -361,86 +334,60 @@ void person::GetDateOfBaby(){						// Get My First Child's Birthday - This metho
 		int j=0;
 		while (f>BirthArray[index][j] && j<35){ j++; };				// Find out in which age group I will have my child
 		
-		AgeAtBirthTest = 15+j;	// Set age at birth
-		DateOfBirthTest = DoB + AgeAtBirthTest;
+		DateOfBirthTest = DoB + 15 +j;
 		
-		D(cout << endl << "M: " << m << endl;)
-		D(cout << "\J: " << j << "\tF: " << f << endl;)
-		D(cout << "Age at birth: " << AgeAtBirthTest << "\tBirth: " << DateOfBirthTest << endl;)
 		
 		while (DateOfBirthTest>DateOfDeath){						// Run this loop in case birth ocurrs before birth
-			D(cout << "Looks like birth will happen after death...let's try again" << endl;)
 			double	f = ((double)rand() / (RAND_MAX));
 			int j = 0;
-			D(cout << "f: " << f << ", j:" << j << endl;)
-			while (f>BirthArray[*p_PY][j] && j<35){ j++; };
-			AgeAtBirthTest = 15+j;									// Set age at birth
-			DateOfBirthTest = DoB + AgeAtBirthTest;
+			while (f>BirthArray[index][j] && j<35){ j++; };
+			DateOfBirthTest = DoB + 15+j;
 
-			D(cout << "\J: " << j << "\tF: " << f << endl;)
-			D(cout << "Age at birth: " << AgeAtBirthTest << "\tBirth: " << DateOfBirthTest << endl;)
 			};
 
-		BirthChild.push_back(DateOfBirthTest);						// Once we checked birth doesn't happen before birth lets push that in
-		AgeBirthChild.push_back(AgeAtBirthTest);
+		DatesBirth.push_back(DateOfBirthTest);						// Once we checked birth doesn't happen before birth lets push that in
 			  	
 		
 		//// --- Lets check if I am already giving birth at this age --- ////
-		if (BirthChild.size()>1){											// Only need to check if there are already more than 1 child
-			int n=0;														// Index to count past births with this newly assigned birth
+		if (DatesBirth.size()>1){									// Only need to check if there are already more than 1 child
+			int n=0;												// Index to count past births with this newly assigned birth
 			
 			while (n<m){
-				double Diff_1 = BirthChild.at(n) - BirthChild.at(m);		// This Diff is the original difference
-				double Diff_2 = BirthChild.at(n) - BirthChild.at(m);		// This Diff is the new one if new one is needed.  
-																			// [...] If both the same we can move on, if not we need to check the new Birth against births 1 to max again
-				D(cout << "M: " << m << "\tN: " << n << "\t\tDifferences: " << Diff_1 << " and " << Diff_2 << endl;)
-				
-				while ((BirthChild.at(n) - BirthChild.at(m) > -0.75 && BirthChild.at(n) - BirthChild.at(m)<0.75) || BirthChild.at(m)>DateOfDeath){
+				double Diff_1 = DatesBirth.at(n) - DatesBirth.at(m);	// This Diff is the original difference
+				double Diff_2 = DatesBirth.at(n) - DatesBirth.at(m);	// This Diff is the new one if new one is needed.  
+																		// [...] If both the same we can move on, if not we need to check the new Birth against births 1 to max again
+				while ((DatesBirth.at(n) - DatesBirth.at(m) > -0.75 && DatesBirth.at(n) - DatesBirth.at(m)<0.75) || DatesBirth.at(m)>DateOfDeath){
 						double	f = ((double)rand() / (RAND_MAX));
 						int j = 0;
-						D(cout << endl << "Looks like births are too close or happen after death so lets reset j to: " << j << endl;)
 						while (f>BirthArray[*p_PY][j] && j<35){ j++; };
 						
-						AgeAtBirthTest = 15+j;	// Set age at birth
-						DateOfBirthTest = DoB + AgeAtBirthTest;
-						BirthChild.at(m)=DateOfBirthTest;
-						AgeBirthChild.at(m)=AgeAtBirthTest;
-						Diff_2 = BirthChild.at(n) - BirthChild.at(m);
-						D(cout << "f: " << f << ", j:" << j << "\tDifferences: " << Diff_1 << "\t and " << Diff_2 << endl;)
-						D(cout << "Birth: " << BirthChild.at(m) << " Age at birth: " << j + 15 << endl;)
+						DateOfBirthTest = DoB + 15+j;
+						DatesBirth.at(m)=DateOfBirthTest;
+						Diff_2 = DatesBirth.at(n) - DatesBirth.at(m);
 					};
-					if (Diff_1 == Diff_2){ n++; D(cout << "Option 1! Let's check the next one!" << endl;)};					// If we didn't have to change BirthOfDate we can check against next birth
-					if (Diff_1 != Diff_2){n = 0; D(cout << "Option 2! Let's start again!" << endl;)};							// If we have changed DateOfBirth we need to check this new Date against all existing ones
-					D(cout << "At the end, N: " << n << endl;)
-			};
-		};
+					if (Diff_1 == Diff_2){ n++;};						// If we didn't have to change BirthOfDate we can check against next birth
+					if (Diff_1 != Diff_2){n = 0;};						// If we have changed DateOfBirth we need to check this new Date against all existing ones
+					
+			}
+		}
 
-		m++; D(cout << "The value of m: " << m << endl;)
-	};
+		m++; 
+	}
+	
 
-
-	//// --- Lets output the fertility schedule we have generated --- ////
-	int nr=0;
-	D(cout << endl << "The dates and age of birth are: " << endl;
-	cout << "I am going to have " << BirthChild.size() << " children." << endl;
-		while (nr<NrChildren){
-			cout << "Date " << nr << ": " << BirthChild.at(nr) << "\t\ Age " << nr << ": " << AgeBirthChild.at(nr) << endl;
-			nr++;
-		};)
-	};
-
+	}
 	E(cout << "We have finished assigning births!" << endl;)
 };
 
 	  
 
-
-void person::GetDateOfDeath(){						// --- Assign Date of death ---	// This is done by assigning life expactancy according to age in 1950
+// --- Assign Date of death ---	
+void person::GetDateOfDeath(){						// This is done by assigning life expactancy according to age in 1950
 
 	E(cout << "We are assigning deaths!" << endl;)
-	double OneMonth=(float)1 / (float)12;;				// Define length of a month for below
-
 	
+	double OneMonth=(float)1 / (float)12;;				// Define length of a month for below
+		
 	double DeathArray_Women[301][121]	= {
 	{0.144057991734569, 0.170144499205207, 0.195435969318822, 0.219956632394471, 0.243729980284826, 0.251384930248850, 0.258962396962945, 0.266463164711011, 0.273888009838443, 0.281237700832485, 0.285095871737630, 0.288933332760313, 0.292750195067003, 0.296546569227449, 0.300322565217882, 0.304347313757783, 0.308348910770990, 0.312327489431831, 0.316283182148578, 0.320216120567852, 0.324751376171650, 0.329256374300956, 0.333731316821959, 0.338176404254074, 0.342591835778928, 0.347722050081480, 0.352812229744636, 0.357862687186604, 0.362873732387572, 0.367845672908739, 0.373552798318204, 0.379208399473158, 0.384812941537517, 0.390366885475669, 0.395870688090392, 0.402110094048050, 0.408285059850369, 0.414396251030839, 0.420444326249364, 0.426429937363257, 0.433020801858813, 0.439535931064770, 0.445976195251500, 0.452342454689141, 0.458635559762511, 0.465439822807926, 0.472158564913748, 0.478792860969508, 0.485343772354740, 0.491812347108787, 0.499777690273248, 0.507618184493886, 0.515335786655476, 0.522932422970544, 0.530409989460124, 0.540403608146800, 0.550184546810023, 0.559757331617321, 0.569126392412211, 0.578296064764130, 0.591493093490871, 0.604277127335037, 0.616661090779597, 0.628657503841832, 0.640278494730898, 0.657491150478908, 0.673880181524030, 0.689484998266446, 0.704343125320691, 0.718490291750400, 0.739590344766800, 0.759108881323028, 0.777164441136111, 0.793866678992144, 0.809317030700284, 0.831132495883856, 0.850452119289195, 0.867561442669804, 0.882713339805715, 0.896131753948113, 0.914430617145044, 0.929505700149011, 0.941924948554268, 0.952156250823773, 0.960585065733834, 0.971281721959162, 0.979075456829092, 0.984754082181091, 0.988891608851749, 0.991906269247398, 0.994102793408933, 0.995703211949997, 0.996869299512990, 0.997718927388249, 0.998337978263436, 0.998789027478309, 0.999117668309609, 0.999357120663001, 0.999531589031153, 0.999658709149433, 0.999751330663825, 0.999818816007956, 0.999867986783260, 0.999903813304931, 0.999929917014851, 0.999948936546745, 0.999962794446430, 0.999972891507953, 0.999980248369651, 0.999985608683036, 0.999989514283110, 0.999992359958511, 0.999994433357817, 0.999995944065849, 0.999997044789067, 0.999997846791557, 0.999998431141903, 0.999998856907823, 0.999999167126888, 0.999999393156882, 0.999999557845529},
 	{0.144057991734569, 0.170144499205207, 0.195435969318822, 0.219956632394471, 0.243729980284826, 0.251384930248850, 0.258962396962945, 0.266463164711011, 0.273888009838443, 0.281237700832485, 0.285095871737630, 0.288933332760313, 0.292750195067003, 0.296546569227449, 0.300322565217882, 0.304347313757783, 0.308348910770990, 0.312327489431831, 0.316283182148578, 0.320216120567852, 0.324751376171650, 0.329256374300956, 0.333731316821959, 0.338176404254074, 0.342591835778928, 0.347722050081480, 0.352812229744636, 0.357862687186604, 0.362873732387572, 0.367845672908739, 0.373552798318204, 0.379208399473158, 0.384812941537517, 0.390366885475669, 0.395870688090392, 0.402110094048050, 0.408285059850369, 0.414396251030839, 0.420444326249364, 0.426429937363257, 0.433020801858813, 0.439535931064770, 0.445976195251500, 0.452342454689141, 0.458635559762511, 0.465439822807926, 0.472158564913748, 0.478792860969508, 0.485343772354740, 0.491812347108787, 0.499777690273248, 0.507618184493886, 0.515335786655476, 0.522932422970544, 0.530409989460124, 0.540403608146800, 0.550184546810023, 0.559757331617321, 0.569126392412211, 0.578296064764130, 0.591493093490871, 0.604277127335037, 0.616661090779597, 0.628657503841832, 0.640278494730898, 0.657491150478908, 0.673880181524030, 0.689484998266446, 0.704343125320691, 0.718490291750400, 0.739590344766800, 0.759108881323028, 0.777164441136111, 0.793866678992144, 0.809317030700284, 0.831132495883856, 0.850452119289195, 0.867561442669804, 0.882713339805715, 0.896131753948113, 0.914430617145044, 0.929505700149011, 0.941924948554268, 0.952156250823773, 0.960585065733834, 0.971281721959162, 0.979075456829092, 0.984754082181091, 0.988891608851749, 0.991906269247398, 0.994102793408933, 0.995703211949997, 0.996869299512990, 0.997718927388249, 0.998337978263436, 0.998789027478309, 0.999117668309609, 0.999357120663001, 0.999531589031153, 0.999658709149433, 0.999751330663825, 0.999818816007956, 0.999867986783260, 0.999903813304931, 0.999929917014851, 0.999948936546745, 0.999962794446430, 0.999972891507953, 0.999980248369651, 0.999985608683036, 0.999989514283110, 0.999992359958511, 0.999994433357817, 0.999995944065849, 0.999997044789067, 0.999997846791557, 0.999998431141903, 0.999998856907823, 0.999999167126888, 0.999999393156882, 0.999999557845529},
@@ -1053,46 +1000,36 @@ void person::GetDateOfDeath(){						// --- Assign Date of death ---	// This is d
 	int i=(DoB-1800);										// To find corresponding year of birth from mortality array
 	int j=0;												// This will be matched to probability taken from random number generator
 	double	d = ((double) rand() / (RAND_MAX)) ;			// get a random number to determine Life Expectancy
-	D(cout << "Death values for thi person: " << endl;
-	  cout << "The value of i is: " << i << " and DOB: " << DoB << endl;
-	  cout << "The value of d is; " << d << " and Sex: " << Sex << endl;);
-
+	
 	if (Sex==1){
 		while(d>DeathArray_Men[i][j] && j<121){j++;}
-		D(cout << "The value of j is: " << j << endl;);
 		DateOfDeath=(DoB+j);
 		while (DateOfDeath<*p_GT){							// Run this again if Death happens in the past (important for 1950)
-			D(cout << "We need to run this again" << endl;);
 			double	d = ((double) rand() / (RAND_MAX)) ;	// get a random number to determine Life Expectancy
 			while(d>DeathArray_Men[i][j] && j<121){j++;}
-			D(cout << "The value of j is: " << j << endl;);
-			DateOfDeath=(DoB+j);};
-		D(cout << "The value of Death is: " << DeathArray_Men[i][j] << " and Date of Death: " << DateOfDeath << endl;);	};
+			DateOfDeath=(DoB+j);}
+	}
 	
 	if (Sex==2) {
 		while(d>DeathArray_Women[i][j] && j<121){j++;}
 		DateOfDeath=(DoB+j);
 		while (DateOfDeath<*p_GT){							// Run this again if Death happens in the past (important for 1950)
-			D(cout << "We need to run this again" << endl;);
 			double	d = ((double) rand() / (RAND_MAX)) ;	// get a random number to determine Life Expectancy
 			while(d>DeathArray_Women[i][j] && j<121){j++;}
-			D(cout << "The value of j is: " << j << endl;);
 			DateOfDeath=(DoB+j);};
-		D(cout << "The value of Death is: " << DeathArray_Men[i][j] << " and Date of Death: " << DateOfDeath << endl;);	};	
-
+	}
 		AgeAtDeath=DateOfDeath-DoB;
 
 	E(cout << "We have finished assigning death dates!" << endl;)
 	
 }
-	
 
 
 //// --- FUNCTIONS FOR NEW ENTRY --- ////
 void person::GetMyDoBNewEntry(){							// --- Assign Age for New Entry ---
 	E(cout << "We are assigning births to babies!" << endl;)
 	Age=0;													// Set all new entries as 'newborns' 
-	DoB=(*p_GT-Age);
+	DoB=*p_GT;
 };
 
  

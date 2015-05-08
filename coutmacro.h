@@ -9,7 +9,7 @@
 
 	/* Macro header file */
 
-#define DEBUG_MODE			// Comment this out to stop D(x) x cout statement
+//#define DEBUG_MODE			// Comment this out to stop D(x) x cout statement
 
 #ifdef DEBUG_MODE
 #define D(x) x
