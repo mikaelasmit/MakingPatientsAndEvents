@@ -1,6 +1,5 @@
 /////////////////////////////////////////////////////////////////
 //    Created by Mikaela Smit on 07/11/2014.				   //	
-//    Copyright (c) 2014 Mikaela Smit. All rights reserved.    //
 //    These event are added to the EventQ.					   //
 /////////////////////////////////////////////////////////////////
 
@@ -9,21 +8,14 @@
 using namespace std;
 
 
-	//// --- Life Events ---
-	void EventMyDeathDate(person *MyPointerToPerson);
-	void EventTellAgeCohort(person *MyPointerToPerson);
+//// ---- NOTE: Think about having different types of events ----
 
+	//// --- Demographic Events ---
+	void EventMyDeathDate(person *MyPointerToPerson);			// Add deaths to eventQ
+	void EventBirth(person *MyPointerToPerson);					// Add births to EventQ
 	
-	//// --- Birth ---
-	void EventBirth(person *MyPointerToPerson);
-	void EventStopBreastfeeding(person *MyPointerToPerson);
-	void EventBirthForTheYear(person *MyPointerToPerson);
-	void EventTellBirthByAge(person *MyPointerToPerson);
-
-	//// --- New Year ---
-	void EventTellNewYear(person *MyPointerToPerson);					// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!
-
-
-	//// --- HIV Events --- 
-	double GetDateOfHIVInfection(int x, int y);							// Function to get date of HIV infection
-	void EventMyHivStatus(person *MyPointerToPerson);					// Function to be executed when HIV infection occurs
+	
+	//// --- Calendar Events ---
+	void EventTellNewYear(person *MyPointerToPerson);			// Tell us when a new year start an update calendar-related items
+	
+	

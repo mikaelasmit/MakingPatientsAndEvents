@@ -1,6 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
 //    Created by Mikaela Smit on 07/11/2014.							 //
-//    Copyright (c) 2014 Mikaela Smit. All rights reserved.				 //
 //    This script provides properties of 'events' added to the EventQ.   // 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +18,7 @@ public:
 
 	event();											// Class constructor
  	
- 	double time;	
+	double time;	
 
  	void (*p_fun)(person *MyPointerToPerson);			// Function pointer - when an event is called in the Q it can point to what functions need to be executed e.g. If person gets pos HIVTest tell him to schedule GP appointment
 														// [...] the bit inside the brackets "(person *MyPointerToPerson) means function can carry argument which is pointer 'pointer' to class 'person'.  

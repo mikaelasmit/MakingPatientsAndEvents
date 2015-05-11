@@ -1,6 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////////
 //    Created by Mikaela Smit on 30/10/2014.									  //
-//    Copyright (c) 2014 Mikaela Smit. All rights reserved.						  //
 //    This script is to make the EventQ itself.       							  //
 //    N.B. can add personalised 'push' 'pop' etc here as Jack did if necessary.   //
 ////////////////////////////////////////////////////////////////////////////////////
