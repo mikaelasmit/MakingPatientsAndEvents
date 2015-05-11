@@ -13,12 +13,12 @@ using namespace std;
 
 
 //// --- CREATING PEOPLE --- ////
-
 class person{										// Classes are considered private unless stated otherwise 
 public:
     
     person();										// Class constructor or calling function for person
-    
+	~person(); 
+
 
 //// --- Persons Characteristics --- ////
 	int PersonID;									// Basic variables
@@ -35,6 +35,10 @@ public:
     double DateOfDeath;								// Variables related to death
 	int Alive;
 	int AgeAtDeath;
+
+	int HIV;										// Variables related to HIV
+	int CD4;
+	int ART;
 
 	
 //// --- FUNCTIONS --- ////		

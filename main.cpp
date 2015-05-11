@@ -62,7 +62,12 @@ int total_population=init_pop;												// Update total population for output 
 
 priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing  as a result of 'primary' events in the queue, e.g. recurrent birthdays
 person** MyArrayOfPointersToPeople = new person*[final_number_people];		// First 'person*' is a pointer (address) and 'new person' and space for x person which will point to actual person below
-																			// Have to now change [init_pop] to [final_number_people] to give the final size of 'matrix'
+
+
+//vector<event *> Events;														// vector<class*>name
+
+
+// Have to now change [init_pop] to [final_number_people] to give the final size of 'matrix'
 
 
 //// --- RUN THE MAIN MODEL ---
@@ -85,15 +90,19 @@ int main(){
 	priority_queue<event*, vector<event*>, timeComparison> iQ;				// Define th ePriority Q
 	p_PQ=&iQ;																// Define pointer to event Q
 	p_PY=&PY;
-	
+	//Events.resize(300000);
 	
 	//// --- Making Population---
 	cout << "We got to section 1 - We are going to create a population" << endl;
-	for(int i=0; i<final_number_people; i++){								// REMEMBER: this needs to stay "final_number_people" or it will give error with CSV FILES!!!!
+	for(int i=0; i<total_population; i++){								// REMEMBER: this needs to stay "final_number_people" or it will give error with CSV FILES!!!!
 		MyArrayOfPointersToPeople[i]=new person();							// The 'new person' the actual new person
-		
 		int a=i;
-		(MyArrayOfPointersToPeople[i])->PersonIDAssign(a);					// --- Assign PersonID ---
+		(MyArrayOfPointersToPeople[i])->PersonIDAssign(a);	
+	}
+	
+	for(int i=0; i<total_population; i++){
+		/*int a=i;
+		(MyArrayOfPointersToPeople[i])->PersonIDAssign(a);	*/				// --- Assign PersonID ---
 
 		(MyArrayOfPointersToPeople[i])->Alive=1;							// --- Assign Life Status ---
 
@@ -110,7 +119,7 @@ int main(){
 
 
 	//// --- EVENTQ ---
-	cout << "We got to section 3 - We are going to create events" << endl;
+	cout << "We got to section 3 - We are going to add events to the EventQ" << endl;
 
 	// Let go through every person and feed in all their events
 	for (int i = 0; i < total_population; i++){
@@ -122,7 +131,8 @@ int main(){
 			int index = 0;
 			while (index < size){
 				if (MyArrayOfPointersToPeople[i]->DatesBirth.at(index) >= *p_GT){
-					event * BabyBirth = new event;												
+					event * BabyBirth = new event;
+					//Events.push_back(BabyBirth);
 					BabyBirth->time = MyArrayOfPointersToPeople[i]->DatesBirth.at(index);
 					BabyBirth->p_fun = &EventBirth;
 					BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
@@ -134,7 +144,8 @@ int main(){
 		}
 
 	// 2. Lets feed death into the eventQ
-		event * DeathEvent = new event;												
+		event * DeathEvent = new event;	
+		//Events.push_back(DeathEvent);
 		DeathEvent->time = MyArrayOfPointersToPeople[i]->DateOfDeath;													
 		DeathEvent->p_fun = &EventMyDeathDate;
 		DeathEvent->person_ID = MyArrayOfPointersToPeople[i];
@@ -146,12 +157,15 @@ int main(){
 
 	// Lets feed in calendar update
 	event * TellNewYear = new event;											// --- Tell me every time  a new year start ---
+	//Events.push_back(TellNewYear);
 	TellNewYear->time = StartYear;													// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
 	TellNewYear->p_fun = &EventTellNewYear;
 	iQ.push(TellNewYear);
 
+	//cout << "Event " << Events.size() << " is " << Events.at(0)->time << endl;
 
 
+	cout << "We got to section 4 - Lets run the EventQ" << endl;
 	////// --- GIVE OUTPUT OF QUEUE AS IT HAPPENS --- ////
 	cout << endl << endl << "The characteristics of the event queue:" << endl;
 	cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
@@ -182,10 +196,23 @@ int main(){
 	fclose(csv_out);
 
 
-	///// !!!! NOTE: Still need to delete Event Q!!!!!!
-	//float * ptrtomyfloat = new float;
-	//delete ptrtomyfloat;
+	//// Delete Event
+	//cout << "Lets delete the heap! " << endl;
+	//for(int i=0; i<Events.size()-1; i++){
+	//	E(cout << "Event " << Events.size() << " is " << Events.at(i)->time << endl;)
+	//	delete Events.at(i);
+	//	E(cout << "Event " << Events.size() << " is " << Events.at(i)->time << endl;)
+	//}
 
+	//for(int i=0; i<total_population; i++){								// REMEMBER: this needs to stay "final_number_people" or it will give error with CSV FILES!!!!
+	//	//cout << endl << "I: " << i <<"\nTotal population: " << total_population << "\tPersonID: " << MyArrayOfPointersToPeople[i]->PersonID << endl;
+	//	delete MyArrayOfPointersToPeople[i];								// The 'new person' the actual new person
+	//	//cout << "Total population: "<< total_population << endl;
+	//	//cout << "\tPersonID: " << MyArrayOfPointersToPeople[i]->PersonID << endl;
+	//}
+
+
+	
 	// --- End of code ---
     cout << endl << "Hi Jack, so sorry\n";
 	system("pause");
