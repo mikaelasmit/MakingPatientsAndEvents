@@ -1,0 +1,53 @@
+﻿Build started 5/13/2015 5:20:51 PM.
+     1>Project "C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\MakingPatientsAndEvents\MakingPatientsAndEvents.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\MakingPatientsAndEvents.unsuccessfulbuild".
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt event.cpp eventfunctions.cpp eventQ.cpp main.cpp person.cpp
+         person.cpp
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\person.cpp(114): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\person.cpp(124): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\person.cpp(125): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\person.cpp(334): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\person.cpp(1057): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+         main.cpp
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\main.cpp(89): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\main.cpp(144): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
+     1>c:\users\mc1405\documents\visual studio 2010\projects\makingpatientsandevents\makingpatientsandevents\main.cpp(171): warning C4018: '<' : signed/unsigned mismatch
+         eventQ.cpp
+         eventfunctions.cpp
+         event.cpp
+         Generating Code...
+       ManifestResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\MakingPatientsAndEvents.exe.embed.manifest.res" Debug\MakingPatientsAndEvents_manifest.rc 
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\Debug\MakingPatientsAndEvents.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\MakingPatientsAndEvents.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\Debug\MakingPatientsAndEvents.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\Debug\MakingPatientsAndEvents.lib" /MACHINE:X86 /PROFILE Debug\MakingPatientsAndEvents.exe.embed.manifest.res
+         Debug\event.obj
+         Debug\eventfunctions.obj
+         Debug\eventQ.obj
+         Debug\main.obj
+         Debug\person.obj
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/PROFILE' specification
+     1>event.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:REF' specification
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\MakingPatientsAndEvents.exe.embed.manifest" /manifest Debug\MakingPatientsAndEvents.exe.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\MakingPatientsAndEvents.exe.embed.manifest.res" Debug\MakingPatientsAndEvents_manifest.rc 
+       LinkEmbedManifest:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\Debug\MakingPatientsAndEvents.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\MakingPatientsAndEvents.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\Debug\MakingPatientsAndEvents.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\Debug\MakingPatientsAndEvents.lib" /MACHINE:X86 /PROFILE Debug\MakingPatientsAndEvents.exe.embed.manifest.res
+         Debug\event.obj
+         Debug\eventfunctions.obj
+         Debug\eventQ.obj
+         Debug\main.obj
+         Debug\person.obj
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/PROFILE' specification
+     1>event.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:REF' specification
+         MakingPatientsAndEvents.vcxproj -> C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\Debug\MakingPatientsAndEvents.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\MakingPatientsAndEvents.unsuccessfulbuild".
+         Touching "Debug\MakingPatientsAndEvents.lastbuildstate".
+     1>Done Building Project "C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\MakingPatientsAndEvents\MakingPatientsAndEvents.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.78

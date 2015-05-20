@@ -1,0 +1,42 @@
+﻿Build started 5/20/2015 6:32:18 PM.
+     1>Project "C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\MakingPatientsAndEvents\MakingPatientsAndEvents.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "x64\Release\MakingPatientsAndEvents.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt event.cpp eventfunctions.cpp eventQ.cpp main.cpp person.cpp
+         event.cpp
+         eventfunctions.cpp
+     1>eventfunctions.cpp(108): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+         eventQ.cpp
+         main.cpp
+     1>main.cpp(96): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>main.cpp(150): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
+         person.cpp
+     1>person.cpp(42): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
+     1>person.cpp(54): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
+     1>person.cpp(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
+     1>person.cpp(172): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>person.cpp(174): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>person.cpp(175): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>person.cpp(270): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>person.cpp(292): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+         Generating Code...
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\x64\Release\MakingPatientsAndEvents.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /DEBUG /PDB:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\x64\Release\MakingPatientsAndEvents.pdb" /SUBSYSTEM:CONSOLE /OPT:NOREF /OPT:NOICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\x64\Release\MakingPatientsAndEvents.lib" /MACHINE:X64 x64\Release\event.obj
+         x64\Release\eventfunctions.obj
+         x64\Release\eventQ.obj
+         x64\Release\main.obj
+         x64\Release\person.obj
+         MakingPatientsAndEvents.vcxproj -> C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\x64\Release\MakingPatientsAndEvents.exe
+       FinalizeBuildStatus:
+         Deleting file "x64\Release\MakingPatientsAndEvents.unsuccessfulbuild".
+         Touching "x64\Release\MakingPatientsAndEvents.lastbuildstate".
+     1>Done Building Project "C:\Users\mc1405\Documents\Visual Studio 2010\Projects\MakingPatientsAndEvents\MakingPatientsAndEvents\MakingPatientsAndEvents.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.69

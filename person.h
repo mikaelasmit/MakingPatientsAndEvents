@@ -10,9 +10,9 @@
 
 using namespace std;
 
-//void loadBirthArray();
-//void loadDeathArray_Women();
-//void loadDeathArray_Men();
+void loadBirthArray();
+void loadDeathArray_Women();
+void loadDeathArray_Men();
 
 
 //// --- CREATING PEOPLE --- ////

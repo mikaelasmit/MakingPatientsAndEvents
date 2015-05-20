@@ -77,9 +77,9 @@ int main(){
 
 	//// Load relevant parameters
 	cout << "Loading all parameter arrays" << endl;
-	//loadBirthArray();
-	//loadDeathArray_Women();
-	//loadDeathArray_Men();
+	loadBirthArray();
+	loadDeathArray_Women();
+	loadDeathArray_Men();
 	cout << "Done, arrays are loaded!" << endl;
 	 
 
