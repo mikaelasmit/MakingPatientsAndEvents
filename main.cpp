@@ -81,7 +81,7 @@ int main(){
 	//loadDeathArray_Women();
 	//loadDeathArray_Men();
 	cout << "Done, arrays are loaded!" << endl;
-
+	 
 
 	//// Some notification code
 	D(cout << "NOTE: The Debug Macro is working" << endl << endl;);

@@ -63,7 +63,7 @@ void EventTellNewYear(person *MyPointerToPerson){
 
   E(cout << "We have finished telling you the new year and setting fertility variables for the year." << endl;)		 
 } 
-
+ 
 
 //// --- DEATH EVENT --- ////	
 void EventMyDeathDate(person *MyPointerToPerson){						

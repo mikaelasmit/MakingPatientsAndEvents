@@ -1112,7 +1112,7 @@ void person::GetDateOfDeath(){						// This is done by assigning life expactancy
 
 	E(cout << "We have finished assigning death dates!" << endl;)
 	
-}
+} 
 
 
 //// --- FUNCTIONS FOR NEW ENTRY --- ////
