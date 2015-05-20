@@ -4,7 +4,7 @@
 /////////////////////////////////////////////////////////////////
 
 
-#ifndef person_h	 								// If not defined then defines it  # are pre-compiler definitions
+#ifndef person_h									// If not defined then defines it  # are pre-compiler definitions
 #define person_h	
 #include <vector>
 
@@ -16,12 +16,12 @@ void loadDeathArray_Men();
 
 
 //// --- CREATING PEOPLE --- ////
+
 class person{										// Classes are considered private unless stated otherwise 
 public:
     
     person();										// Class constructor or calling function for person
-	//~person(); 
-
+    
 
 //// --- Persons Characteristics --- ////
 	int PersonID;									// Basic variables
@@ -34,17 +34,14 @@ public:
 	vector<person*> ChildIDVector;					// ChildIDVector is its name <now holds 'people pointer'> of type vector which is the structure
 	vector<double> DatesBirth;						// Hold dates of the birth of all children - vector
 	
+	
     double DateOfDeath;								// Variables related to death
 	int Alive;
 	int AgeAtDeath;
 
-	int HIV;										// Variables related to HIV
-	int CD4;
-	int ART;
-
 	
 //// --- FUNCTIONS --- ////		
-		 
+		
 
 	// --- Functions related to People ---
 	void PersonIDAssign(int x);						// Function to get Person ID
@@ -72,5 +69,3 @@ public:
 };	
 
 #endif
-
-
