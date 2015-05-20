@@ -287,7 +287,7 @@ void person::GetDateOfDeath(){						// This is done by assigning life expactancy
 			double	d = ((double) rand() / (RAND_MAX)) ;	// get a random number to determine Life Expectancy
 			while(d>DeathArray_Women[i][j] && j<121){j++;}
 			DateOfDeath=(DoB+j);};
-	}
+	} 
 		
 		AgeAtDeath=DateOfDeath-DoB;
 			

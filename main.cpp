@@ -162,7 +162,7 @@ int main(){
 			);}
 	fclose(csv_out);
 	 
-	
+	 
 
 	//// --- LETS AVOID MEMORY LEAKS AND DELETE ALL NEW EVENTS --- ////
 	cout << "Lets delete the heap! " << endl;

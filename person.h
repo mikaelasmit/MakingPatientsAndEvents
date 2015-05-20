@@ -44,7 +44,7 @@ public:
 
 	
 //// --- FUNCTIONS --- ////		
-		
+		 
 
 	// --- Functions related to People ---
 	void PersonIDAssign(int x);						// Function to get Person ID
