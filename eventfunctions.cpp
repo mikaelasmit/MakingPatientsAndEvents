@@ -92,7 +92,7 @@ void EventBirth(person *MyPointerToPerson){
 		(MyArrayOfPointersToPeople[total_population-1])->GetDateOfDeath();
 		(MyArrayOfPointersToPeople[total_population-1])->GetDateOfBaby();
 
-	
+	 
 		// Include death of baby into Event Q
 		event * DeathEvent = new event;
 		//Events.push_back(DeathEvent);
