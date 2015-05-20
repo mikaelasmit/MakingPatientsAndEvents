@@ -73,7 +73,7 @@ vector<event *> Events;														// vector<class*>name
 //// --- RUN THE MAIN MODEL ---
 int main(){
 	cout << "Hello, Mikaela!" << endl << endl ;	// Check if model is running
-	
+	 
 
 	//// Load relevant parameters
 	cout << "Loading all parameter arrays" << endl;

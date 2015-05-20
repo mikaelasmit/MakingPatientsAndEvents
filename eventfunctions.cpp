@@ -62,7 +62,7 @@ void EventTellNewYear(person *MyPointerToPerson){
 	p_PQ->push(RecurrentTellNewYear);
 
   E(cout << "We have finished telling you the new year and setting fertility variables for the year." << endl;)		 
-}
+} 
 
 
 //// --- DEATH EVENT --- ////	
