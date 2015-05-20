@@ -26,7 +26,7 @@ extern priority_queue<event*, vector<event*>, timeComparison> *p_PQ;	// Tell thi
 extern int total_population;											// Update total population for output and for next new entry
 extern person** MyArrayOfPointersToPeople;								// Pointer to MyArrayOfPointersToPeople
 extern int *p_PY;														// Pointer to show which year range we are on
-//extern vector<event*> Events;
+extern vector<event*> Events;
 
 
 
@@ -56,15 +56,12 @@ void EventTellNewYear(person *MyPointerToPerson){
 
 	// Schedule event for next year
 	event * RecurrentTellNewYear = new event;
-	//Events.push_back(RecurrentTellNewYear);
+	Events.push_back(RecurrentTellNewYear);
 	RecurrentTellNewYear->time = *p_GT + 1;													
 	RecurrentTellNewYear->p_fun = &EventTellNewYear;
 	p_PQ->push(RecurrentTellNewYear);
 
-	//cout << "Event " << Events.size() << " is " << Events.at(Events.size()-1)->time << endl;
-	
-
-	E(cout << "We have finished telling you the new year and setting fertility variables for the year." << endl;)		 
+  E(cout << "We have finished telling you the new year and setting fertility variables for the year." << endl;)		 
 }
 
 
@@ -79,7 +76,7 @@ void EventMyDeathDate(person *MyPointerToPerson){
 void EventBirth(person *MyPointerToPerson){								
 
 	E(cout << "A birth is about to happen and my life status: " << endl;)
-	
+		
 	if(MyPointerToPerson->Alive == 1) {										// Only let woman give birth if she is still alive 
 	
 		total_population=total_population+1;								// Update total population for output and for next new entry
@@ -107,11 +104,12 @@ void EventBirth(person *MyPointerToPerson){
 
 
 		// Include future births of this new baby that has just been created into EventQ
+
 		int NrChildren=MyArrayOfPointersToPeople[total_population-1]->DatesBirth.size();	// Find number of children woman will have 
 		for (int i = 0; i < NrChildren; i++){												// Add each of babies a woman will have to the EventQ
 			if (MyArrayOfPointersToPeople[total_population-1]->DatesBirth.at(i) >= *p_GT){	// Only add the ones that are in future to EventQ
 				event * BabyBirth = new event;												
-				//Events.push_back(BabyBirth);
+				Events.push_back(BabyBirth);
 				BabyBirth->time = MyArrayOfPointersToPeople[total_population-1]->DatesBirth.at(i);
 				BabyBirth->p_fun = &EventBirth;
 				BabyBirth->person_ID = MyArrayOfPointersToPeople[total_population-1];
@@ -120,7 +118,6 @@ void EventBirth(person *MyPointerToPerson){
 				}
 		}
 	
-
 		// Link Mother and Child
 		(MyArrayOfPointersToPeople[total_population-1])->MotherID=MyPointerToPerson->PersonID;			// Give child their mothers ID
 		MyPointerToPerson->ChildIDVector.push_back((MyArrayOfPointersToPeople[total_population-1]));	// Give mothers their child's ID

@@ -10,6 +10,9 @@
 
 using namespace std;
 
+//void loadBirthArray();
+//void loadDeathArray_Women();
+//void loadDeathArray_Men();
 
 
 //// --- CREATING PEOPLE --- ////
@@ -17,7 +20,7 @@ class person{										// Classes are considered private unless stated otherwise
 public:
     
     person();										// Class constructor or calling function for person
-	~person(); 
+	//~person(); 
 
 
 //// --- Persons Characteristics --- ////
@@ -30,7 +33,6 @@ public:
 	int MotherID;									// Holds ID of the mother
 	vector<person*> ChildIDVector;					// ChildIDVector is its name <now holds 'people pointer'> of type vector which is the structure
 	vector<double> DatesBirth;						// Hold dates of the birth of all children - vector
-	
 	
     double DateOfDeath;								// Variables related to death
 	int Alive;
@@ -70,3 +72,5 @@ public:
 };	
 
 #endif
+
+

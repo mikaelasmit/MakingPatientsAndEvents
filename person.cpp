@@ -16,12 +16,80 @@
 #include"errorcoutmacro.h"
 #include "coutmacro.h"
 #include "demographmacro.h"
+#include "eventQ.h"
 
 
 //// --- OUTSIDE INFORMATION --- ////
 extern double *p_GT;								// Tell this .cpp that there is pointer to Global Time defined externally 
 extern double StartYear;							// Include Start Year so only have to change it once in main()
 extern int *p_PY;									// Pointer to show which year range we are on
+extern priority_queue<event*, vector<event*>, timeComparison> *p_PQ;	// Tell this .cpp that there is a priorty_queue externall and define pointer to it
+extern vector<event*> Events;
+extern person** MyArrayOfPointersToPeople;								// Pointer to MyArrayOfPointersToPeople
+
+
+//// --- INSIDE INFORMATION TO BE GLOBALLY AVAILABLE --- ////
+double** BirthArray;
+double** DeathArray_Women;
+double** DeathArray_Men;
+double NrChildrenArray[3][200] = {				// Min first, second Max, third proportion with min and max children
+		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+		{8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+		{0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.49, 0.49, 0.49, 0.49, 0.50, 0.51, 0.51, 0.52, 0.53, 0.54, 0.56, 0.57, 0.58, 0.60, 0.62, 0.64, 0.66, 0.68, 0.70, 0.72, 0.74, 0.77, 0.79, 0.81, 0.82, 0.84, 0.86, 0.88, 0.88, 0.87, 0.87, 0.87, 0.87, 0.85, 0.84, 0.83, 0.81, 0.80, 0.71, 0.62, 0.53, 0.44, 0.35, 0.25, 0.15, 0.06, 0.96, 0.86, 0.73, 0.60, 0.47, 0.34, 0.21, 0.10, 0.99, 0.88, 0.77, 0.66, 0.58, 0.51, 0.43, 0.36, 0.28, 0.22, 0.16, 0.10, 0.03, 0.97, 0.95, 0.93, 0.91, 0.89, 0.87, 0.86, 0.85, 0.84, 0.83, 0.82, 0.82, 0.81, 0.81, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80}
+};
+	
+//void loadBirthArray() {							// Load birth array
+//  FILE* f = fopen("birth_array.bin","rb");
+//  BirthArray = new double*[200];
+//  for (int i=0; i<200; i++) {
+//    BirthArray[i]=new double[35];
+//	for (int j=0; j<35; j++) {
+//	  fread(&BirthArray[i][j],8,1,f);
+//	}
+//  }
+//  fclose(f);
+//}
+//
+//void loadDeathArray_Women() {					// Load Death Array for women
+//  FILE* f = fopen("mortality_array_women.bin","rb");
+//  DeathArray_Women = new double*[301];
+//  for (int i=0; i<301; i++) {
+//    DeathArray_Women[i]=new double[121];
+//	for (int j=0; j<121; j++) {
+//	  fread(&DeathArray_Women[i][j],8,1,f);
+//	}
+//  }
+//  fclose(f);
+//}
+//
+//void loadDeathArray_Men() {						// Load Death Array for men
+//  FILE* f = fopen("mortality_array_men.bin","rb");
+//  DeathArray_Men = new double*[301];
+//  for (int i=0; i<301; i++) {
+//    DeathArray_Men[i]=new double[121];
+//	for (int j=0; j<121; j++) {
+//	  fread(&DeathArray_Men[i][j],8,1,f);
+//	}
+//  }
+//  fclose(f);
+//}
+
+// HERE's some code to dump the array to a binary file.  
+// INSTRUCTIONS:
+//1. This needs to be placed just after the array to be able to copy it to file.  
+//2. Put a breakpoint just after to avoid wasteing time running whole model
+//3. Then remove array and this code and include the above code to load it
+//4. Add reference to file in main and person.h, too
+
+//FILE* f = fopen("mortality_array_men.bin","wb");
+ //   for (int i=0; i<301; i++) {
+	//  for (int j=0; j<121; j++) {
+	//	  fwrite(&DeathArray_Men[i][j],8,1,f);
+	//  }
+ //   }
+ //   fclose(f);
+	//cout << "We finished making the csv file" << endl;
+
 
 int RandomMinMax(int min, int max){					// Provide function for random number generator between min and max number 
 	return rand()%(max-min+1)+min;					// !!!!Note: if min=0 and max=4 it will generate 0,1,2,3,4
@@ -41,22 +109,11 @@ person::person()									// First 'person' class second constructor/variable and
 	MotherID=-999;									// Dummy value (i.e. those born before 1950 will not have the ID of mother)
 	ChildIDVector.resize(0);						// Vector to store pointer to children.  Make sure it's starting size is 0 at the beginning
 	DatesBirth.resize(0);							// This will be used to push in all births of every child
-		
+			
 	DateOfDeath=9999;								// --- Varibles related to death ---
 	AgeAtDeath=-999;								// NOTE: VERY IMPORTANT this number needs to be HIGH as it entres EventQ
 	Alive=-999;										// Variable to update eventQ - global check to see if person is still alive
-
-	HIV=-999;										// Variables related to HIV
-	CD4=999;
-	ART=-999;
 }
-
-person::~person()
-{
-	//if(qqq!=NULL)
-	//	delete qqq; 
-}
-
 
 //// --- FUNCTION TO ASSIGN CHARACTERISTIC FOR INITIAL POPULATION --- ////
 
@@ -100,31 +157,26 @@ void person::GetMyDoB(){
 }
 
 
-// --- Get Dates of all my future babies ---
+////--- Get Dates of all my future babies ---
 void person::GetDateOfBaby(){						// This method already calculates the child's month of birth by providing a year of birth with decimal
 	
 	E(cout << "We are assigning Births!" << endl;)
 
+
 	Age= (*p_GT - DoB);								// Update age ... just in case
 	if (Sex == 2 && Alive == 1 && Age<50 && AgeAtDeath>=15){
 	
+
 	//// --- Lets first see how many children I will have --- ////
 	double r_nr=RandomMinMax(0,100)*0.01;			// To get a random number to later assign whether a woman gets min or max nr of children for time period
 	int index=DoB-1901+15;							// index for large arrays, related to year the patient will be 15 and ready for birth
 	int NrChildren;
-
-	double NrChildrenArray[3][200] = {				// Min first, second Max, third proportion with min and max children
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-		{8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-		{0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.48, 0.49, 0.49, 0.49, 0.49, 0.50, 0.51, 0.51, 0.52, 0.53, 0.54, 0.56, 0.57, 0.58, 0.60, 0.62, 0.64, 0.66, 0.68, 0.70, 0.72, 0.74, 0.77, 0.79, 0.81, 0.82, 0.84, 0.86, 0.88, 0.88, 0.87, 0.87, 0.87, 0.87, 0.85, 0.84, 0.83, 0.81, 0.80, 0.71, 0.62, 0.53, 0.44, 0.35, 0.25, 0.15, 0.06, 0.96, 0.86, 0.73, 0.60, 0.47, 0.34, 0.21, 0.10, 0.99, 0.88, 0.77, 0.66, 0.58, 0.51, 0.43, 0.36, 0.28, 0.22, 0.16, 0.10, 0.03, 0.97, 0.95, 0.93, 0.91, 0.89, 0.87, 0.86, 0.85, 0.84, 0.83, 0.82, 0.82, 0.81, 0.81, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80}
-		};
-	
 	if (r_nr<NrChildrenArray[2][index]){NrChildren=NrChildrenArray[0][index];}
 	if (r_nr>=NrChildrenArray[2][index]){NrChildren=NrChildrenArray[1][index];}
 	
 	
-	//// --- Lets see when I will having all my children --- ////
-	/*double BirthArray[200][35]	= {
+	// --- Lets see when I will having all my children --- ////
+	double BirthArray[200][35]	= {
 	{0.02260, 0.04520, 0.06780, 0.09040, 0.11300, 0.16000, 0.20700, 0.25400, 0.30100, 0.34800, 0.39320, 0.43840, 0.48360, 0.52880, 0.57400, 0.61200, 0.65000, 0.68800, 0.72600, 0.76400, 0.79120, 0.81840, 0.84560, 0.87280, 0.90000, 0.91480, 0.92960, 0.94440, 0.95920, 0.97400, 0.97920, 0.98440, 0.98960, 0.99480, 1},
 	{0.02260, 0.04520, 0.06780, 0.09040, 0.11300, 0.16000, 0.20700, 0.25400, 0.30100, 0.34800, 0.39320, 0.43840, 0.48360, 0.52880, 0.57400, 0.61200, 0.65000, 0.68800, 0.72600, 0.76400, 0.79120, 0.81840, 0.84560, 0.87280, 0.90000, 0.91480, 0.92960, 0.94440, 0.95920, 0.97400, 0.97920, 0.98440, 0.98960, 0.99480, 1},
 	{0.02260, 0.04520, 0.06780, 0.09040, 0.11300, 0.16000, 0.20700, 0.25400, 0.30100, 0.34800, 0.39320, 0.43840, 0.48360, 0.52880, 0.57400, 0.61200, 0.65000, 0.68800, 0.72600, 0.76400, 0.79120, 0.81840, 0.84560, 0.87280, 0.90000, 0.91480, 0.92960, 0.94440, 0.95920, 0.97400, 0.97920, 0.98440, 0.98960, 0.99480, 1},
@@ -325,8 +377,9 @@ void person::GetDateOfBaby(){						// This method already calculates the child's
 	{0.02088, 0.04176, 0.06264, 0.08352, 0.10440, 0.15324, 0.20208, 0.25092, 0.29976, 0.34860, 0.39622, 0.44384, 0.49146, 0.53908, 0.58670, 0.62338, 0.66006, 0.69674, 0.73342, 0.77010, 0.79670, 0.82330, 0.84990, 0.87650, 0.90310, 0.91462, 0.92614, 0.93766, 0.94918, 0.96070, 0.96856, 0.97642, 0.98428, 0.99214, 1},
 	{0.02088, 0.04176, 0.06264, 0.08352, 0.10440, 0.15324, 0.20208, 0.25092, 0.29976, 0.34860, 0.39622, 0.44384, 0.49146, 0.53908, 0.58670, 0.62338, 0.66006, 0.69674, 0.73342, 0.77010, 0.79670, 0.82330, 0.84990, 0.87650, 0.90310, 0.91462, 0.92614, 0.93766, 0.94918, 0.96070, 0.96856, 0.97642, 0.98428, 0.99214, 1},
 	{0.02088, 0.04176, 0.06264, 0.08352, 0.10440, 0.15324, 0.20208, 0.25092, 0.29976, 0.34860, 0.39622, 0.44384, 0.49146, 0.53908, 0.58670, 0.62338, 0.66006, 0.69674, 0.73342, 0.77010, 0.79670, 0.82330, 0.84990, 0.87650, 0.90310, 0.91462, 0.92614, 0.93766, 0.94918, 0.96070, 0.96856, 0.97642, 0.98428, 0.99214, 1},
-	};*/
+	};
 
+	// CSV File with fertility array is read in elsewhere
 	int m=0;														// Count of how many children I will have - can be used to manage ChildVector and loop
 	double DateOfBirthTest=-9999;
 	int ChildBearingYears=AgeAtDeath-15;
@@ -334,88 +387,89 @@ void person::GetDateOfBaby(){						// This method already calculates the child's
 	
 	//// --- Just in case the person is going to die early, lets let her have as many kdis as possible first --- ////
 	if(ChildBearingYears<NrChildren){
-		NrChildren=ChildBearingYears;
-	}
-
-	DateOfBirthTest=DoB + 15;
-	DatesBirth.push_back(DateOfBirthTest);
-
-	while (m<NrChildren){
-
-		DateOfBirthTest=DateOfBirthTest++;
-		//cout << "Date of birth " << m << " is " << DateOfBirthTest << endl;
-		DatesBirth.push_back(DateOfBirthTest);
-		m++;
-	}
-
-	//int i=0;
-	////cout << "I will have " << NrChildren << " children and my Dob is: " << DoB << endl;
-	//	while (i<DatesBirth.size()){
-	//		//cout << "Child nr " << i+1 << " will be born in: " << DatesBirth.at(i) << endl;
-	//		i++;
-	//	}
+		NrChildren=ChildBearingYears;}
+	
 
 	//// --- Let's see when the first birth will happen and check it doesn' ocurr before death --- ////
-	//while (m<NrChildren){
-	//	double	f = ((double)rand() / (RAND_MAX));					// Get random fertility value
-	//	int j=0;
-	//	while (f>BirthArray[index][j] && j<35){ j++; };				// Find out in which age group I will have my child
-	//	
-	//	DateOfBirthTest = DoB + 15 +j;
-	//	
-	//	
-	//	while (DateOfBirthTest>DateOfDeath){						// Run this loop in case birth ocurrs before birth
-	//		double	f = ((double)rand() / (RAND_MAX));
-	//		int j = 0;
-	//		while (f>BirthArray[index][j] && j<35){ j++; };
-	//		DateOfBirthTest = DoB + 15+j;
+	while (m<NrChildren){
+		
+		double	f = ((double)rand() / (RAND_MAX));					// Get random fertility value
+		int j=0;
+		while (f>BirthArray[index][j] && j<35){j++;};				// Find out in which age group I will have my child
+		DateOfBirthTest = DoB + 15 +j;								// Set the date of birth dummer - this will be checked and then added to the vector containing births of babies
+				
+		while (DateOfBirthTest>=DateOfDeath){						// Run this loop in case birth ocurrs before birth
+			double	f = ((double)rand() / (RAND_MAX));
+			int j = 0;
+			while (f>BirthArray[index][j] && j<35){j++;};
+			DateOfBirthTest = DoB + 15+j;
+		};
 
-	//		};
+		DatesBirth.push_back(DateOfBirthTest);						// Once we checked birth doesn't happen before birth lets push that in
+			  	
+		
+		//// --- Lets check if I am already giving birth at this age --- ////
+		if (DatesBirth.size()>1){									// Only need to check if there are already more than 1 child
+			int n=0;												// Index to count past births with this newly assigned birth
+			
+			while (n<m){
+				double Diff_1 = DatesBirth.at(n) - DatesBirth.at(m);	// This Diff is the original difference
+				double Diff_2 = DatesBirth.at(n) - DatesBirth.at(m);	// This Diff is the new one if new one is needed.  
+																		// [...] If both the same we can move on, if not we need to check the new Birth against births 1 to max again
+				while ((DatesBirth.at(n) - DatesBirth.at(m) > -0.75 && DatesBirth.at(n) - DatesBirth.at(m)<0.75) || DatesBirth.at(m)>=DateOfDeath){
+						double	f = ((double)rand() / (RAND_MAX));
+						int j = 0;
+						while (f>BirthArray[*p_PY][j] && j<35){ j++; };
+						
+						DateOfBirthTest = DoB + 15+j;
+						DatesBirth.at(m)=DateOfBirthTest;
+						Diff_2 = DatesBirth.at(n) - DatesBirth.at(m);
+					};
+					if (Diff_1 == Diff_2){ n++;};						// If we didn't have to change BirthOfDate we can check against next birth
+					if (Diff_1 != Diff_2){n = 0;};						// If we have changed DateOfBirth we need to check this new Date against all existing ones
+					
+			}
+		}
 
-	//	DatesBirth.push_back(DateOfBirthTest);						// Once we checked birth doesn't happen before birth lets push that in
-	//		  	
-	//	
-	//	//// --- Lets check if I am already giving birth at this age --- ////
-	//	if (DatesBirth.size()>1){									// Only need to check if there are already more than 1 child
-	//		int n=0;												// Index to count past births with this newly assigned birth
-	//		
-	//		while (n<m){
-	//			double Diff_1 = DatesBirth.at(n) - DatesBirth.at(m);	// This Diff is the original difference
-	//			double Diff_2 = DatesBirth.at(n) - DatesBirth.at(m);	// This Diff is the new one if new one is needed.  
-	//																	// [...] If both the same we can move on, if not we need to check the new Birth against births 1 to max again
-	//			while ((DatesBirth.at(n) - DatesBirth.at(m) > -0.75 && DatesBirth.at(n) - DatesBirth.at(m)<0.75) || DatesBirth.at(m)>DateOfDeath){
-	//					double	f = ((double)rand() / (RAND_MAX));
-	//					int j = 0;
-	//					while (f>BirthArray[*p_PY][j] && j<35){ j++; };
-	//					
-	//					DateOfBirthTest = DoB + 15+j;
-	//					DatesBirth.at(m)=DateOfBirthTest;
-	//					Diff_2 = DatesBirth.at(n) - DatesBirth.at(m);
-	//				};
-	//				if (Diff_1 == Diff_2){ n++;};						// If we didn't have to change BirthOfDate we can check against next birth
-	//				if (Diff_1 != Diff_2){n = 0;};						// If we have changed DateOfBirth we need to check this new Date against all existing ones
-	//				
-	//		}
-	//	}
-
-	//	m++; 
-	//}
-	//
-
+		m++; 
 	}
+
+
+	// Lets add births to the EventQ
+	int p=PersonID-1;
+	int index2 = 0;
+	while (index2 < NrChildren){
+		if (DatesBirth.at(index2) >= *p_GT){
+			event * BabyBirth = new event;
+			Events.push_back(BabyBirth);
+			BabyBirth->time = MyArrayOfPointersToPeople[p]->DatesBirth.at(index2);
+			BabyBirth->p_fun = &EventBirth;
+			BabyBirth->person_ID = MyArrayOfPointersToPeople[p];
+			p_PQ->push(BabyBirth);
+			E(cout << "We have just fed the birth into the EventQ." << endl;);
+		}
+		index2++;
+	}
+
+	//Lets output all births
+	E(cout << "I patient nr " << PersonID << " with DateDeath" << DateOfDeath << " will have " << NrChildren << " children on:" <<  endl;
+	int index3=0;
+	while (index3 < NrChildren){
+		cout << "Child nr " << index3+1 << " will be born in " << DatesBirth.at(index3) << endl;
+		index3++;})
+  }
 	E(cout << "We have finished assigning births!" << endl;)
 };
 
 	  
 
-// --- Assign Date of death ---	
+//// --- Assign Date of death ---	
 void person::GetDateOfDeath(){						// This is done by assigning life expactancy according to age in 1950
 
 	E(cout << "We are assigning deaths!" << endl;)
 	
 	double OneMonth=(float)1 / (float)12;;				// Define length of a month for below
-		
-	/*double DeathArray_Women[301][121]	= {
+	double DeathArray_Women[301][121]	= {
 	{0.144057991734569, 0.170144499205207, 0.195435969318822, 0.219956632394471, 0.243729980284826, 0.251384930248850, 0.258962396962945, 0.266463164711011, 0.273888009838443, 0.281237700832485, 0.285095871737630, 0.288933332760313, 0.292750195067003, 0.296546569227449, 0.300322565217882, 0.304347313757783, 0.308348910770990, 0.312327489431831, 0.316283182148578, 0.320216120567852, 0.324751376171650, 0.329256374300956, 0.333731316821959, 0.338176404254074, 0.342591835778928, 0.347722050081480, 0.352812229744636, 0.357862687186604, 0.362873732387572, 0.367845672908739, 0.373552798318204, 0.379208399473158, 0.384812941537517, 0.390366885475669, 0.395870688090392, 0.402110094048050, 0.408285059850369, 0.414396251030839, 0.420444326249364, 0.426429937363257, 0.433020801858813, 0.439535931064770, 0.445976195251500, 0.452342454689141, 0.458635559762511, 0.465439822807926, 0.472158564913748, 0.478792860969508, 0.485343772354740, 0.491812347108787, 0.499777690273248, 0.507618184493886, 0.515335786655476, 0.522932422970544, 0.530409989460124, 0.540403608146800, 0.550184546810023, 0.559757331617321, 0.569126392412211, 0.578296064764130, 0.591493093490871, 0.604277127335037, 0.616661090779597, 0.628657503841832, 0.640278494730898, 0.657491150478908, 0.673880181524030, 0.689484998266446, 0.704343125320691, 0.718490291750400, 0.739590344766800, 0.759108881323028, 0.777164441136111, 0.793866678992144, 0.809317030700284, 0.831132495883856, 0.850452119289195, 0.867561442669804, 0.882713339805715, 0.896131753948113, 0.914430617145044, 0.929505700149011, 0.941924948554268, 0.952156250823773, 0.960585065733834, 0.971281721959162, 0.979075456829092, 0.984754082181091, 0.988891608851749, 0.991906269247398, 0.994102793408933, 0.995703211949997, 0.996869299512990, 0.997718927388249, 0.998337978263436, 0.998789027478309, 0.999117668309609, 0.999357120663001, 0.999531589031153, 0.999658709149433, 0.999751330663825, 0.999818816007956, 0.999867986783260, 0.999903813304931, 0.999929917014851, 0.999948936546745, 0.999962794446430, 0.999972891507953, 0.999980248369651, 0.999985608683036, 0.999989514283110, 0.999992359958511, 0.999994433357817, 0.999995944065849, 0.999997044789067, 0.999997846791557, 0.999998431141903, 0.999998856907823, 0.999999167126888, 0.999999393156882, 0.999999557845529},
 	{0.144057991734569, 0.170144499205207, 0.195435969318822, 0.219956632394471, 0.243729980284826, 0.251384930248850, 0.258962396962945, 0.266463164711011, 0.273888009838443, 0.281237700832485, 0.285095871737630, 0.288933332760313, 0.292750195067003, 0.296546569227449, 0.300322565217882, 0.304347313757783, 0.308348910770990, 0.312327489431831, 0.316283182148578, 0.320216120567852, 0.324751376171650, 0.329256374300956, 0.333731316821959, 0.338176404254074, 0.342591835778928, 0.347722050081480, 0.352812229744636, 0.357862687186604, 0.362873732387572, 0.367845672908739, 0.373552798318204, 0.379208399473158, 0.384812941537517, 0.390366885475669, 0.395870688090392, 0.402110094048050, 0.408285059850369, 0.414396251030839, 0.420444326249364, 0.426429937363257, 0.433020801858813, 0.439535931064770, 0.445976195251500, 0.452342454689141, 0.458635559762511, 0.465439822807926, 0.472158564913748, 0.478792860969508, 0.485343772354740, 0.491812347108787, 0.499777690273248, 0.507618184493886, 0.515335786655476, 0.522932422970544, 0.530409989460124, 0.540403608146800, 0.550184546810023, 0.559757331617321, 0.569126392412211, 0.578296064764130, 0.591493093490871, 0.604277127335037, 0.616661090779597, 0.628657503841832, 0.640278494730898, 0.657491150478908, 0.673880181524030, 0.689484998266446, 0.704343125320691, 0.718490291750400, 0.739590344766800, 0.759108881323028, 0.777164441136111, 0.793866678992144, 0.809317030700284, 0.831132495883856, 0.850452119289195, 0.867561442669804, 0.882713339805715, 0.896131753948113, 0.914430617145044, 0.929505700149011, 0.941924948554268, 0.952156250823773, 0.960585065733834, 0.971281721959162, 0.979075456829092, 0.984754082181091, 0.988891608851749, 0.991906269247398, 0.994102793408933, 0.995703211949997, 0.996869299512990, 0.997718927388249, 0.998337978263436, 0.998789027478309, 0.999117668309609, 0.999357120663001, 0.999531589031153, 0.999658709149433, 0.999751330663825, 0.999818816007956, 0.999867986783260, 0.999903813304931, 0.999929917014851, 0.999948936546745, 0.999962794446430, 0.999972891507953, 0.999980248369651, 0.999985608683036, 0.999989514283110, 0.999992359958511, 0.999994433357817, 0.999995944065849, 0.999997044789067, 0.999997846791557, 0.999998431141903, 0.999998856907823, 0.999999167126888, 0.999999393156882, 0.999999557845529},
 	{0.144057991734569, 0.170144499205207, 0.195435969318822, 0.219956632394471, 0.243729980284826, 0.251384930248850, 0.258962396962945, 0.266463164711011, 0.273888009838443, 0.281237700832485, 0.285095871737630, 0.288933332760313, 0.292750195067003, 0.296546569227449, 0.300322565217882, 0.304347313757783, 0.308348910770990, 0.312327489431831, 0.316283182148578, 0.320216120567852, 0.324751376171650, 0.329256374300956, 0.333731316821959, 0.338176404254074, 0.342591835778928, 0.347722050081480, 0.352812229744636, 0.357862687186604, 0.362873732387572, 0.367845672908739, 0.373552798318204, 0.379208399473158, 0.384812941537517, 0.390366885475669, 0.395870688090392, 0.402110094048050, 0.408285059850369, 0.414396251030839, 0.420444326249364, 0.426429937363257, 0.433020801858813, 0.439535931064770, 0.445976195251500, 0.452342454689141, 0.458635559762511, 0.465439822807926, 0.472158564913748, 0.478792860969508, 0.485343772354740, 0.491812347108787, 0.499777690273248, 0.507618184493886, 0.515335786655476, 0.522932422970544, 0.530409989460124, 0.540403608146800, 0.550184546810023, 0.559757331617321, 0.569126392412211, 0.578296064764130, 0.591493093490871, 0.604277127335037, 0.616661090779597, 0.628657503841832, 0.640278494730898, 0.657491150478908, 0.673880181524030, 0.689484998266446, 0.704343125320691, 0.718490291750400, 0.739590344766800, 0.759108881323028, 0.777164441136111, 0.793866678992144, 0.809317030700284, 0.831132495883856, 0.850452119289195, 0.867561442669804, 0.882713339805715, 0.896131753948113, 0.914430617145044, 0.929505700149011, 0.941924948554268, 0.952156250823773, 0.960585065733834, 0.971281721959162, 0.979075456829092, 0.984754082181091, 0.988891608851749, 0.991906269247398, 0.994102793408933, 0.995703211949997, 0.996869299512990, 0.997718927388249, 0.998337978263436, 0.998789027478309, 0.999117668309609, 0.999357120663001, 0.999531589031153, 0.999658709149433, 0.999751330663825, 0.999818816007956, 0.999867986783260, 0.999903813304931, 0.999929917014851, 0.999948936546745, 0.999962794446430, 0.999972891507953, 0.999980248369651, 0.999985608683036, 0.999989514283110, 0.999992359958511, 0.999994433357817, 0.999995944065849, 0.999997044789067, 0.999997846791557, 0.999998431141903, 0.999998856907823, 0.999999167126888, 0.999999393156882, 0.999999557845529},
@@ -1022,32 +1076,39 @@ void person::GetDateOfDeath(){						// This is done by assigning life expactancy
 	{0.0678698086534057, 0.0761404895764715, 0.0843377857260730, 0.0924623482366243, 0.100514822465101, 0.103997732435552, 0.107467156178363, 0.110923145913759, 0.114365753659759, 0.117795031232964, 0.120416796522905, 0.123030770365870, 0.125636975916734, 0.128235436261559, 0.130826174417799, 0.133671123127666, 0.136506759853068, 0.139333115073659, 0.142150219169329, 0.144958102420529, 0.148699947861317, 0.152425418189561, 0.156134585066240, 0.159827519838731, 0.163504293542180, 0.168624517657733, 0.173713400673995, 0.178771134431104, 0.183797909594936, 0.188793915664297, 0.196035534402827, 0.203212507371352, 0.210325411661228, 0.217374819212132, 0.224361296858043, 0.234392349427313, 0.244293674050776, 0.254066948452659, 0.263713828659793, 0.273235949282220, 0.282893780687172, 0.292423270978726, 0.301826125657910, 0.311104027561669, 0.320258637164041, 0.328988715176958, 0.337606670747019, 0.346113943889098, 0.354511956123620, 0.362802110714089, 0.371038786420082, 0.379168991549467, 0.387194102383657, 0.395115477413700, 0.402934457570243, 0.412184832729214, 0.421291891226108, 0.430257853475264, 0.439084905489995, 0.447775199415570, 0.460385731218765, 0.472708290601686, 0.484749453664068, 0.496515646334709, 0.508013147800756, 0.525064308776004, 0.541524514750515, 0.557414246899348, 0.572753276565967, 0.587560689863407, 0.609817812350343, 0.630873838120202, 0.650793583877148, 0.669638368517817, 0.687466201889102, 0.714389582777181, 0.738993635506751, 0.761478159766015, 0.782025743398767, 0.800803245127359, 0.828368054916018, 0.852118451467018, 0.872582272572790, 0.890214313930491, 0.905406436693526, 0.928163388759127, 0.945445561683168, 0.958570056567874, 0.968537111447822, 0.976106330976084, 0.981854577068547, 0.986219932441864, 0.989535087574198, 0.992052695560622, 0.993964627195883, 0.995416593744139, 0.996519251819550, 0.997356636697824, 0.997992566774427, 0.998475507263107, 0.998842263804728, 0.999120787482021, 0.999332305014798, 0.999492936481058, 0.999614923853046, 0.999707563976872, 0.999777917099516, 0.999831344941160, 0.999871919320171, 0.999902732472668, 0.999926132716614, 0.999943903420756, 0.999957398917915, 0.999967647720784, 0.999975430906464, 0.999981341643562, 0.999985830398486, 0.999989239266185, 0.999991828041732, 0.999993794019713, 0.999995287030347},
 	{0.0678698086534057, 0.0761404895764715, 0.0843377857260730, 0.0924623482366243, 0.100514822465101, 0.103997732435552, 0.107467156178363, 0.110923145913759, 0.114365753659759, 0.117795031232964, 0.120416796522905, 0.123030770365870, 0.125636975916734, 0.128235436261559, 0.130826174417799, 0.133671123127666, 0.136506759853068, 0.139333115073659, 0.142150219169329, 0.144958102420529, 0.148699947861317, 0.152425418189561, 0.156134585066240, 0.159827519838731, 0.163504293542180, 0.168624517657733, 0.173713400673995, 0.178771134431104, 0.183797909594936, 0.188793915664297, 0.196035534402827, 0.203212507371352, 0.210325411661228, 0.217374819212132, 0.224361296858043, 0.234392349427313, 0.244293674050776, 0.254066948452659, 0.263713828659793, 0.273235949282220, 0.282893780687172, 0.292423270978726, 0.301826125657910, 0.311104027561669, 0.320258637164041, 0.328988715176958, 0.337606670747019, 0.346113943889098, 0.354511956123620, 0.362802110714089, 0.371038786420082, 0.379168991549467, 0.387194102383657, 0.395115477413700, 0.402934457570243, 0.412184832729214, 0.421291891226108, 0.430257853475264, 0.439084905489995, 0.447775199415570, 0.460385731218765, 0.472708290601686, 0.484749453664068, 0.496515646334709, 0.508013147800756, 0.525064308776004, 0.541524514750515, 0.557414246899348, 0.572753276565967, 0.587560689863407, 0.609817812350343, 0.630873838120202, 0.650793583877148, 0.669638368517817, 0.687466201889102, 0.714389582777181, 0.738993635506751, 0.761478159766015, 0.782025743398767, 0.800803245127359, 0.828368054916018, 0.852118451467018, 0.872582272572790, 0.890214313930491, 0.905406436693526, 0.928163388759127, 0.945445561683168, 0.958570056567874, 0.968537111447822, 0.976106330976084, 0.981854577068547, 0.986219932441864, 0.989535087574198, 0.992052695560622, 0.993964627195883, 0.995416593744139, 0.996519251819550, 0.997356636697824, 0.997992566774427, 0.998475507263107, 0.998842263804728, 0.999120787482021, 0.999332305014798, 0.999492936481058, 0.999614923853046, 0.999707563976872, 0.999777917099516, 0.999831344941160, 0.999871919320171, 0.999902732472668, 0.999926132716614, 0.999943903420756, 0.999957398917915, 0.999967647720784, 0.999975430906464, 0.999981341643562, 0.999985830398486, 0.999989239266185, 0.999991828041732, 0.999993794019713, 0.999995287030347},
 	};
-		*/
+
+	int i=(DoB-1800);										// To find corresponding year of birth from mortality array
+	int j=0;												// This will be matched to probability taken from random number generator
+	double	d = ((double) rand() / (RAND_MAX)) ;			// get a random number to determine Life Expectancy
 	
-	//int i=(DoB-1800);										// To find corresponding year of birth from mortality array
-	//int j=0;												// This will be matched to probability taken from random number generator
-	//double	d = ((double) rand() / (RAND_MAX)) ;			// get a random number to determine Life Expectancy
-	//
-	//if (Sex==1){
-	//	while(d>DeathArray_Men[i][j] && j<121){j++;}
-	//	DateOfDeath=(DoB+j);
-	//	while (DateOfDeath<*p_GT){							// Run this again if Death happens in the past (important for 1950)
-	//		double	d = ((double) rand() / (RAND_MAX)) ;	// get a random number to determine Life Expectancy
-	//		while(d>DeathArray_Men[i][j] && j<121){j++;}
-	//		DateOfDeath=(DoB+j);}
-	//}
-	//
-	//if (Sex==2) {
-	//	while(d>DeathArray_Women[i][j] && j<121){j++;}
-	//	DateOfDeath=(DoB+j);
-	//	while (DateOfDeath<*p_GT){							// Run this again if Death happens in the past (important for 1950)
-	//		double	d = ((double) rand() / (RAND_MAX)) ;	// get a random number to determine Life Expectancy
-	//		while(d>DeathArray_Women[i][j] && j<121){j++;}
-	//		DateOfDeath=(DoB+j);};
-	//}
+	if (Sex==1){
+		while(d>DeathArray_Men[i][j] && j<121){j++;}
+		DateOfDeath=(DoB+j);
+		while (DateOfDeath<*p_GT){							// Run this again if Death happens in the past (important for 1950)
+			double	d = ((double) rand() / (RAND_MAX)) ;	// get a random number to determine Life Expectancy
+			while(d>DeathArray_Men[i][j] && j<121){j++;}
+			DateOfDeath=(DoB+j);}
+	}
+	
+	if (Sex==2) {
+		while(d>DeathArray_Women[i][j] && j<121){j++;}
+		DateOfDeath=(DoB+j);
+		while (DateOfDeath<*p_GT){							// Run this again if Death happens in the past (important for 1950)
+			double	d = ((double) rand() / (RAND_MAX)) ;	// get a random number to determine Life Expectancy
+			while(d>DeathArray_Women[i][j] && j<121){j++;}
+			DateOfDeath=(DoB+j);};
+	}
 		
-		DateOfDeath=DoB+70;
 		AgeAtDeath=DateOfDeath-DoB;
+			
+		// Lets add death to the EventQ
+		int p=PersonID-1;									// To make sure we are pointing th the right person below when including death in Event Q
+		event * DeathEvent = new event;	
+		Events.push_back(DeathEvent);
+		DeathEvent->time = MyArrayOfPointersToPeople[p]->DateOfDeath;													
+		DeathEvent->p_fun = &EventMyDeathDate;
+		DeathEvent->person_ID = MyArrayOfPointersToPeople[p];
+		p_PQ->push(DeathEvent);
 
 	E(cout << "We have finished assigning death dates!" << endl;)
 	

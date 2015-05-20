@@ -20,5 +20,4 @@ event::event()
 	{														// Miki Notes: Could also write with class constructor: event::event():time(0),sex(2) 
 			time=StartYear;									// [...] this is the same thing but could be 'clearner' if lots of functions in constructor
 															// StartYear refers to initial time  - this is changed later on in the model
-			
-}	
+	}	
