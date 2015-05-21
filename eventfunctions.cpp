@@ -26,7 +26,7 @@ extern priority_queue<event*, vector<event*>, timeComparison> *p_PQ;	// Tell thi
 extern int total_population;											// Update total population for output and for next new entry
 extern person** MyArrayOfPointersToPeople;								// Pointer to MyArrayOfPointersToPeople
 extern int *p_PY;														// Pointer to show which year range we are on
-
+extern vector<event*> Events;
 
 
 //////////////////////////////////////
@@ -49,12 +49,13 @@ void EventTellNewYear(person *MyPointerToPerson){
 	if (*p_GT >= 1985 && *p_GT<1990){*p_PY = 7; };
 	if (*p_GT >= 1990 && *p_GT<1995){*p_PY = 8; };
 	if (*p_GT >= 1995 && *p_GT<2000){*p_PY = 9; };
-	if (*p_GT >= 2000 && *p_GT<2005){*p_PY = 10; };
+	if (*p_GT >= 2000 && *p_GT<2005){*p_PY = 10;};
 	if (*p_GT >= 2005){*p_PY = 11; };
 	E(cout << "Let's check relevant things have been updated... *p_PY: " << *p_PY << " and Global Time: " << *p_GT << endl;)
 
 	// Schedule event for next year
-	event * RecurrentTellNewYear = new event;															
+	event * RecurrentTellNewYear = new event;	
+	Events.push_back(RecurrentTellNewYear);
 	RecurrentTellNewYear->time = *p_GT + 1;													
 	RecurrentTellNewYear->p_fun = &EventTellNewYear;
 	p_PQ->push(RecurrentTellNewYear);
@@ -93,6 +94,7 @@ void EventBirth(person *MyPointerToPerson){
 	
 		// Include death of baby into Event Q
 		event * DeathEvent = new event;										
+		Events.push_back(DeathEvent);
 		DeathEvent->time = MyArrayOfPointersToPeople[total_population-1]->DateOfDeath;													
 		DeathEvent->p_fun = &EventMyDeathDate;								
 		DeathEvent->person_ID = MyArrayOfPointersToPeople[total_population-1];				// NOTE: next line related to '->person_ID' is asking for ArrayPointer[nr] not Person ID, i.e its looking for pointer to person not identity	
@@ -105,6 +107,7 @@ void EventBirth(person *MyPointerToPerson){
 		for (int i = 0; i < NrChildren; i++){												// Add each of babies a woman will have to the EventQ
 			if (MyArrayOfPointersToPeople[total_population-1]->DatesBirth.at(i) >= *p_GT){	// Only add the ones that are in future to EventQ
 				event * BabyBirth = new event;												
+				Events.push_back(BabyBirth);
 				BabyBirth->time = MyArrayOfPointersToPeople[total_population-1]->DatesBirth.at(i);
 				BabyBirth->p_fun = &EventBirth;
 				BabyBirth->person_ID = MyArrayOfPointersToPeople[total_population-1];

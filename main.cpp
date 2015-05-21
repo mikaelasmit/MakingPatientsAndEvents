@@ -56,13 +56,14 @@ double StartYear=1950;														// Define Start Year if the model and set it
 int EndYear=2010;															// If endyear is more than 2010, some things will need to get changes, an error message below has been set up as reminder
 
 
-const int final_number_people=100000000;										// To determine the final size of the total population to be modeled
+const long long int final_number_people=1000000000;							// To determine the final size of the total population to be modeled
 int init_pop =5910;															// Initial population 1st Jan 1950 as 5910 (see Excel for calculation)
 int total_population=init_pop;												// Update total population for output and for next new entry
 
 priority_queue<event*, vector<event*>, timeComparison> *p_PQ;				// Pointer to event queue so as to be able to push-in/pop-out new events that are ocurreing  as a result of 'primary' events in the queue, e.g. recurrent birthdays
 person** MyArrayOfPointersToPeople = new person*[final_number_people];		// First 'person*' is a pointer (address) and 'new person' and space for x person which will point to actual person below
 																			// Have to now change [init_pop] to [final_number_people] to give the final size of 'matrix'
+vector<event *> Events;
 
 
 //// --- RUN THE MAIN MODEL ---
@@ -132,6 +133,7 @@ int main(){
 			while (index < size){
 				if (MyArrayOfPointersToPeople[i]->DatesBirth.at(index) >= *p_GT){
 					event * BabyBirth = new event;												
+					Events.push_back(BabyBirth);
 					BabyBirth->time = MyArrayOfPointersToPeople[i]->DatesBirth.at(index);
 					BabyBirth->p_fun = &EventBirth;
 					BabyBirth->person_ID = MyArrayOfPointersToPeople[i];
@@ -144,6 +146,7 @@ int main(){
 
 	// 2. Lets feed death into the eventQ
 		event * DeathEvent = new event;												
+		Events.push_back(DeathEvent);
 		DeathEvent->time = MyArrayOfPointersToPeople[i]->DateOfDeath;													
 		DeathEvent->p_fun = &EventMyDeathDate;
 		DeathEvent->person_ID = MyArrayOfPointersToPeople[i];
@@ -155,25 +158,23 @@ int main(){
 
 	// Lets feed in calendar update
 	event * TellNewYear = new event;											// --- Tell me every time  a new year start ---
+	Events.push_back(TellNewYear);
 	TellNewYear->time = StartYear;													// THINK ABOUT DOING DIFFERENT TYPES OF EVENTS!!!!					
 	TellNewYear->p_fun = &EventTellNewYear;
 	iQ.push(TellNewYear);
 
-
-
+	
 	//// --- GIVE OUTPUT OF QUEUE AS IT HAPPENS --- ////
 	cout << endl << endl << "The characteristics of the event queue:" << endl;
 	cout << "the first event will ocurr in " << iQ.top()->time << ".  " << endl;
 	cout << "the size of the event queue is " << iQ.size() << endl;
 	
-
-	while(iQ.top()->time< EndYear /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
+	while(iQ.top()->time< EndYear +1 /*|| !iQ.empty()*/){							// this loop throws up error because no recurrent birthday pushing gt over 5 yrs and iq.pop means gt cannot be updated after pop
 		GlobalTime=iQ.top()->time;											// careful with order of global time update - do not touch or touch and check!!		
 		iQ.top()-> p_fun(iQ.top()->person_ID);
 		iQ.pop();		
 	} 
 	
-
 	//// --- Output the results in a csv file ---
 	FILE* csv_out = fopen("test.csv","w");
 	for (int i=0; i<total_population; i++) {								// Change the i< X here as well as the "%d!!
@@ -191,9 +192,13 @@ int main(){
 	fclose(csv_out);
 
 
-	///// !!!! NOTE: Still need to delete Event Q!!!!!!
-	//float * ptrtomyfloat = new float;
-	//delete ptrtomyfloat;
+	//// --- LETS AVOID MEMORY LEAKS AND DELETE ALL NEW EVENTS --- ////
+	cout << "Lets delete the heap! " << endl;
+	for(int i=0; i<Events.size()-1; i++){
+		E(cout << "Event " << Events.size() << " is " << Events.at(i)->time << endl;)
+		delete Events.at(i);
+		E(cout << "Event " << Events.size() << " is " << Events.at(i)->time << endl;)
+	}
 
 	for(int i=0; i<total_population; i++){								// REMEMBER: this needs to stay "final_number_people" or it will give error with CSV FILES!!!!
 		delete MyArrayOfPointersToPeople[i];								// The 'new person' the actual new person

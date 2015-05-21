@@ -23,12 +23,14 @@ extern double *p_GT;								// Tell this .cpp that there is pointer to Global Ti
 extern double StartYear;							// Include Start Year so only have to change it once in main()
 extern int *p_PY;									// Pointer to show which year range we are on
 
-double** BirthArray;
+
+//// --- Pointers to external arrays --- ////
+double** BirthArray;								// Pointer to the arrays (i think?!)				
 double** DeathArray_Women;
 double** DeathArray_Men;
 
 
-void loadBirthArray() {							// Load birth array
+void loadBirthArray() {								// Load birth array
   FILE* f = fopen("birth_array.bin","rb");
   BirthArray = new double*[200];
   for (int i=0; i<200; i++) {
@@ -39,6 +41,7 @@ void loadBirthArray() {							// Load birth array
   }
   fclose(f);
 }
+
 
 void loadDeathArray_Women() {					// Load Death Array for women
   FILE* f = fopen("mortality_array_women.bin","rb");
@@ -53,7 +56,6 @@ void loadDeathArray_Women() {					// Load Death Array for women
 }
 
 
-
 void loadDeathArray_Men() {						// Load Death Array for men
   FILE* f = fopen("mortality_array_men.bin","rb");
   DeathArray_Men = new double*[301];
@@ -65,6 +67,7 @@ void loadDeathArray_Men() {						// Load Death Array for men
   }
   fclose(f);
 }
+
 
 int RandomMinMax(int min, int max){					// Provide function for random number generator between min and max number 
 	return rand()%(max-min+1)+min;					// !!!!Note: if min=0 and max=4 it will generate 0,1,2,3,4
@@ -157,8 +160,7 @@ void person::GetDateOfBaby(){						// This method already calculates the child's
 	
 	
 	//// --- Lets see when I will having all my children --- ////
-	
-
+	// The csv files are loaded elsewhere
 	int m=0;														// Count of how many children I will have - can be used to manage ChildVector and loop
 	double DateOfBirthTest=-9999;
 	int ChildBearingYears=AgeAtDeath-15;
@@ -177,8 +179,7 @@ void person::GetDateOfBaby(){						// This method already calculates the child's
 		while (f>BirthArray[index][j] && j<35){ j++; };				// Find out in which age group I will have my child
 		
 		DateOfBirthTest = DoB + 15 +j;
-		
-		
+				
 		while (DateOfBirthTest>=DateOfDeath){						// Run this loop in case birth ocurrs before birth
 			double	f = ((double)rand() / (RAND_MAX));
 			int j = 0;
@@ -230,8 +231,6 @@ void person::GetDateOfDeath(){						// This is done by assigning life expactancy
 	
 	double OneMonth=(float)1 / (float)12;;				// Define length of a month for below
 		
-	
-	
 	int i=(DoB-1800);										// To find corresponding year of birth from mortality array
 	int j=0;												// This will be matched to probability taken from random number generator
 	double	d = ((double) rand() / (RAND_MAX)) ;			// get a random number to determine Life Expectancy

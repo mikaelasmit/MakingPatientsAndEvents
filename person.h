@@ -10,7 +10,9 @@
 
 using namespace std;
 
-void loadBirthArray();
+
+//// --- External Arrays --- //// 
+void loadBirthArray();								// functions to load arrays
 void loadDeathArray_Women();
 void loadDeathArray_Men();
 
