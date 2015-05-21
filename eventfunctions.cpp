@@ -65,8 +65,8 @@ void EventTellNewYear(person *MyPointerToPerson){
 
 
 //// --- DEATH EVENT --- ////	
-void EventMyDeathDate(person *MyPointerToPerson){						
-	MyPointerToPerson->Alive=0;
+void EventMyDeathDate(person *MyPointerToPerson){	
+	if (MyPointerToPerson->Alive=1){MyPointerToPerson->Alive=0;}
 	E(cout << "Person " << MyPointerToPerson->PersonID << " just died. Their life status now is: " << MyPointerToPerson->Alive << endl;)
 }
 
@@ -75,13 +75,12 @@ void EventMyDeathDate(person *MyPointerToPerson){
 void EventBirth(person *MyPointerToPerson){								
 
 	E(cout << "A birth is about to happen and my life status: " << endl;)
-	
+
 	if(MyPointerToPerson->Alive == 1) {										// Only let woman give birth if she is still alive 
 	
 		total_population=total_population+1;								// Update total population for output and for next new entry
 		MyPointerToPerson->Age= (*p_GT - MyPointerToPerson->DoB);			// Update age to get age at birth for output
-
-
+		
 		// Creating a new person 
 		MyArrayOfPointersToPeople[total_population-1]=new person();			
 		(MyArrayOfPointersToPeople[total_population-1])->PersonIDAssign(total_population-1);
@@ -92,31 +91,6 @@ void EventBirth(person *MyPointerToPerson){
 		(MyArrayOfPointersToPeople[total_population-1])->GetDateOfBaby();
 
 	
-		// Include death of baby into Event Q
-		event * DeathEvent = new event;										
-		Events.push_back(DeathEvent);
-		DeathEvent->time = MyArrayOfPointersToPeople[total_population-1]->DateOfDeath;													
-		DeathEvent->p_fun = &EventMyDeathDate;								
-		DeathEvent->person_ID = MyArrayOfPointersToPeople[total_population-1];				// NOTE: next line related to '->person_ID' is asking for ArrayPointer[nr] not Person ID, i.e its looking for pointer to person not identity	
-		p_PQ->push(DeathEvent);
-		E(cout << "We have just fed the baby's death into the EventQ" << endl;);
-
-
-		// Include future births of this new baby that has just been created into EventQ
-		int NrChildren=MyArrayOfPointersToPeople[total_population-1]->DatesBirth.size();	// Find number of children woman will have 
-		for (int i = 0; i < NrChildren; i++){												// Add each of babies a woman will have to the EventQ
-			if (MyArrayOfPointersToPeople[total_population-1]->DatesBirth.at(i) >= *p_GT){	// Only add the ones that are in future to EventQ
-				event * BabyBirth = new event;												
-				Events.push_back(BabyBirth);
-				BabyBirth->time = MyArrayOfPointersToPeople[total_population-1]->DatesBirth.at(i);
-				BabyBirth->p_fun = &EventBirth;
-				BabyBirth->person_ID = MyArrayOfPointersToPeople[total_population-1];
-				p_PQ->push(BabyBirth);
-				E(cout << "We have just fed the birth of the babies into the EventQ" << endl;);
-				}
-		}
-	
-
 		// Link Mother and Child
 		(MyArrayOfPointersToPeople[total_population-1])->MotherID=MyPointerToPerson->PersonID;			// Give child their mothers ID
 		MyPointerToPerson->ChildIDVector.push_back((MyArrayOfPointersToPeople[total_population-1]));	// Give mothers their child's ID

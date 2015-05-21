@@ -16,12 +16,16 @@
 #include"errorcoutmacro.h"
 #include "coutmacro.h"
 #include "demographmacro.h"
+#include "eventQ.h"
 
 
 //// --- OUTSIDE INFORMATION --- ////
 extern double *p_GT;								// Tell this .cpp that there is pointer to Global Time defined externally 
 extern double StartYear;							// Include Start Year so only have to change it once in main()
 extern int *p_PY;									// Pointer to show which year range we are on
+extern priority_queue<event*, vector<event*>, timeComparison> *p_PQ;	// Tell this .cpp that there is a priorty_queue externall and define pointer to it
+extern vector<event*> Events;
+extern person** MyArrayOfPointersToPeople;								// Pointer to MyArrayOfPointersToPeople
 
 
 //// --- Pointers to external arrays --- ////
@@ -97,10 +101,7 @@ person::person()									// First 'person' class second constructor/variable and
 //// --- FUNCTION TO ASSIGN CHARACTERISTIC FOR INITIAL POPULATION --- ////
 
 // --- Assign Person ID ---
-void person::PersonIDAssign(int x){					
-	E(cout << "We are assigning Patient ID!" << endl;)
-	PersonID=x+1;
-}
+void person::PersonIDAssign(int x){PersonID=x+1;}
 
 
 // --- Assign Gender Distribution ---
@@ -217,7 +218,20 @@ void person::GetDateOfBaby(){						// This method already calculates the child's
 		m++; 
 	}
 	
-
+	//// --- Lets feed the births into the EventQ --- ////
+	int p=PersonID-1;
+		
+	for (int c = 0; c < NrChildren; c++){
+		if (DatesBirth.at(c) >= *p_GT){
+			event * BabyBirth = new event;												
+			Events.push_back(BabyBirth);
+			BabyBirth->time = DatesBirth.at(c);
+			BabyBirth->p_fun = &EventBirth;
+			BabyBirth->person_ID = MyArrayOfPointersToPeople[p];
+			p_PQ->push(BabyBirth);
+			}
+		}
+		
 	}
 	E(cout << "We have finished assigning births!" << endl;)
 };
@@ -253,6 +267,15 @@ void person::GetDateOfDeath(){						// This is done by assigning life expactancy
 			DateOfDeath=(DoB+j);};
 	}
 		AgeAtDeath=DateOfDeath-DoB;
+
+		// 2. Lets feed death into the eventQ
+		int p=PersonID-1;
+		event * DeathEvent = new event;												
+		Events.push_back(DeathEvent);
+		DeathEvent->time = DateOfDeath;													
+		DeathEvent->p_fun = &EventMyDeathDate;
+		DeathEvent->person_ID = MyArrayOfPointersToPeople[p];
+		p_PQ->push(DeathEvent);
 
 	E(cout << "We have finished assigning death dates!" << endl;)
 	
